@@ -1,0 +1,15 @@
+# Modules and IDEs folder
+node_modules
+.vscode
+.idea
+
+# Keep environment variables out of version control
+.env
+
+# Lock files
+package-*.json
+*.lock
+
+# Não sobe para o Git, pois é criada no Container. Apenas aceite, Marcelo. O outro é arquivos de teste
+dist
+*.spec.ts

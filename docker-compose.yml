@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  juridico-db:
+    image: mysql:8.0.30
+    container_name: juridico-db
+    restart: always
+    environment:
+      - MYSQL_DATABASE=juridico_db
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - juridico_data:/data/db
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - "33070:3306"
+    networks:
+      - juridico_app
+
+  juridico-backend:
+    image: node:16
+    container_name: juridico_backend
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/app"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - PORT=3700
+    ports:
+      - "3700:3700"
+    networks:
+      - juridico_app
