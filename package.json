@@ -1,8 +1,11 @@
 {
   "name": "juridico-backend",
+  "description": "API para Gerenciamento de Processos em âmbito jurídico",
+  "private": true,
   "version": "1.0.0",
+  "homepage": "http://localhost:3700/api/v1",
   "main": "dist/server.js",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "author": {
     "name": "André Lucas Freitas",
     "email": "andrelucas.batista@outlook.com"
@@ -18,6 +21,10 @@
     "development": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "build": "tsc -p .",
     "production": "node dist/server.js"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "yarn": ">=1.22.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
