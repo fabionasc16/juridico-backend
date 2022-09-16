@@ -9,3 +9,41 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model TiposProcesso {
+  id_tipoprocesso   String @id @default(uuid())
+  desc_tipoprocesso String @db.VarChar(100)
+
+  @@map("tipo_processo")
+}
+
+model Assunto {
+  id_assunto   String @id @default(uuid())
+  codigo_siged Int    @unique
+  desc_assunto String @db.MediumText
+
+  @@map("assunto")
+}
+
+model OrgaoDemandante {
+  id_orgao         String @id @default(uuid())
+  orgao_demandante String @db.VarChar(180)
+  sigla_orgao      String @db.VarChar(20)
+  esfera_orgao     String @db.VarChar(40)
+  orgao_controle   String @db.Char(1)
+  orgao_justica    String @db.Char(1)
+
+  @@map("orgao_demandante")
+}
+
+model Feriados {
+  id_feriado   String   @id @default(uuid())
+  data_feriado DateTime @db.Date
+  desc_feriado String   @db.VarChar(120)
+  dia_feriado  Int?
+  mes_feriado  Int?
+  ano_feriado  Int?
+  tipo_feriado String   @db.VarChar(20)
+
+  @@map("feriado")
+}

@@ -17,7 +17,7 @@ services:
       - juridico_app
 
   juridico-backend:
-    image: node:16
+    image: juridico-api
     container_name: juridico_backend
     restart: always
     build:
