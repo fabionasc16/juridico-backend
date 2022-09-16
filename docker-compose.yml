@@ -33,3 +33,9 @@ services:
       - "3700:3700"
     networks:
       - juridico_app
+        
+networks:
+  juridico_app:
+    
+volumes:
+  juridico_data:
