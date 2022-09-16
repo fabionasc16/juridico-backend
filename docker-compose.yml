@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       - MYSQL_DATABASE=juridico_db
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=qQ*eteVo2ep53R0s2Y11
     volumes:
       - juridico_data:/data/db
       - "/etc/timezone:/etc/timezone:ro"
