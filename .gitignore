@@ -10,6 +10,8 @@ node_modules
 package-*.json
 *.lock
 
-# Não sobe para o Git, pois é criada no Container. Apenas aceite, Marcelo. O outro é arquivos de teste
-dist
+# Não sobe para o Git, pois é criada no Container
 *.spec.ts
+
+# Migrations Prisma - Não precisam subir no projeto
+prisma/migrations
