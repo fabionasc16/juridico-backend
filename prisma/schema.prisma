@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,27 +8,31 @@ datasource db {
 }
 
 model TiposProcesso {
-  id_tipoprocesso   String @id @default(uuid())
-  desc_tipoprocesso String @db.VarChar(100)
+  id_tipoprocesso   String      @id @default(uuid())
+  desc_tipoprocesso String      @db.VarChar(100)
+  processos         Processos[]
 
   @@map("tipo_processo")
 }
 
 model Assunto {
-  id_assunto   String @id @default(uuid())
-  codigo_siged Int    @unique
-  desc_assunto String @db.MediumText
+  id_assunto   String      @id @default(uuid())
+  codigo_siged Int
+  desc_assunto String      @db.MediumText
+  Processos    Processos[]
 
+  @@unique([codigo_siged])
   @@map("assunto")
 }
 
 model OrgaoDemandante {
-  id_orgao         String @id @default(uuid())
-  orgao_demandante String @db.VarChar(180)
-  sigla_orgao      String @db.VarChar(20)
-  esfera_orgao     String @db.VarChar(40)
-  orgao_controle   String @db.Char(1)
-  orgao_justica    String @db.Char(1)
+  id_orgao         String      @id @default(uuid())
+  orgao_demandante String      @db.VarChar(180)
+  sigla_orgao      String      @db.VarChar(20)
+  esfera_orgao     String      @db.VarChar(40)
+  orgao_controle   String      @db.Char(1)
+  orgao_justica    String      @db.Char(1)
+  processos        Processos[]
 
   @@map("orgao_demandante")
 }
@@ -46,4 +47,112 @@ model Feriados {
   tipo_feriado String   @db.VarChar(20)
 
   @@map("feriado")
+}
+
+model Classificacao {
+  id_classificacao   String      @id @default(uuid())
+  desc_classificacao String      @db.VarChar(100)
+  Processos          Processos[]
+
+  @@map("classificacao")
+}
+
+model TiposEventos {
+  id_tipoevento   String      @id @default(uuid())
+  desc_tipoevento String      @db.VarChar(100)
+  Historico       Historico[]
+
+  @@map("tipo_evento")
+}
+
+model Responsaveis {
+  id_responsavel   String      @id @default(uuid())
+  nome_responsavel String      @db.VarChar(200)
+  cpf_responsavel  String      @db.VarChar(20)
+  telefone         String      @db.VarChar(40)
+  email            String      @db.VarChar(60)
+  registro_oab     String      @db.VarChar(40)
+  Processos        Processos[]
+  Historico        Historico[]
+
+  @@unique([cpf_responsavel])
+  @@map("responsaveis")
+}
+
+model Status {
+  id_status   String       @id @default(uuid())
+  desc_status String       @db.VarChar(100)
+  aplica_a    String       @db.VarChar(100)
+  Reiteracao  Reiteracao[]
+
+  @@map("status")
+}
+
+model Processos {
+  id_processo         String       @id @default(uuid())
+  num_procedimento    String       @db.VarChar(100)
+  fk_tipoprocesso     String
+  prazo_total         Int
+  fk_orgaodemandante  String
+  data_processo       DateTime     @db.Date
+  data_recebimento    DateTime     @db.Date
+  hora_recebimento    DateTime     @db.Time()
+  fk_assunto          String
+  fk_classificacao    String
+  objeto              String       @db.MediumText
+  requer_siged        String       @db.Char(1)
+  numero_siged        String?
+  data_processo_siged DateTime?    @db.Date
+  permanencia_siged   String       @db.VarChar(100)
+  caixa_atual_siged   String       @db.VarChar(150)
+  tramitacao_siged    String       @db.VarChar(150)
+  fk_responsavel      String
+  descricao           String       @db.MediumText
+  dia_limite_prazo    DateTime     @db.Date
+  dias_percorridos    Int
+  dias_expirados      Int
+  status_prazo        String       @db.VarChar(70)
+  sigiloso            String       @db.Char(1)
+  Historico           Historico[]
+  Reiteracao          Reiteracao[]
+
+  tipoProcesso    TiposProcesso   @relation(fields: [fk_tipoprocesso], references: [id_tipoprocesso])
+  orgaoDemandante OrgaoDemandante @relation(fields: [fk_orgaodemandante], references: [id_orgao])
+  assunto         Assunto         @relation(fields: [fk_assunto], references: [id_assunto])
+  classificacao   Classificacao   @relation(fields: [fk_classificacao], references: [id_classificacao])
+  responsavel     Responsaveis    @relation(fields: [fk_responsavel], references: [id_responsavel])
+
+  @@map("processos")
+}
+
+model Historico {
+  id_historico   String   @id @default(uuid())
+  data_historico DateTime @db.DateTime()
+  id_usuario     String   @db.VarChar(190)
+  fk_tipoevento  String
+  fk_processo    String
+  fk_responsavel String
+
+  tipoEvento  TiposEventos @relation(fields: [fk_tipoevento], references: [id_tipoevento])
+  processo    Processos    @relation(fields: [fk_processo], references: [id_processo])
+  responsavel Responsaveis @relation(fields: [fk_responsavel], references: [id_responsavel])
+
+  @@map("historico")
+}
+
+model Reiteracao {
+  id_reiteracao    String    @id @default(uuid())
+  numero_siged     String?   @db.VarChar(120)
+  data_processo    DateTime? @db.Date
+  prazo            Int?
+  fk_status        String
+  data_recebimento DateTime? @db.Date
+  hora_recebimento DateTime? @db.Time()
+  reiteracao       String?   @db.MediumText
+  fk_processo      String
+
+  status   Status    @relation(fields: [fk_status], references: [id_status])
+  processo Processos @relation(fields: [fk_processo], references: [id_processo])
+
+  @@map("reiteracao")
 }
