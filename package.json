@@ -17,6 +17,7 @@
     "url": "https://gitlab.com/sec-saude-am/juridico-backend/issues"
   },
   "scripts": {
+    "migrate": "prisma migrate dev --name create_juridico_base",
     "generate": "prisma generate",
     "development": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "build": "tsc",

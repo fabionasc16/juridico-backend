@@ -11,8 +11,10 @@ RUN npm install
 
 COPY . . 
 
-# Comando que vai gerar os mapeamentos da base de dados que serão usadas no prisma
-# Elas ficam localizadas na node_modules
+# Comandos que vão criar a base de dados e gerar os mapeamentos da base de dados 
+# que serão usadas no prisma. Elas ficam localizadas na node_modules - COMANDO 
+# PARA CRIAR A MIGRATION SERÁ EXECUTADO UMA ÚNICA VEZ
+RUN npm run migrate
 RUN npm run generate
 
 # Transpila o código TS para JS e cria a pasta ./dist
