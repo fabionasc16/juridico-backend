@@ -4,6 +4,7 @@ stages:
 local_tests:
   script:
     - docker-compose up -d --build
+    - docker container prune -f
   stage: local_tests
   tags:
     - andre-personalDocker

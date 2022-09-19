@@ -19,7 +19,7 @@
   "scripts": {
     "generate": "prisma generate",
     "development": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
-    "build": "tsc -p .",
+    "build": "tsc",
     "production": "node dist/server.js"
   },
   "engines": {
