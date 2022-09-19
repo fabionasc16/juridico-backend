@@ -29,6 +29,10 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PORT=3700
+    links:
+      - juridico-db
+    depends_on:
+      - juridico-db
     ports:
       - "3700:3700"
     networks:
