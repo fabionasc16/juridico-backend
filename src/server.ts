@@ -1,3 +1,5 @@
-import { app } from "./app.config";
+import { app } from './App.config';
 
-app.listen(3700);
+app.listen(process.env.PORT, () => {
+  console.log(`Conectado na porta ${process.env.PORT}`);
+});

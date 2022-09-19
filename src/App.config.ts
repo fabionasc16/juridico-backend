@@ -1,18 +1,28 @@
-import express, { Request, Response, NextFunction } from "express";
-import cors from "cors";
-import "express-async-errors";
+import 'reflect-metadata';
+import cors from 'cors';
+import express, { Request, Response, NextFunction } from 'express';
+import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
+import 'express-async-errors';
+import YAML from 'yamljs';
 
 const app = express();
-app.use(express.json());
+const swaggerDocument = YAML.load('./src/docs/swagger.yaml');
+
 app.use(
   cors({
-    origin: "*",
-    allowedHeaders: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  })
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'],
+  }),
 );
-
-app.get("/", (req, res) => {
-  return res.send("Teste ok");
-});
+app.use(express.json());
+app.use(morgan('combined'));
+app.use(
+  '/api/v1/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    customSiteTitle: 'Juridico API - Docs',
+  }),
+);
 
 export { app };

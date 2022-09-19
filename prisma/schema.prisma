@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:andrefreitas221@localhost:3306/juridico_db"
+  url      = env("DATABASE_URL")
 }
 
 model TiposProcesso {
@@ -84,6 +84,8 @@ model Status {
   desc_status String       @db.VarChar(100)
   aplica_a    String       @db.VarChar(100)
   Reiteracao  Reiteracao[]
+  Historico   Historico[]
+  Processos   Processos[]
 
   @@map("status")
 }
@@ -107,12 +109,14 @@ model Processos {
   caixa_atual_siged   String       @db.VarChar(150)
   tramitacao_siged    String       @db.VarChar(150)
   fk_responsavel      String
+  observacao          String       @db.MediumText
   descricao           String       @db.MediumText
   dia_limite_prazo    DateTime     @db.Date
   dias_percorridos    Int
   dias_expirados      Int
   status_prazo        String       @db.VarChar(70)
   sigiloso            String       @db.Char(1)
+  fk_status           String
   Historico           Historico[]
   Reiteracao          Reiteracao[]
 
@@ -121,6 +125,7 @@ model Processos {
   assunto         Assunto         @relation(fields: [fk_assunto], references: [id_assunto])
   classificacao   Classificacao   @relation(fields: [fk_classificacao], references: [id_classificacao])
   responsavel     Responsaveis    @relation(fields: [fk_responsavel], references: [id_responsavel])
+  status          Status          @relation(fields: [fk_status], references: [id_status])
 
   @@map("processos")
 }
@@ -132,16 +137,19 @@ model Historico {
   fk_tipoevento  String
   fk_processo    String
   fk_responsavel String
+  fk_status      String
 
   tipoEvento  TiposEventos @relation(fields: [fk_tipoevento], references: [id_tipoevento])
   processo    Processos    @relation(fields: [fk_processo], references: [id_processo])
   responsavel Responsaveis @relation(fields: [fk_responsavel], references: [id_responsavel])
+  status      Status       @relation(fields: [fk_status], references: [id_status])
 
   @@map("historico")
 }
 
 model Reiteracao {
   id_reiteracao    String    @id @default(uuid())
+  num_procedimento String?   @db.VarChar(120)
   numero_siged     String?   @db.VarChar(120)
   data_processo    DateTime? @db.Date
   prazo            Int?
