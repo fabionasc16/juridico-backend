@@ -29,7 +29,6 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
     environment:
       - PORT=3700
-      - DATABASE_URL="mysql://root:qQ1eteVo2ep53R0s2Y11@localhost:33070/juridico_db?schema=public"
     ports:
       - "3700:3700"
     networks:
