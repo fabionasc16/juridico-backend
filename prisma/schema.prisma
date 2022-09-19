@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:qQ1eteVo2ep53R0s2Y11@localhost:33070/juridico_db?schema=public"
+  url      = "mysql://root:andrefreitas221@localhost:3306/juridico_db?schema=public"
 }
 
 model TiposProcesso {
