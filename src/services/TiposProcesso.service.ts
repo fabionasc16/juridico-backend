@@ -27,7 +27,7 @@ class TiposProcessoService {
   }
 
   async delete(args: any): Promise<void> {
-    if (args.id_tipoprocesso) {
+    if (!args.id_tipoprocesso) {
       throw new AppError('Informe o Tipo de Processo a ser deletado');
     }
 
