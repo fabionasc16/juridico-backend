@@ -1,6 +1,6 @@
 {
   "name": "juridico-backend",
-  "description": "API para Gerenciamento de Processos em âmbito jurídico",
+  "description": "API para Gerenciamento de Processos em âmbito jurídico na Secretaria de Saúde do Amazonas",
   "private": true,
   "version": "1.0.0",
   "homepage": "http://localhost:3700/api/v1",

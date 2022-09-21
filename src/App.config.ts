@@ -7,6 +7,7 @@ import 'express-async-errors';
 import YAML from 'yamljs';
 
 import { AppError } from './errors/AppError.class';
+import { routes } from './routes/index.routes';
 
 const app = express();
 const swaggerDocument = YAML.load('./src/docs/swagger.yaml');
@@ -19,6 +20,7 @@ app.use(
 );
 app.use(express.json());
 app.use(morgan('combined'));
+app.use('/api/v1', routes);
 app.use(
   '/api/v1/docs',
   swaggerUi.serve,
