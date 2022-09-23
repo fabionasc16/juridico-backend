@@ -1,4 +1,5 @@
 export class Processos {
+  public id_processo?: number;
   public num_procedimento: string;
   public fk_tipoprocesso: number;
   public prazo_total: number;
@@ -10,11 +11,11 @@ export class Processos {
   public fk_classificacao: number;
   public objeto: string;
   public requer_siged: string;
-  public numero_siged?: string;
-  public data_processo_siged?: Date;
-  public permanencia_siged?: string;
-  public caixa_atual_siged?: string;
-  public tramitacao_siged?: string;
+  public numero_siged?: string | null;
+  public data_processo_siged?: Date | null;
+  public permanencia_siged?: string | null;
+  public caixa_atual_siged?: string | null;
+  public tramitacao_siged?: string | null;
   public fk_responsavel: number;
   public observacao: string;
   public descricao: string;
@@ -22,10 +23,11 @@ export class Processos {
   public dias_percorridos: number;
   public dias_expirados: number;
   public status_prazo: string;
-  public sigiloso?: string;
+  public sigiloso?: string | null;
   public fk_status: number;
 
   constructor(
+    id_processo: number,
     num_procedimento: string,
     fk_tipoprocesso: number,
     prazo_total: number,
@@ -52,6 +54,7 @@ export class Processos {
     caixa_atual_siged?: string,
     tramitacao_siged?: string,
   ) {
+    this.id_processo = id_processo;
     this.num_procedimento = num_procedimento;
     this.fk_tipoprocesso = fk_tipoprocesso;
     this.prazo_total = prazo_total;
