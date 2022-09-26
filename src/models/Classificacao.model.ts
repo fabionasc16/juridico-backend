@@ -1,7 +1,4 @@
-export class Classificacao {
-  public desc_classificacao: string;
-
-  constructor(desc_classificacao: string) {
-    this.desc_classificacao = desc_classificacao;
-  }
-}
+export type Classificacao = {
+  id_classificacao?: number;
+  desc_classificacao: string;
+};

@@ -1,27 +1,74 @@
+import { Processos } from 'models/Processos.model';
+import { AssuntoRepository } from 'repositories/Assunto.repository';
+import { OrgaoDemandanteRepository } from 'repositories/OrgaoDemandante.repository';
+import { TiposProcessoRepository } from 'repositories/TiposProcesso.repository';
+
+import { calculateDays } from '../config/Holidays.config';
 import { AppError } from '../errors/AppError.class';
 import { ProcessosRepository } from '../repositories/Processos.repository';
 
 class ProcessosService {
   private processos: ProcessosRepository;
+  private tiposProcesso: TiposProcessoRepository;
+  private orgaoDemandante: OrgaoDemandanteRepository;
+  private assunto: AssuntoRepository;
+
   constructor() {
     this.processos = new ProcessosRepository();
+    this.tiposProcesso = new TiposProcessoRepository();
+    this.orgaoDemandante = new OrgaoDemandanteRepository();
+    this.assunto = new AssuntoRepository();
   }
 
-  async create(args: any): Promise<any> {
-    if (!args.num_processo) {
+  async create(args: Processos): Promise<Processos> {
+    if (!args.num_procedimento) {
       throw new AppError('Informe o Número do Processo');
     }
 
     if (!args.fk_tipoprocesso) {
       throw new AppError('Informe o Tipo de Processo');
-    }
-
-    if (!args.prazo_total) {
-      throw new AppError('Informe o Prazo Total do Projeto');
+    } else {
+      const tiposProcesso = await this.tiposProcesso.listId(
+        args.fk_tipoprocesso,
+      );
+      if (!tiposProcesso) {
+        throw new AppError(
+          'Nenhum Tipo de Processo foi localizado com os parâmetros informados',
+          404,
+        );
+      }
     }
 
     if (!args.fk_orgaodemandante) {
       throw new AppError('Informe o Órgão Demandante do Processo');
+    } else {
+      const orgao = await this.orgaoDemandante.loadId(args.fk_orgaodemandante);
+      if (!orgao) {
+        throw new AppError(
+          'Nenhum Órgão Demandante foi localizado com os parâmetros informados',
+          404,
+        );
+      }
+    }
+
+    if (!args.fk_assunto) {
+      throw new AppError('Informe o Assunto do Projeto');
+    } else {
+      const assunto = await this.assunto.loadId(args.fk_assunto);
+      if (!assunto) {
+        throw new AppError(
+          'Nenhum Órgão Demandante foi localizado com os parâmetros informados',
+          404,
+        );
+      }
+    }
+
+    if (!args.fk_classificacao) {
+      throw new AppError('Informe a Classificação do Processo');
+    }
+
+    if (!args.prazo_total) {
+      throw new AppError('Informe o Prazo Total do Projeto');
     }
 
     if (!args.data_processo) {
@@ -34,14 +81,6 @@ class ProcessosService {
 
     if (!args.hora_recebimento) {
       throw new AppError('Informe a Hora de Abertura do Processo');
-    }
-
-    if (!args.fk_assunto) {
-      throw new AppError('Informe o Assunto do Projeto');
-    }
-
-    if (!args.fk_classificacao) {
-      throw new AppError('Informe a Classificação do Processo');
     }
 
     if (!args.objeto) {
@@ -120,6 +159,30 @@ class ProcessosService {
       sigiloso: args.sigiloso,
       fk_status: args.fk_status,
     });
+  }
+
+  async delete(id_processo: number): Promise<void> {
+    if (!id_processo) {
+      throw new AppError('Informe o identificador do Processo');
+    }
+
+    const findProcesso = await this.processos.loadId(id_processo);
+    if (!findProcesso) {
+      throw new AppError(
+        'Nenhum processo foi localizado com o identificador informado',
+        404,
+      );
+    }
+
+    await this.processos.delete(findProcesso.id_processo);
+  }
+
+  async read(args: any): Promise<any> {
+    return this.processos.read(args);
+  }
+
+  async update(args: any): Promise<void> {
+    throw new Error('method not implemented');
   }
 }
 

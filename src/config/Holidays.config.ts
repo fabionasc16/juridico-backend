@@ -1,32 +1,41 @@
-// import { updateLocale } from 'moment-business-days';
-//
-// export const holidayParameters = updateLocale('pt-br', {
-//   holidays: ['2022-01-01', '2022-02-12'],
-//   holidayFormat: 'YYYY-MM-DD',
-//   workingWeekdays: [1, 2, 3, 4, 5],
-// });
+import { response } from 'express';
+import moment from 'moment-business-days';
 
-import moment from 'moment';
+import { prisma } from './Prisma.config';
 
-const feriados = [
-  '2022-09-23',
-  '2022-09-26',
-  '2022-09-27',
-  '2022-09-28',
-  '2022-09-29',
-];
+export async function calculateDays(date: any, days: number) {
+  const anoVigente = Number(moment(new Date()).format('YYYY'));
+  const mesVigente = Number(moment(new Date()).format('MM'));
 
-export function calculateDays(date: any, days: number) {
-  date = moment(date);
-  while (days > 0) {
-    date = date.add(1, 'd');
-    if (date.isoWeekday() !== 6 && date.isoWeekday() !== 7) {
-      days -= 1;
-    }
-    if (feriados.includes(date.format('YYYY-MM-DD'))) {
-      days -= 1;
-    }
+  try {
+    const datas_especiais = [];
+    const feriados = await prisma.feriados.findMany({
+      select: {
+        data_feriado: true,
+      },
+      where: {
+        AND: {
+          mes_feriado: {
+            equals: mesVigente,
+          },
+          ano_feriado: {
+            equals: anoVigente,
+          },
+        },
+      },
+    });
+
+    feriados.forEach(feriado => {
+      datas_especiais.push(feriado.data_feriado);
+    });
+
+    moment.updateLocale('pt-BR', {
+      holidays: datas_especiais,
+      holidayFormat: 'YYYY-MM-DD',
+      workingWeekdays: [1, 2, 3, 4, 5],
+    });
+    return moment(date, 'YYYY-MM-DD').businessAdd(days);
+  } catch (e) {
+    return response.status(500).send();
   }
-
-  return date;
 }
