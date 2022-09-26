@@ -1,12 +1,13 @@
 import { prisma } from 'config/Prisma.config';
 import { IPrismaSource } from 'generics/IPrismaSource';
-import { Classificacao } from 'models/Classificacao.model';
+import { Status } from 'models/Status.model';
 
-class ClassificacaoRepository implements IPrismaSource<Classificacao> {
-  async create(args: Classificacao): Promise<Classificacao> {
-    return prisma.classificacao.create({
+class StatusRepository implements IPrismaSource<Status> {
+  async create(args: Status): Promise<Status> {
+    return prisma.status.create({
       data: {
-        desc_classificacao: args.desc_classificacao,
+        desc_status: args.desc_status,
+        aplica_a: args.aplica_a,
       },
     });
   }
@@ -18,17 +19,17 @@ class ClassificacaoRepository implements IPrismaSource<Classificacao> {
     let filters = {};
     if (search) {
       filters = {
-        desc_classificacao: args.search,
+        desc_status: args.search,
       };
     }
 
-    const total = await prisma.classificacao.count({
+    const total = await prisma.status.count({
       where: filters,
     });
     const pageNumber = Number(page);
     const pageSizeNumber = Number(pageSize);
 
-    const data = await prisma.classificacao.findMany({
+    const data = await prisma.status.findMany({
       skip: pageNumber * pageSizeNumber,
       take: pageSizeNumber,
       where: filters,
@@ -42,32 +43,33 @@ class ClassificacaoRepository implements IPrismaSource<Classificacao> {
     };
   }
 
-  async update(args: Classificacao): Promise<void> {
-    await prisma.classificacao.update({
+  async update(args: Status): Promise<void> {
+    await prisma.status.update({
       where: {
-        id_classificacao: args.id_classificacao,
+        id_status: args.id_status,
       },
       data: {
-        desc_classificacao: args.desc_classificacao,
+        desc_status: args.desc_status,
+        aplica_a: args.aplica_a,
       },
     });
   }
 
-  async delete({ id_classificacao }: Classificacao): Promise<void> {
-    await prisma.classificacao.delete({
+  async delete({ id_status }: Status): Promise<void> {
+    await prisma.status.delete({
       where: {
-        id_classificacao,
+        id_status,
       },
     });
   }
 
-  async loadId(id_classificacao: number): Promise<any> {
-    return prisma.classificacao.findUnique({
+  async loadId({ id_status }: Status): Promise<any> {
+    return prisma.status.findUnique({
       where: {
-        id_classificacao,
+        id_status,
       },
     });
   }
 }
 
-export { ClassificacaoRepository };
+export { StatusRepository };

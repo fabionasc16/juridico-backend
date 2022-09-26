@@ -23,7 +23,7 @@ class AssuntoRepository implements IPrismaSource<Assunto> {
       };
     }
 
-    const total = await prisma.processos.count({
+    const total = await prisma.assunto.count({
       where: filters,
     });
     const pageNumber = Number(page);
@@ -55,10 +55,10 @@ class AssuntoRepository implements IPrismaSource<Assunto> {
     });
   }
 
-  async delete(args: any): Promise<void> {
+  async delete({ id_assunto }: Assunto): Promise<void> {
     await prisma.assunto.delete({
       where: {
-        id_assunto: args.id_assunto,
+        id_assunto,
       },
     });
   }

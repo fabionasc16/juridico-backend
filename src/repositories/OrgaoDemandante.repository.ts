@@ -27,7 +27,7 @@ class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
       };
     }
 
-    const total = await prisma.processos.count({
+    const total = await prisma.orgaoDemandante.count({
       where: filters,
     });
     const pageNumber = Number(page);
@@ -62,10 +62,10 @@ class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
     });
   }
 
-  async delete(args: any): Promise<void> {
+  async delete({ id_orgao }: OrgaoDemandante): Promise<void> {
     await prisma.orgaoDemandante.delete({
       where: {
-        id_orgao: args.id_orgao,
+        id_orgao,
       },
     });
   }

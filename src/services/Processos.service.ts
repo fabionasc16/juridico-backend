@@ -1,23 +1,28 @@
+import { calculateDays } from 'config/Holidays.config';
+import { AppError } from 'errors/AppError.class';
 import { Processos } from 'models/Processos.model';
 import { AssuntoRepository } from 'repositories/Assunto.repository';
+import { ClassificacaoRepository } from 'repositories/Classificacao.repository';
 import { OrgaoDemandanteRepository } from 'repositories/OrgaoDemandante.repository';
+import { ProcessosRepository } from 'repositories/Processos.repository';
+import { ResponsaveisRepository } from 'repositories/Responsaveis.repository';
 import { TiposProcessoRepository } from 'repositories/TiposProcesso.repository';
-
-import { calculateDays } from '../config/Holidays.config';
-import { AppError } from '../errors/AppError.class';
-import { ProcessosRepository } from '../repositories/Processos.repository';
 
 class ProcessosService {
   private processos: ProcessosRepository;
   private tiposProcesso: TiposProcessoRepository;
   private orgaoDemandante: OrgaoDemandanteRepository;
   private assunto: AssuntoRepository;
+  private classificacao: ClassificacaoRepository;
+  private responsavel: ResponsaveisRepository;
 
   constructor() {
     this.processos = new ProcessosRepository();
     this.tiposProcesso = new TiposProcessoRepository();
     this.orgaoDemandante = new OrgaoDemandanteRepository();
     this.assunto = new AssuntoRepository();
+    this.classificacao = new ClassificacaoRepository();
+    this.responsavel = new ResponsaveisRepository();
   }
 
   async create(args: Processos): Promise<Processos> {
@@ -65,6 +70,32 @@ class ProcessosService {
 
     if (!args.fk_classificacao) {
       throw new AppError('Informe a Classificação do Processo');
+    } else {
+      const classificacao = await this.classificacao.loadId(
+        args.fk_classificacao,
+      );
+      if (!classificacao) {
+        throw new AppError(
+          'Nenhuma Classificação foi localizada com os parâmetros informados',
+          404,
+        );
+      }
+    }
+
+    if (!args.fk_responsavel) {
+      throw new AppError('Informe um Responsável pelo Processo');
+    } else {
+      const responsavel = await this.responsavel.loadId(args.fk_responsavel);
+      if (!responsavel) {
+        throw new AppError(
+          'Nenhum Responsável foi localizado com os parâmetros informados',
+          404,
+        );
+      }
+    }
+
+    if (!args.fk_status) {
+      throw new AppError('Informe o Status do Processo');
     }
 
     if (!args.prazo_total) {
@@ -93,10 +124,6 @@ class ProcessosService {
       );
     }
 
-    if (!args.fk_responsavel) {
-      throw new AppError('Informe um Responsável pelo Processo');
-    }
-
     if (!args.observacao) {
       throw new AppError('Informe uma Observação para o Processo');
     }
@@ -119,10 +146,6 @@ class ProcessosService {
 
     if (!args.status_prazo) {
       throw new AppError('Informe o Status do Prazo do Processo');
-    }
-
-    if (!args.fk_status) {
-      throw new AppError('Informe o Status do Processo');
     }
 
     const dataExists = await this.processos.loadNumProcedimento(

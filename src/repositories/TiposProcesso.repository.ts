@@ -12,10 +12,10 @@ class TiposProcessoRepository implements IPrismaSource<TiposProcesso> {
     });
   }
 
-  async delete(args: any): Promise<void> {
+  async delete({ id_tipoprocesso }: TiposProcesso): Promise<void> {
     await prisma.tiposProcesso.delete({
       where: {
-        id_tipoprocesso: args.id_tipoprocesso,
+        id_tipoprocesso,
       },
     });
   }
@@ -62,18 +62,18 @@ class TiposProcessoRepository implements IPrismaSource<TiposProcesso> {
     });
   }
 
-  async listDescription(desc: string): Promise<any> {
-    return prisma.tiposProcesso.findFirst({
+  async loadId({ id_tipoprocesso }: TiposProcesso): Promise<any> {
+    return prisma.tiposProcesso.findUnique({
       where: {
-        desc_tipoprocesso: desc,
+        id_tipoprocesso,
       },
     });
   }
 
-  async listId(id: number): Promise<any> {
-    return prisma.tiposProcesso.findUnique({
+  async listDescription(desc: string): Promise<any> {
+    return prisma.tiposProcesso.findFirst({
       where: {
-        id_tipoprocesso: id,
+        desc_tipoprocesso: desc,
       },
     });
   }
