@@ -6,6 +6,7 @@ import { ClassificacaoRepository } from 'repositories/Classificacao.repository';
 import { OrgaoDemandanteRepository } from 'repositories/OrgaoDemandante.repository';
 import { ProcessosRepository } from 'repositories/Processos.repository';
 import { ResponsaveisRepository } from 'repositories/Responsaveis.repository';
+import { StatusRepository } from 'repositories/Status.repository';
 import { TiposProcessoRepository } from 'repositories/TiposProcesso.repository';
 
 class ProcessosService {
@@ -15,6 +16,7 @@ class ProcessosService {
   private assunto: AssuntoRepository;
   private classificacao: ClassificacaoRepository;
   private responsavel: ResponsaveisRepository;
+  private status: StatusRepository;
 
   constructor() {
     this.processos = new ProcessosRepository();
@@ -23,6 +25,7 @@ class ProcessosService {
     this.assunto = new AssuntoRepository();
     this.classificacao = new ClassificacaoRepository();
     this.responsavel = new ResponsaveisRepository();
+    this.status = new StatusRepository();
   }
 
   async create(args: Processos): Promise<Processos> {
@@ -33,7 +36,7 @@ class ProcessosService {
     if (!args.fk_tipoprocesso) {
       throw new AppError('Informe o Tipo de Processo');
     } else {
-      const tiposProcesso = await this.tiposProcesso.listId(
+      const tiposProcesso = await this.tiposProcesso.loadId(
         args.fk_tipoprocesso,
       );
       if (!tiposProcesso) {
@@ -96,6 +99,14 @@ class ProcessosService {
 
     if (!args.fk_status) {
       throw new AppError('Informe o Status do Processo');
+    } else {
+      const status = await this.status.loadId(args.fk_status);
+      if (!status) {
+        throw new AppError(
+          'Nenhum Status foi localizado com os parâmetros informados',
+          404,
+        );
+      }
     }
 
     if (!args.prazo_total) {

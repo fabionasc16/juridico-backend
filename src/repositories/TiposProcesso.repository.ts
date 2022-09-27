@@ -62,7 +62,7 @@ class TiposProcessoRepository implements IPrismaSource<TiposProcesso> {
     });
   }
 
-  async loadId({ id_tipoprocesso }: TiposProcesso): Promise<any> {
+  async loadId(id_tipoprocesso: number): Promise<any> {
     return prisma.tiposProcesso.findUnique({
       where: {
         id_tipoprocesso,

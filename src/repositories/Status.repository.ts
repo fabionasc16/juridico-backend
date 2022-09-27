@@ -63,7 +63,7 @@ class StatusRepository implements IPrismaSource<Status> {
     });
   }
 
-  async loadId({ id_status }: Status): Promise<any> {
+  async loadId(id_status: number): Promise<any> {
     return prisma.status.findUnique({
       where: {
         id_status,
