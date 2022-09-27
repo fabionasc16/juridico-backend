@@ -36,7 +36,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     });
   }
 
-  async delete({ id_processo }: Processos): Promise<void> {
+  async delete(id_processo: number): Promise<void> {
     await prisma.processos.delete({
       where: {
         id_processo,

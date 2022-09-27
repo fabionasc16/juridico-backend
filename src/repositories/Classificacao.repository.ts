@@ -53,7 +53,7 @@ class ClassificacaoRepository implements IPrismaSource<Classificacao> {
     });
   }
 
-  async delete({ id_classificacao }: Classificacao): Promise<void> {
+  async delete(id_classificacao: number): Promise<void> {
     await prisma.classificacao.delete({
       where: {
         id_classificacao,

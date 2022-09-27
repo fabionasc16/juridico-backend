@@ -62,7 +62,7 @@ class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
     });
   }
 
-  async delete({ id_orgao }: OrgaoDemandante): Promise<void> {
+  async delete(id_orgao: number): Promise<void> {
     await prisma.orgaoDemandante.delete({
       where: {
         id_orgao,

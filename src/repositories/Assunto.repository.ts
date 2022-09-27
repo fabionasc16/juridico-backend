@@ -55,7 +55,7 @@ class AssuntoRepository implements IPrismaSource<Assunto> {
     });
   }
 
-  async delete({ id_assunto }: Assunto): Promise<void> {
+  async delete(id_assunto: number): Promise<void> {
     await prisma.assunto.delete({
       where: {
         id_assunto,

@@ -31,7 +31,7 @@ class TiposProcessoService {
       throw new AppError('Informe o Tipo de Processo a ser deletado');
     }
 
-    const dataExists = await this.tiposProcesso.listId(args.id_tipoprocesso);
+    const dataExists = await this.tiposProcesso.loadId(args.id_tipoprocesso);
     if (!dataExists) {
       throw new AppError(
         'Não foram encontrados registros na base para os parâmetros informados',
@@ -39,9 +39,7 @@ class TiposProcessoService {
       );
     }
 
-    await this.tiposProcesso.delete({
-      id_tipoprocesso: args.id_tipoprocesso,
-    });
+    await this.tiposProcesso.delete(args.id_tipoprocesso);
   }
 
   async read(args: any): Promise<any> {
@@ -53,7 +51,7 @@ class TiposProcessoService {
       throw new AppError('Informe o Tipo de Processo a ser atualizado');
     }
 
-    const data = await this.tiposProcesso.listId(args.id_tipoprocesso);
+    const data = await this.tiposProcesso.loadId(args.id_tipoprocesso);
     if (!data) {
       throw new AppError(
         'Não foram encontrados registros na base para os parâmetros informados',

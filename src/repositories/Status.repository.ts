@@ -19,7 +19,7 @@ class StatusRepository implements IPrismaSource<Status> {
     let filters = {};
     if (search) {
       filters = {
-        desc_status: args.search,
+        aplica_a: args.search,
       };
     }
 
@@ -55,7 +55,7 @@ class StatusRepository implements IPrismaSource<Status> {
     });
   }
 
-  async delete({ id_status }: Status): Promise<void> {
+  async delete(id_status: number): Promise<void> {
     await prisma.status.delete({
       where: {
         id_status,

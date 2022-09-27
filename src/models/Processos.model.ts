@@ -4,9 +4,9 @@ export type Processos = {
   fk_tipoprocesso: number;
   prazo_total: number;
   fk_orgaodemandante: number;
-  data_processo: Date;
-  data_recebimento: Date;
-  hora_recebimento: Date;
+  data_processo: Date | string;
+  data_recebimento: Date | string;
+  hora_recebimento: Date | string;
   fk_assunto: number;
   fk_classificacao: number;
   objeto: string;
@@ -19,7 +19,7 @@ export type Processos = {
   fk_responsavel: number;
   observacao: string;
   descricao: string;
-  dia_limite_prazo: Date;
+  dia_limite_prazo: Date | string;
   dias_percorridos: number;
   dias_expirados: number;
   status_prazo: string;

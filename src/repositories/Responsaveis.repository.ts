@@ -61,7 +61,7 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
     });
   }
 
-  async delete({ id_responsavel }: Responsaveis): Promise<void> {
+  async delete(id_responsavel: number): Promise<void> {
     await prisma.responsaveis.delete({
       where: {
         id_responsavel,

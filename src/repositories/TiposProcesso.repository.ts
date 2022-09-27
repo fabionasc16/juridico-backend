@@ -12,7 +12,7 @@ class TiposProcessoRepository implements IPrismaSource<TiposProcesso> {
     });
   }
 
-  async delete({ id_tipoprocesso }: TiposProcesso): Promise<void> {
+  async delete(id_tipoprocesso: number): Promise<void> {
     await prisma.tiposProcesso.delete({
       where: {
         id_tipoprocesso,
