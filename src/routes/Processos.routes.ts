@@ -1,5 +1,6 @@
-import { ProcessosController } from 'controllers/Processos.controller';
 import { Router } from 'express';
+
+import { ProcessosController } from '../controllers/Processos.controller';
 
 const processosRoutes = Router();
 const controller = new ProcessosController();

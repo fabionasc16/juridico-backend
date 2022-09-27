@@ -1,6 +1,6 @@
-import { prisma } from 'config/Prisma.config';
-import { IPrismaSource } from 'generics/IPrismaSource';
-import { Classificacao } from 'models/Classificacao.model';
+import { prisma } from '../config/Prisma.config';
+import { IPrismaSource } from '../generics/IPrismaSource';
+import { Classificacao } from '../models/Classificacao.model';
 
 class ClassificacaoRepository implements IPrismaSource<Classificacao> {
   async create(args: Classificacao): Promise<Classificacao> {

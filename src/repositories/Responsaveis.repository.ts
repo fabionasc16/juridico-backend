@@ -1,6 +1,6 @@
-import { prisma } from 'config/Prisma.config';
-import { IPrismaSource } from 'generics/IPrismaSource';
-import { Responsaveis } from 'models/Responsaveis.model';
+import { prisma } from '../config/Prisma.config';
+import { IPrismaSource } from '../generics/IPrismaSource';
+import { Responsaveis } from '../models/Responsaveis.model';
 
 class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
   async create(args: Responsaveis): Promise<Responsaveis> {

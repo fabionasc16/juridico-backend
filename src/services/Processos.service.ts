@@ -1,14 +1,15 @@
-import { calculateDays } from 'config/Holidays.config';
-import { AppError } from 'errors/AppError.class';
-import { Processos } from 'models/Processos.model';
 import moment from 'moment';
-import { AssuntoRepository } from 'repositories/Assunto.repository';
-import { ClassificacaoRepository } from 'repositories/Classificacao.repository';
-import { OrgaoDemandanteRepository } from 'repositories/OrgaoDemandante.repository';
-import { ProcessosRepository } from 'repositories/Processos.repository';
-import { ResponsaveisRepository } from 'repositories/Responsaveis.repository';
-import { StatusRepository } from 'repositories/Status.repository';
-import { TiposProcessoRepository } from 'repositories/TiposProcesso.repository';
+
+import { calculateDays } from '../config/Holidays.config';
+import { AppError } from '../errors/AppError.class';
+import { Processos } from '../models/Processos.model';
+import { AssuntoRepository } from '../repositories/Assunto.repository';
+import { ClassificacaoRepository } from '../repositories/Classificacao.repository';
+import { OrgaoDemandanteRepository } from '../repositories/OrgaoDemandante.repository';
+import { ProcessosRepository } from '../repositories/Processos.repository';
+import { ResponsaveisRepository } from '../repositories/Responsaveis.repository';
+import { StatusRepository } from '../repositories/Status.repository';
+import { TiposProcessoRepository } from '../repositories/TiposProcesso.repository';
 
 class ProcessosService {
   private processos: ProcessosRepository;
@@ -31,7 +32,7 @@ class ProcessosService {
 
   async create(args: Processos): Promise<Processos> {
     if (!args.num_procedimento) {
-      throw new AppError('Informe o Número do Processo');
+      throw new AppError('Informe o Número do Procedimento');
     }
 
     if (!args.fk_tipoprocesso) {

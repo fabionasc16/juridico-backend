@@ -1,7 +1,6 @@
-import { Processos } from 'models/Processos.model';
-
 import { prisma } from '../config/Prisma.config';
 import { IPrismaSource } from '../generics/IPrismaSource';
+import { Processos } from '../models/Processos.model';
 
 class ProcessosRepository implements IPrismaSource<Processos> {
   async create(args: Processos): Promise<Processos> {

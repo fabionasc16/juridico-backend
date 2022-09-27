@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { ProcessosService } from 'services/Processos.service';
+
+import { ProcessosService } from '../services/Processos.service';
 
 class ProcessosController {
   static service: ProcessosService;

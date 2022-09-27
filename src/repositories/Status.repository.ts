@@ -1,6 +1,6 @@
-import { prisma } from 'config/Prisma.config';
-import { IPrismaSource } from 'generics/IPrismaSource';
-import { Status } from 'models/Status.model';
+import { prisma } from '../config/Prisma.config';
+import { IPrismaSource } from '../generics/IPrismaSource';
+import { Status } from '../models/Status.model';
 
 class StatusRepository implements IPrismaSource<Status> {
   async create(args: Status): Promise<Status> {

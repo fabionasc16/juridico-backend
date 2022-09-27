@@ -1,7 +1,6 @@
-import { IPrismaSource } from 'generics/IPrismaSource';
-import { OrgaoDemandante } from 'models/OrgaoDemandante.model';
-
 import { prisma } from '../config/Prisma.config';
+import { IPrismaSource } from '../generics/IPrismaSource';
+import { OrgaoDemandante } from '../models/OrgaoDemandante.model';
 
 class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
   async create(args: OrgaoDemandante): Promise<OrgaoDemandante> {
