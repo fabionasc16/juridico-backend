@@ -156,11 +156,11 @@ class ProcessosService {
       throw new AppError('Informe o Status do Prazo do Processo');
     }
 
-    let limiteProcesso = (
+    const limiteProcesso = (
       await calculateDays(args.data_recebimento, args.prazo_total)
     ).format('YYYY-MM-DD');
 
-    let diasPercorridos = moment(new Date(), 'YYYY-MM-DD').diff(
+    const diasPercorridos = moment(new Date(), 'YYYY-MM-DD').diff(
       moment(args.data_recebimento, 'YYYY-MM-DD'),
     );
 
@@ -362,7 +362,7 @@ class ProcessosService {
     );
 
     let diasExpirados = 0;
-    let expirado = moment(
+    const expirado = moment(
       processo.dia_limite_prazo as string,
       'YYYY-MM-DD',
     ).diff(moment(new Date(), 'YYYY-MM-DD'));
