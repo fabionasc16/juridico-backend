@@ -1,0 +1,131 @@
+import { Request, Response } from 'express';
+import { ProcessosService } from 'services/Processos.service';
+
+class ProcessosController {
+  static service: ProcessosService;
+  public constructor() {
+    ProcessosController.service = new ProcessosService();
+  }
+
+  async create(request: Request, response: Response): Promise<Response> {
+    const {
+      numProcedimento,
+      idTipoProcesso,
+      prazoTotal,
+      idOrgaoDemandante,
+      dataProcesso,
+      dataRecebimento,
+      horaRecebimento,
+      idAssunto,
+      idClassificacao,
+      objeto,
+      requerSIGED,
+      numProcessoSIGED,
+      dataProcessoSIGED,
+      permanenciaSIGED,
+      caixaAtualSIGED,
+      tramitacaoSIGED,
+      idResponsavel,
+      observacao,
+      descricao,
+      statusPrazo,
+      sigiloso,
+      statusProcesso,
+    } = request.body;
+    const service = await ProcessosController.service.create({
+      num_procedimento: numProcedimento,
+      fk_tipoprocesso: idTipoProcesso,
+      prazo_total: prazoTotal,
+      fk_orgaodemandante: idOrgaoDemandante,
+      data_processo: dataProcesso,
+      data_recebimento: dataRecebimento,
+      hora_recebimento: horaRecebimento,
+      fk_assunto: idAssunto,
+      fk_classificacao: idClassificacao,
+      objeto,
+      requer_siged: requerSIGED,
+      numero_siged: numProcessoSIGED,
+      data_processo_siged: dataProcessoSIGED,
+      permanencia_siged: permanenciaSIGED,
+      caixa_atual_siged: caixaAtualSIGED,
+      tramitacao_siged: tramitacaoSIGED,
+      fk_responsavel: idResponsavel,
+      observacao,
+      descricao,
+      status_prazo: statusPrazo,
+      sigiloso,
+      fk_status: statusProcesso,
+    });
+
+    return response.status(201).send(service);
+  }
+
+  async delete(request: Request, response: Response): Promise<Response> {
+    const { id_processo } = request.params;
+    await ProcessosController.service.delete(Number(id_processo));
+
+    return response.status(204).send();
+  }
+
+  async read(request: Request, response: Response): Promise<Response> {
+    const data = await ProcessosController.service.read(request.query);
+    return response.status(200).json(data);
+  }
+
+  async update(request: Request, response: Response): Promise<Response> {
+    const { id_processo } = request.params;
+    const {
+      numProcedimento,
+      idTipoProcesso,
+      prazoTotal,
+      idOrgaoDemandante,
+      dataProcesso,
+      dataRecebimento,
+      horaRecebimento,
+      idAssunto,
+      idClassificacao,
+      objeto,
+      requerSIGED,
+      numProcessoSIGED,
+      dataProcessoSIGED,
+      permanenciaSIGED,
+      caixaAtualSIGED,
+      tramitacaoSIGED,
+      idResponsavel,
+      observacao,
+      descricao,
+      statusPrazo,
+      sigiloso,
+      statusProcesso,
+    } = request.body;
+    await ProcessosController.service.update({
+      id_processo: Number(id_processo),
+      num_procedimento: numProcedimento,
+      fk_tipoprocesso: idTipoProcesso,
+      prazo_total: prazoTotal,
+      fk_orgaodemandante: idOrgaoDemandante,
+      data_processo: dataProcesso,
+      data_recebimento: dataRecebimento,
+      hora_recebimento: horaRecebimento,
+      fk_assunto: idAssunto,
+      fk_classificacao: idClassificacao,
+      objeto,
+      requer_siged: requerSIGED,
+      numero_siged: numProcessoSIGED,
+      data_processo_siged: dataProcessoSIGED,
+      permanencia_siged: permanenciaSIGED,
+      caixa_atual_siged: caixaAtualSIGED,
+      tramitacao_siged: tramitacaoSIGED,
+      fk_responsavel: idResponsavel,
+      observacao,
+      descricao,
+      status_prazo: statusPrazo,
+      sigiloso,
+      fk_status: statusProcesso,
+    });
+
+    return response.status(204).send();
+  }
+}
+
+export { ProcessosController };

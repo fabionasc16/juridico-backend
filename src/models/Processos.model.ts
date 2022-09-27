@@ -19,9 +19,9 @@ export type Processos = {
   fk_responsavel: number;
   observacao: string;
   descricao: string;
-  dia_limite_prazo: Date | string;
-  dias_percorridos: number;
-  dias_expirados: number;
+  dia_limite_prazo?: Date | string;
+  dias_percorridos?: number;
+  dias_expirados?: number;
   status_prazo: string;
   sigiloso: string | null;
   fk_status: number;

@@ -2,12 +2,12 @@ import { Router } from 'express';
 
 import { TiposProcessoController } from '../controllers/TiposProcesso.controller';
 
-const tiposProcesso = Router();
+const tiposProcessoRoutes = Router();
 const controller = new TiposProcessoController();
 
-tiposProcesso.post('/', controller.create);
-tiposProcesso.get('/', controller.read);
-tiposProcesso.put('/:id_tipoprocesso', controller.update);
-tiposProcesso.delete('/:id_tipoprocesso', controller.delete);
+tiposProcessoRoutes.post('/', controller.create);
+tiposProcessoRoutes.get('/', controller.read);
+tiposProcessoRoutes.put('/:id_tipoprocesso', controller.update);
+tiposProcessoRoutes.delete('/:id_tipoprocesso', controller.delete);
 
-export { tiposProcesso };
+export { tiposProcessoRoutes };

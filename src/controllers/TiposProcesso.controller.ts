@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 
-import { TiposProcesso } from '../models/TiposProcesso.model';
 import { TiposProcessoService } from '../services/TiposProcesso.service';
 
 class TiposProcessoController {

@@ -231,15 +231,17 @@ class ProcessosService {
   }
 
   async update(args: any): Promise<void> {
-    if (!args.num_procedimento) {
-      throw new AppError('Informe o número do procedimento');
+    if (!args.id_processo) {
+      throw new AppError('Informe o Identificador do procedimento');
     }
 
-    const processo = await this.processos.loadNumProcedimento(
-      args.num_procedimento,
-    );
+    const processo = await this.processos.loadId(args.id_processo);
     if (!processo) {
       throw new AppError('Processo não localizado no sistema', 404);
+    }
+
+    if (args.num_procedimento) {
+      processo.num_procedimento = args.num_procedimento;
     }
 
     if (args.fk_tipoprocesso) {
