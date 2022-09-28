@@ -64,6 +64,14 @@ class ProcessosRepository implements IPrismaSource<Processos> {
       skip: pageNumber * pageSizeNumber,
       take: pageSizeNumber,
       where: filters,
+      include: {
+        tipoProcesso: true,
+        status: true,
+        assunto: true,
+        classificacao: true,
+        orgaoDemandante: true,
+        responsavel: true,
+      },
     });
 
     return {

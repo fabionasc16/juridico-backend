@@ -270,11 +270,15 @@ class ProcessosService {
     }
 
     if (args.data_processo) {
-      processo.data_processo = args.data_processo;
+      processo.data_processo = new Date(
+        moment(args.data_processo).format('YYYY-MM-DD'),
+      );
     }
 
     if (args.data_recebimento) {
-      processo.data_recebimento = args.data_recebimento;
+      processo.data_recebimento = new Date(
+        moment(args.data_recebimento).format('YYYY-MM-DD'),
+      );
     }
 
     if (args.hora_recebimento) {
@@ -318,7 +322,9 @@ class ProcessosService {
     }
 
     if (args.data_processo_siged) {
-      processo.data_processo_siged = args.data_processo_siged;
+      processo.data_processo_siged = new Date(
+        moment(args.data_processo_siged).format('YYYY-MM-DD'),
+      );
     }
 
     if (args.permanencia_siged) {
@@ -351,20 +357,23 @@ class ProcessosService {
     if (args.descicao) {
       processo.descicao = args.descicao;
     }
-
-    processo.dia_limite_prazo = (
+    const limitePrazo = (
       await calculateDays(args.data_recebimento, args.prazo_total)
     ).format('YYYY-MM-DD');
+    processo.dia_limite_prazo = new Date(
+      moment(limitePrazo as string).format('YYYY-MM-DD'),
+    );
 
     processo.dias_percorridos = moment(new Date(), 'YYYY-MM-DD').diff(
       moment(args.data_recebimento, 'YYYY-MM-DD'),
+      'days',
     );
 
     let diasExpirados = 0;
     const expirado = moment(
       processo.dia_limite_prazo as string,
       'YYYY-MM-DD',
-    ).diff(moment(new Date(), 'YYYY-MM-DD'));
+    ).diff(moment(new Date(), 'YYYY-MM-DD'), 'days');
     if (expirado >= 0) {
       diasExpirados = 0;
     } else {
@@ -391,7 +400,7 @@ class ProcessosService {
       processo.fk_status = args.fk_status;
     }
 
-    await this.processos.update(args);
+    await this.processos.update(processo);
   }
 }
 
