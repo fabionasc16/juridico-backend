@@ -98,7 +98,7 @@ model Processos {
   fk_orgaodemandante  Int
   data_processo       DateTime     @db.Date
   data_recebimento    DateTime     @db.Date
-  hora_recebimento    DateTime     @db.Time()
+  hora_recebimento    String       @db.VarChar(10)
   fk_assunto          Int
   fk_classificacao    Int
   objeto              String       @db.MediumText

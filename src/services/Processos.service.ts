@@ -141,18 +141,6 @@ class ProcessosService {
       throw new AppError('Informe uma Descrição para o Processo');
     }
 
-    if (!args.dia_limite_prazo) {
-      throw new AppError('Informe um Prazo Limite para o Processo');
-    }
-
-    if (!args.dias_percorridos) {
-      throw new AppError('Informe os Dias Percorridos do Processo');
-    }
-
-    if (!args.dias_expirados) {
-      throw new AppError('Informe os Dias Expirados do Processo');
-    }
-
     if (!args.status_prazo) {
       throw new AppError('Informe o Status do Prazo do Processo');
     }
@@ -163,11 +151,13 @@ class ProcessosService {
 
     const diasPercorridos = moment(new Date(), 'YYYY-MM-DD').diff(
       moment(args.data_recebimento, 'YYYY-MM-DD'),
+      'days',
     );
 
     let diasExpirados = 0;
     const expirado = moment(limiteProcesso as string, 'YYYY-MM-DD').diff(
       moment(new Date(), 'YYYY-MM-DD'),
+      'days',
     );
     if (expirado >= 0) {
       diasExpirados = 0;
@@ -187,22 +177,28 @@ class ProcessosService {
       fk_tipoprocesso: args.fk_tipoprocesso,
       prazo_total: args.prazo_total,
       fk_orgaodemandante: args.fk_orgaodemandante,
-      data_processo: args.data_processo,
-      data_recebimento: args.data_recebimento,
+      data_processo: new Date(moment(args.data_processo).format('YYYY-MM-DD')),
+      data_recebimento: new Date(
+        moment(args.data_recebimento).format('YYYY-MM-DD'),
+      ),
       hora_recebimento: args.hora_recebimento,
       fk_assunto: args.fk_assunto,
       fk_classificacao: args.fk_classificacao,
       objeto: args.objeto,
       requer_siged: args.requer_siged,
       numero_siged: args.numero_siged,
-      data_processo_siged: args.data_processo_siged,
+      data_processo_siged: new Date(
+        moment(args.data_processo_siged).format('YYYY-MM-DD'),
+      ),
       permanencia_siged: args.permanencia_siged,
       caixa_atual_siged: args.caixa_atual_siged,
       tramitacao_siged: args.tramitacao_siged,
       fk_responsavel: args.fk_responsavel,
       observacao: args.observacao,
       descricao: args.descricao,
-      dia_limite_prazo: limiteProcesso as string,
+      dia_limite_prazo: new Date(
+        moment(limiteProcesso as string).format('YYYY-MM-DD'),
+      ),
       dias_percorridos: diasPercorridos,
       dias_expirados: diasExpirados,
       status_prazo: args.status_prazo,

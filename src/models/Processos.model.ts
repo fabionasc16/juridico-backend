@@ -6,7 +6,7 @@ export type Processos = {
   fk_orgaodemandante: number;
   data_processo: Date | string;
   data_recebimento: Date | string;
-  hora_recebimento: Date | string;
+  hora_recebimento: string;
   fk_assunto: number;
   fk_classificacao: number;
   objeto: string;
