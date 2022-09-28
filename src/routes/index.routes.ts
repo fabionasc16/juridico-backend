@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { assuntoRoutes } from './Assunto.routes';
+import { classificacaoRoutes } from './Classificacao.routes';
 import { processosRoutes } from './Processos.routes';
 import { tiposProcessoRoutes } from './TiposProcesso.routes';
 
@@ -13,5 +14,6 @@ routes.get('/', (request, response) => {
 routes.use('/tipos-processo', tiposProcessoRoutes);
 routes.use('/processo', processosRoutes);
 routes.use('/assunto', assuntoRoutes);
+routes.use('/classificacao', classificacaoRoutes);
 
 export { routes };
