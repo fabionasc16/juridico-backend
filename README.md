@@ -63,9 +63,3 @@ yarn production
 
 npm run production
 ```
-
-Produção (Executando em Docker - pendente de testes)
-
-```bash
-docker-compose up -d --build
-```
