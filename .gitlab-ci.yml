@@ -3,7 +3,7 @@ stages:
 
 development-build:
   script:
-    - docker-compose up -d juridico-dev --force-recreate
+    - docker-compose up -d --force-recreate
   only:
     - development
   stage: development-build
