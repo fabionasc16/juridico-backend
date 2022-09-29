@@ -68,6 +68,14 @@ class ClassificacaoRepository implements IPrismaSource<Classificacao> {
       },
     });
   }
+
+  async loadClassificacao(desc_classificacao: string): Promise<any> {
+    return prisma.classificacao.findFirst({
+      where: {
+        desc_classificacao,
+      },
+    });
+  }
 }
 
 export { ClassificacaoRepository };
