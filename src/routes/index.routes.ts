@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { assuntoRoutes } from './Assunto.routes';
 import { classificacaoRoutes } from './Classificacao.routes';
 import { feriadosRoutes } from './Feriados.routes';
+import { orgaoDemandanteRoutes } from './OrgaoDemandante.routes';
 import { processosRoutes } from './Processos.routes';
 import { tiposProcessoRoutes } from './TiposProcesso.routes';
 
@@ -17,5 +18,6 @@ routes.use('/processo', processosRoutes);
 routes.use('/assunto', assuntoRoutes);
 routes.use('/classificacao', classificacaoRoutes);
 routes.use('/feriados', feriadosRoutes);
+routes.use('/orgao-demandante', orgaoDemandanteRoutes);
 
 export { routes };
