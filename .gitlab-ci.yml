@@ -1,0 +1,12 @@
+stages:
+  - development-build
+
+development-build:
+  script:
+    - docker-compose up -d juridico-dev --force-recreate
+  only:
+    - development
+  stage: development-build
+  tags:
+    - prodam_150
+  
