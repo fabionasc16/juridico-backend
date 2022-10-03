@@ -13,11 +13,11 @@ routes.get('/', (request, response) => {
   return response.status(200).json({ message: 'Hello, API' });
 });
 
-routes.use('/tipos-processo', tiposProcessoRoutes);
-routes.use('/processo', processosRoutes);
-routes.use('/assunto', assuntoRoutes);
-routes.use('/classificacao', classificacaoRoutes);
+routes.use('/tipos-processos', tiposProcessoRoutes);
+routes.use('/processos', processosRoutes);
+routes.use('/assuntos', assuntoRoutes);
+routes.use('/classificacoes', classificacaoRoutes);
 routes.use('/feriados', feriadosRoutes);
-routes.use('/orgao-demandante', orgaoDemandanteRoutes);
+routes.use('/orgaos-demandantes', orgaoDemandanteRoutes);
 
 export { routes };
