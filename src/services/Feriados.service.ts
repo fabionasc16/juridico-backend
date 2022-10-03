@@ -87,15 +87,15 @@ class FeriadosService {
     }
 
     if (args.dia_feriado) {
-      feriado.dia_feriado = new Date(moment(args.dia_feriado).format('DD'));
+      feriado.dia_feriado = new Date(moment(args.data_feriado).format('DD'));
     }
 
     if (args.mes_feriado) {
-      feriado.mes_feriado = new Date(moment(args.mes_feriado).format('MM'));
+      feriado.mes_feriado = new Date(moment(args.data_feriado).format('MM'));
     }
 
     if (args.ano_feriado) {
-      feriado.ano_feriado = new Date(moment(args.ano_feriado).format('YYYY'));
+      feriado.ano_feriado = new Date(moment(args.data_feriado).format('YYYY'));
     }
 
     if (args.tipo_feriado) {
