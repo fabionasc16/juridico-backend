@@ -6,6 +6,7 @@ import { FeriadosRepository } from '../repositories/Feriados.repository';
 
 class FeriadosService {
   private feriado: FeriadosRepository;
+
   constructor() {
     this.feriado = new FeriadosRepository();
   }
@@ -86,17 +87,15 @@ class FeriadosService {
       feriado.desc_feriado = args.desc_feriado;
     }
 
-    if (args.dia_feriado) {
-      feriado.dia_feriado = new Date(moment(args.data_feriado).format('DD'));
-    }
-
-    if (args.mes_feriado) {
-      feriado.mes_feriado = new Date(moment(args.data_feriado).format('MM'));
-    }
-
-    if (args.ano_feriado) {
-      feriado.ano_feriado = new Date(moment(args.data_feriado).format('YYYY'));
-    }
+    feriado.dia_feriado = Number(
+      moment(feriado.data_feriado).utc().format('DD'),
+    );
+    feriado.mes_feriado = Number(
+      moment(feriado.data_feriado).utc().format('MM'),
+    );
+    feriado.ano_feriado = Number(
+      moment(feriado.data_feriado).utc().format('YYYY'),
+    );
 
     if (args.tipo_feriado) {
       feriado.tipo_feriado = args.tipo_feriado;
