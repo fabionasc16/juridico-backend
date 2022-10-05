@@ -5,6 +5,7 @@ import { classificacaoRoutes } from './Classificacao.routes';
 import { feriadosRoutes } from './Feriados.routes';
 import { orgaoDemandanteRoutes } from './OrgaoDemandante.routes';
 import { processosRoutes } from './Processos.routes';
+import { reiteracaoRoutes } from './Reiteracao.routes';
 import { tiposProcessoRoutes } from './TiposProcesso.routes';
 
 const routes = Router();
@@ -19,5 +20,6 @@ routes.use('/assuntos', assuntoRoutes);
 routes.use('/classificacoes', classificacaoRoutes);
 routes.use('/feriados', feriadosRoutes);
 routes.use('/orgaos-demandantes', orgaoDemandanteRoutes);
+routes.use('/reiteracoes', reiteracaoRoutes);
 
 export { routes };

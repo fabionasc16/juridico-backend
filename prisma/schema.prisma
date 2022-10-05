@@ -155,7 +155,7 @@ model Reiteracao {
   prazo            Int?
   fk_status        Int
   data_recebimento DateTime? @db.Date
-  hora_recebimento DateTime? @db.Time()
+  hora_recebimento String?   @db.VarChar(10)
   reiteracao       String?   @db.MediumText
   fk_processo      Int
 
