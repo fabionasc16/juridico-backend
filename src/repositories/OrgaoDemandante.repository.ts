@@ -7,7 +7,7 @@ class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
     return prisma.orgaoDemandante.create({
       data: {
         orgao_demandante: args.orgao_demandante,
-        sigla_orgao: args.orgao_demandante,
+        sigla_orgao: args.sigla_orgao,
         esfera_orgao: args.esfera_orgao,
         orgao_controle: args.orgao_controle,
         orgao_justica: args.orgao_justica,
@@ -53,7 +53,7 @@ class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
       },
       data: {
         orgao_demandante: args.orgao_demandante,
-        sigla_orgao: args.orgao_demandante,
+        sigla_orgao: args.sigla_orgao,
         esfera_orgao: args.esfera_orgao,
         orgao_controle: args.orgao_controle,
         orgao_justica: args.orgao_justica,
