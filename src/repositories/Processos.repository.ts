@@ -50,9 +50,49 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     let filters = {};
     if (search) {
       filters = {
-        num_procedimento: args.search,
+        OR: [{ num_procedimento: search }, { numero_siged: search }],
       };
     }
+
+    const AND = [];
+
+    if (args.idTipoProcesso) {
+      AND.push({ fk_tipoprocesso: Number(args.idTipoProcesso) });
+    }
+
+    if (args.statusProcesso) {
+      AND.push({ fk_status: Number(args.statusProcesso) });
+    }
+
+    if (args.statusPrazo) {
+      AND.push({ status_prazo: args.statusPrazo });
+    }
+
+    if (args.idOrgaoDemandante) {
+      AND.push({ fk_orgaodemandante: Number(args.idOrgaoDemandante) });
+    }
+
+    if (args.idClassificacao) {
+      AND.push({ fk_classificacao: Number(args.idClassificacao) });
+    }
+
+    if (args.idResponsavel) {
+      AND.push({ fk_responsavel: Number(args.idResponsavel) });
+    }
+
+    if (args.idAssunto) {
+      AND.push({ fk_assunto: Number(args.idAssunto) });
+    }
+
+    if (args.caixaAtualSIGED) {
+      AND.push({ caixa_atual_siged: args.caixaAtualSIGED });
+    }
+
+    if (AND.length) {
+      Object.assign(filters, { AND });
+    }
+
+    console.log(filters);
 
     const total = await prisma.processos.count({
       where: filters,
