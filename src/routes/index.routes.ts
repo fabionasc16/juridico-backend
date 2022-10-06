@@ -5,6 +5,7 @@ import { classificacaoRoutes } from './Classificacao.routes';
 import { feriadosRoutes } from './Feriados.routes';
 import { orgaoDemandanteRoutes } from './OrgaoDemandante.routes';
 import { processosRoutes } from './Processos.routes';
+import { reiteracaoRoutes } from './Reiteracao.routes';
 import { responsaveisRoutes } from './Responsaveis.routes';
 import { tiposProcessoRoutes } from './TiposProcesso.routes';
 
@@ -15,11 +16,12 @@ routes.get('/', (request, response) => {
 });
 
 routes.use('/tipos-processo', tiposProcessoRoutes);
-routes.use('/processo', processosRoutes);
-routes.use('/assunto', assuntoRoutes);
-routes.use('/classificacao', classificacaoRoutes);
+routes.use('/processos', processosRoutes);
+routes.use('/assuntos', assuntoRoutes);
+routes.use('/classificacoes', classificacaoRoutes);
 routes.use('/feriados', feriadosRoutes);
-routes.use('/orgao-demandante', orgaoDemandanteRoutes);
+routes.use('/orgaos-demandantes', orgaoDemandanteRoutes);
+routes.use('/reiteracoes', reiteracaoRoutes);
 routes.use('/responsaveis', responsaveisRoutes);
 
 export { routes };

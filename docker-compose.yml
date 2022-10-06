@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+  juridico-dev:
+    image: node:16
+    container_name: juridico_dev
+    restart: always
+    working_dir: /app
+    command: bash -c 'yarn install && yarn generate && yarn development'
+    environment:
+      - PORT=3302
+      - DATABASE_URL=mysql://root:1312Dashs@2020@192.168.107.55:3306/juridico-db
+    volumes:
+      - ".:/app"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports: 
+      - "3302:3302"
+    network_mode: bridge
