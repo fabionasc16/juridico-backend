@@ -38,7 +38,9 @@ class ResponsaveisService {
 
     return this.responsaveis.create({
       nome_responsavel: args.nome_responsavel,
-      cpf_responsavel: args.cpf_responsavel,
+      cpf_responsavel: args.cpf_responsavel
+        .replaceAll('.', '')
+        .replaceAll('-', ''),
       telefone: args.telefone,
       email: args.email,
       registro_oab: args.registro_oab,
