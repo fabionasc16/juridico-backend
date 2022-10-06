@@ -67,7 +67,7 @@ class ProcessosService {
       const assunto = await this.assunto.loadId(args.fk_assunto);
       if (!assunto) {
         throw new AppError(
-          'Nenhum Órgão Demandante foi localizado com os parâmetros informados',
+          'Nenhum Assunto foi localizado com os parâmetros informados',
           404,
         );
       }

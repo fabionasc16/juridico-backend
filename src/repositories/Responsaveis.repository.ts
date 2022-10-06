@@ -76,6 +76,14 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
       },
     });
   }
+
+  async loadResponsavel(cpf_responsavel: string): Promise<any> {
+    return prisma.responsaveis.findFirst({
+      where: {
+        cpf_responsavel,
+      },
+    });
+  }
 }
 
 export { ResponsaveisRepository };
