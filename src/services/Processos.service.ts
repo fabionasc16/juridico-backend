@@ -127,22 +127,8 @@ class ProcessosService {
       throw new AppError('Informe o Objeto do Processo');
     }
 
-    if (!args.requer_siged) {
-      throw new AppError(
-        'Informe se o Processo requer vínculo a um Processo do SIGED',
-      );
-    }
-
-    if (!args.observacao) {
-      throw new AppError('Informe uma Observação para o Processo');
-    }
-
     if (!args.descricao) {
       throw new AppError('Informe uma Descrição para o Processo');
-    }
-
-    if (!args.status_prazo) {
-      throw new AppError('Informe o Status do Prazo do Processo');
     }
 
     const limiteProcesso = (
