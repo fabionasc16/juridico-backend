@@ -44,7 +44,7 @@ class ProcessosController {
       fk_assunto: idAssunto,
       fk_classificacao: idClassificacao,
       objeto,
-      requer_siged: requerSIGED,
+      requer_siged: requerSIGED === true ? 'S' : 'N',
       numero_siged: numProcessoSIGED,
       data_processo_siged: dataProcessoSIGED,
       permanencia_siged: permanenciaSIGED,
