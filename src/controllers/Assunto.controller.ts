@@ -30,6 +30,13 @@ class AssuntoController {
     return response.status(200).json(data);
   }
 
+  async readById(request: Request, response: Response): Promise<Response> {
+    const { id_assunto } = request.params;
+    const data = await AssuntoController.service.readById(Number(id_assunto));
+
+    return response.status(200).json(data);
+  }
+
   async update(request: Request, response: Response): Promise<Response> {
     const { id_assunto } = request.params;
     const { codigoSIGED, descricaoAssunto } = request.body;

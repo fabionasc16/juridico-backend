@@ -47,6 +47,10 @@ class AssuntoService {
     return this.assunto.read(args);
   }
 
+  async readById(id_assunto: number): Promise<any> {
+    return this.assunto.loadId(id_assunto);
+  }
+
   async update(args: Assunto): Promise<void> {
     if (!args.id_assunto) {
       throw new AppError('Informe o Identificador do Assunto');

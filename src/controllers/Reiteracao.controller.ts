@@ -47,6 +47,15 @@ class ReiteracaoController {
     return response.status(200).json(data);
   }
 
+  async readById(request: Request, response: Response): Promise<Response> {
+    const { id_reiteracao } = request.params;
+    const data = await ReiteracaoController.service.readById(
+      Number(id_reiteracao),
+    );
+
+    return response.status(200).json(data);
+  }
+
   async update(request: Request, response: Response): Promise<Response> {
     const { id_reiteracao } = request.params;
     const {

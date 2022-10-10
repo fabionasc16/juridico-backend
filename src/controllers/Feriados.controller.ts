@@ -30,6 +30,13 @@ class FeriadosController {
     return response.status(200).json(data);
   }
 
+  async readById(request: Request, response: Response): Promise<Response> {
+    const { id_feriado } = request.params;
+    const data = await FeriadosController.service.readById(Number(id_feriado));
+
+    return response.status(200).json(data);
+  }
+
   async update(request: Request, response: Response): Promise<Response> {
     const { id_feriado } = request.params;
     const { dataFeriado, descFeriado, tipoFeriado } = request.body;

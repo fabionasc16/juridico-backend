@@ -39,6 +39,15 @@ class OrgaoDemandanteController {
     return response.status(200).json(data);
   }
 
+  async readById(request: Request, response: Response): Promise<Response> {
+    const { id_orgao } = request.params;
+    const data = await OrgaoDemandanteController.service.readById(
+      Number(id_orgao),
+    );
+
+    return response.status(200).json(data);
+  }
+
   async update(request: Request, response: Response): Promise<Response> {
     const { id_orgao } = request.params;
     const {

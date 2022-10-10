@@ -47,6 +47,10 @@ class ClassificacaoService {
     return this.classificacao.read(args);
   }
 
+  async readById(id_classificacao: number): Promise<any> {
+    return this.classificacao.loadId(id_classificacao);
+  }
+
   async update(args: Classificacao): Promise<void> {
     if (!args.id_classificacao) {
       throw new AppError('Informe o Identificador da Classificação');

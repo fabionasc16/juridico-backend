@@ -22,6 +22,15 @@ class TiposProcessoController {
     return response.status(200).json(data);
   }
 
+  async readById(request: Request, response: Response): Promise<Response> {
+    const { id_tipoprocesso } = request.params;
+    const data = await TiposProcessoController.service.readById(
+      Number(id_tipoprocesso),
+    );
+
+    return response.status(200).json(data);
+  }
+
   async update(request: Request, response: Response): Promise<Response> {
     const { id_tipoprocesso } = request.params;
     const { desc_tipoprocesso } = request.body;

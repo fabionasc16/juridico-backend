@@ -64,6 +64,10 @@ class FeriadosService {
     return this.feriado.read(args);
   }
 
+  async readById(id_feriado: number): Promise<any> {
+    return this.feriado.loadId(id_feriado);
+  }
+
   async update(args: Feriados): Promise<void> {
     if (!args.id_feriado) {
       throw new AppError('Informe o Identificador do Feriado');

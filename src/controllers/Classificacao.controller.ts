@@ -29,6 +29,15 @@ class ClassificacaoController {
     return response.status(200).json(data);
   }
 
+  async readById(request: Request, response: Response): Promise<Response> {
+    const { id_classificacao } = request.params;
+    const data = await ClassificacaoController.service.readById(
+      Number(id_classificacao),
+    );
+
+    return response.status(200).json(data);
+  }
+
   async update(request: Request, response: Response): Promise<Response> {
     const { id_classificacao } = request.params;
     const { descClassificacao } = request.body;

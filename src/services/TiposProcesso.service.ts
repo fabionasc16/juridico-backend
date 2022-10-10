@@ -46,6 +46,10 @@ class TiposProcessoService {
     return this.tiposProcesso.read(args);
   }
 
+  async readById(id_tipoprocesso: number): Promise<any> {
+    return this.tiposProcesso.loadId(id_tipoprocesso);
+  }
+
   async update(args: any): Promise<void> {
     if (!args.id_tipoprocesso) {
       throw new AppError('Informe o Tipo de Processo a ser atualizado');

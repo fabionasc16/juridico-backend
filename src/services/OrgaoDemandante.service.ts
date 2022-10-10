@@ -69,6 +69,10 @@ class OrgaoDemandanteService {
     return this.orgaoDemandante.read(args);
   }
 
+  async readById(id_orgao: number): Promise<any> {
+    return this.orgaoDemandante.loadId(id_orgao);
+  }
+
   async update(args: OrgaoDemandante): Promise<void> {
     if (!args.id_orgao) {
       throw new AppError('Informe o identificador do Órgão Demandante');
