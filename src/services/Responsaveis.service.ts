@@ -67,6 +67,10 @@ class ResponsaveisService {
     return this.responsaveis.read(args);
   }
 
+  async readById(id_responsavel: number): Promise<any> {
+    return this.responsaveis.loadId(id_responsavel);
+  }
+
   async update(args: any): Promise<void> {
     if (!args.id_responsavel) {
       throw new AppError('Informe o Identificador do Responsável');

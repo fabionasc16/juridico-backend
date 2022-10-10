@@ -34,6 +34,15 @@ class ResponsaveisController {
     return response.status(200).json(data);
   }
 
+  async readById(request: Request, response: Response): Promise<Response> {
+    const { id_responsavel } = request.params;
+    const data = await ResponsaveisController.service.readById(
+      Number(id_responsavel),
+    );
+
+    return response.status(200).json(data);
+  }
+
   async update(request: Request, response: Response): Promise<Response> {
     const { id_responsavel } = request.params;
     const { nomeResponsavel, cpfResponsavel, telefone, email, registroOAB } =
