@@ -117,6 +117,7 @@ model Processos {
   status_prazo        String       @db.VarChar(70)
   sigiloso            String?      @db.Char(1)
   fk_status           Int
+  valor_multa         Float?       @db.Double
   Historico           Historico[]
   Reiteracao          Reiteracao[]
 

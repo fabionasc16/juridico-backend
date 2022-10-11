@@ -25,4 +25,5 @@ export type Processos = {
   status_prazo: string;
   sigiloso: string | null;
   fk_status: number;
+  valor_multa: number | null;
 };

@@ -32,11 +32,12 @@ class ProcessosController {
       statusPrazo,
       sigiloso,
       statusProcesso,
+      valorMulta,
     } = request.body;
     const service = await ProcessosController.service.create({
       num_procedimento: numProcedimento,
       fk_tipoprocesso: idTipoProcesso,
-      prazo_total: prazoTotal,
+      prazo_total: Number(prazoTotal),
       fk_orgaodemandante: idOrgaoDemandante,
       data_processo: dataProcesso,
       data_recebimento: dataRecebimento,
@@ -54,8 +55,9 @@ class ProcessosController {
       observacao,
       descricao,
       status_prazo: statusPrazo,
-      sigiloso,
+      sigiloso: sigiloso === true ? 'S' : 'N',
       fk_status: statusProcesso,
+      valor_multa: valorMulta === '' ? 0 : Number(valorMulta),
     });
 
     return response.status(201).send(service);
@@ -98,6 +100,7 @@ class ProcessosController {
       statusPrazo,
       sigiloso,
       statusProcesso,
+      valorMulta,
     } = request.body;
     await ProcessosController.service.update({
       id_processo: Number(id_processo),
@@ -123,6 +126,7 @@ class ProcessosController {
       status_prazo: statusPrazo,
       sigiloso,
       fk_status: statusProcesso,
+      valor_multa: valorMulta,
     });
 
     return response.status(204).send();

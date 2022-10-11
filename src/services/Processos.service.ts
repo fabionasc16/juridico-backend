@@ -31,6 +31,8 @@ class ProcessosService {
   }
 
   async create(args: Processos): Promise<Processos> {
+    let diasExpirados = 0;
+
     if (!args.num_procedimento) {
       throw new AppError('Informe o Número do Procedimento');
     }
@@ -131,6 +133,13 @@ class ProcessosService {
       throw new AppError('Informe uma Descrição para o Processo');
     }
 
+    let dataProcessoSIGED: any = null;
+    if (args.data_processo_siged) {
+      dataProcessoSIGED = new Date(
+        moment(args.data_processo_siged).format('YYYY-MM-DD'),
+      );
+    }
+
     const limiteProcesso = (
       await calculateDays(args.data_recebimento, args.prazo_total)
     ).format('YYYY-MM-DD');
@@ -140,7 +149,6 @@ class ProcessosService {
       'days',
     );
 
-    let diasExpirados = 0;
     const expirado = moment(limiteProcesso as string, 'YYYY-MM-DD').diff(
       moment(new Date(), 'YYYY-MM-DD'),
       'days',
@@ -173,9 +181,7 @@ class ProcessosService {
       objeto: args.objeto,
       requer_siged: args.requer_siged,
       numero_siged: args.numero_siged,
-      data_processo_siged: new Date(
-        moment(args.data_processo_siged).format('YYYY-MM-DD'),
-      ),
+      data_processo_siged: dataProcessoSIGED,
       permanencia_siged: args.permanencia_siged,
       caixa_atual_siged: args.caixa_atual_siged,
       tramitacao_siged: args.tramitacao_siged,
@@ -190,6 +196,7 @@ class ProcessosService {
       status_prazo: args.status_prazo,
       sigiloso: args.sigiloso,
       fk_status: args.fk_status,
+      valor_multa: args.valor_multa,
     });
   }
 
@@ -384,6 +391,10 @@ class ProcessosService {
         );
       }
       processo.fk_status = args.fk_status;
+    }
+
+    if (args.valor_multa || args.valor_multa === 0) {
+      processo.valor_multa = args.valor_multa;
     }
 
     await this.processos.update(processo);
