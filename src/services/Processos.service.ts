@@ -1,5 +1,6 @@
 import moment from 'moment';
 
+import { client } from '../config/Elasticsearch.config';
 import { calculateDays } from '../config/Holidays.config';
 import { AppError } from '../errors/AppError.class';
 import { Processos } from '../models/Processos.model';
@@ -398,6 +399,23 @@ class ProcessosService {
     }
 
     await this.processos.update(processo);
+  }
+
+  async retrieveSIGEDData(numero_processo: string): Promise<any> {
+    if (!numero_processo) {
+      throw new AppError('Informe o número do Processo no SIGED');
+    }
+
+    const data = await client.search({
+      index: 'siged_processos',
+      body: {
+        query: {
+          match: { processo: numero_processo },
+        },
+      },
+    });
+
+    return data.body.hits.hits;
   }
 }
 

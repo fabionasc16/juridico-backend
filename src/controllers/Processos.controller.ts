@@ -131,6 +131,18 @@ class ProcessosController {
 
     return response.status(204).send();
   }
+
+  async retrieveSIGEDData(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { numero_processo } = request.query;
+    const data = await ProcessosController.service.retrieveSIGEDData(
+      numero_processo as string,
+    );
+
+    return response.status(200).json(data);
+  }
 }
 
 export { ProcessosController };
