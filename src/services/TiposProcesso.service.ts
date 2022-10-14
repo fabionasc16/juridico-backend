@@ -1,4 +1,5 @@
 import { AppError } from '../errors/AppError.class';
+import { TiposProcesso } from '../models/TiposProcesso.model';
 import { TiposProcessoRepository } from '../repositories/TiposProcesso.repository';
 
 class TiposProcessoService {
@@ -7,7 +8,7 @@ class TiposProcessoService {
     this.tiposProcesso = new TiposProcessoRepository();
   }
 
-  async create(args: any): Promise<any> {
+  async create(args: TiposProcesso): Promise<TiposProcesso> {
     if (!args.desc_tipoprocesso) {
       throw new AppError('Informe o Tipo de Processo');
     }
