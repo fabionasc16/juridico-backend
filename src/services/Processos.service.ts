@@ -221,6 +221,22 @@ class ProcessosService {
     return this.processos.read(args);
   }
 
+  async readById(id_processo: number): Promise<any> {
+    if (!id_processo) {
+      throw new AppError('Informe o Identificador do Processo');
+    }
+
+    const result = await this.processos.loadId(id_processo);
+    if (!result) {
+      throw new AppError(
+        'Nenhum processo foi localizado com o identificador informado',
+        404,
+      );
+    }
+
+    return result;
+  }
+
   async update(args: any): Promise<void> {
     if (!args.id_processo) {
       throw new AppError('Informe o Identificador do procedimento');

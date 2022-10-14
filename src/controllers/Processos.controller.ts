@@ -75,6 +75,15 @@ class ProcessosController {
     return response.status(200).json(data);
   }
 
+  async readById(request: Request, response: Response): Promise<Response> {
+    const { id_processo } = request.params;
+    const data = await ProcessosController.service.readById(
+      Number(id_processo),
+    );
+
+    return response.status(200).json(data);
+  }
+
   async update(request: Request, response: Response): Promise<Response> {
     const { id_processo } = request.params;
     const {
