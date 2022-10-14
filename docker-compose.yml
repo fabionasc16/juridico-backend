@@ -9,6 +9,8 @@ services:
     environment:
       - PORT=3302
       - DATABASE_URL=mysql://root:1312Dashs@2020@192.168.107.55:3306/juridico-db
+      - ELASTIC_USERNAME=sapej_siged
+      - ELASTIC_PASS=oKr11Nq70ntTH6x7A9CEbDv3ZW
     volumes:
       - ".:/app"
       - "/etc/timezone:/etc/timezone:ro"
