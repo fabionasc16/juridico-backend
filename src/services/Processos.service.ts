@@ -422,7 +422,7 @@ class ProcessosService {
       throw new AppError('Informe o número do Processo no SIGED');
     }
 
-    const data = await client.search({
+    const data: any = await client.search({
       index: 'siged_processos',
       body: {
         aggs: {
@@ -580,7 +580,7 @@ class ProcessosService {
               {
                 match_phrase: {
                   'processo.keyword': {
-                    query: numero_processo.trim(),
+                    query: numero_processo.trimStart().trimEnd(),
                   },
                 },
               },
@@ -592,7 +592,21 @@ class ProcessosService {
       },
     });
 
-    return data.body.hits.hits;
+    return {
+      numeroProcesso: data.body.aggregations[2].buckets[0].key,
+      dataProcesso:
+        data.body.aggregations[2].buckets[0][3].buckets[0].key_as_string,
+      caixaAtual:
+        data.body.aggregations[2].buckets[0][3].buckets[0][4].buckets[0][5]
+          .buckets[0][6].buckets[0][7].buckets[0][8].buckets[0].key,
+      tempoPermanencia:
+        data.body.aggregations[2].buckets[0][3].buckets[0][4].buckets[0][5]
+          .buckets[0][6].buckets[0][7].buckets[0][8].buckets[0][9].buckets[0]
+          .key,
+      eventoTramitacao:
+        data.body.aggregations[2].buckets[0][3].buckets[0][4].buckets[0][5]
+          .buckets[0][6].buckets[0].key,
+    };
   }
 }
 
