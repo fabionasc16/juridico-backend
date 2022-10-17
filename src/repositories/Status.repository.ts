@@ -12,35 +12,8 @@ class StatusRepository implements IPrismaSource<Status> {
     });
   }
 
-  async read(args: any): Promise<any> {
-    const page = args.currentPage != null ? `${args.currentPage - 1}` : '0';
-    const pageSize = args.perPage != null ? args.perPage : '10';
-    const search = args.search != null ? args.search : '';
-    let filters = {};
-    if (search) {
-      filters = {
-        aplica_a: args.search,
-      };
-    }
-
-    const total = await prisma.status.count({
-      where: filters,
-    });
-    const pageNumber = Number(page);
-    const pageSizeNumber = Number(pageSize);
-
-    const data = await prisma.status.findMany({
-      skip: pageNumber * pageSizeNumber,
-      take: pageSizeNumber,
-      where: filters,
-    });
-
-    return {
-      currentPage: page,
-      perPage: pageSize,
-      total,
-      data,
-    };
+  async read(): Promise<any> {
+    return prisma.status.findMany();
   }
 
   async update(args: Status): Promise<void> {
@@ -67,6 +40,14 @@ class StatusRepository implements IPrismaSource<Status> {
     return prisma.status.findUnique({
       where: {
         id_status,
+      },
+    });
+  }
+
+  async loadDesc(desc_status: string): Promise<any> {
+    return prisma.status.findFirst({
+      where: {
+        desc_status,
       },
     });
   }

@@ -7,6 +7,8 @@ import { orgaoDemandanteRoutes } from './OrgaoDemandante.routes';
 import { processosRoutes } from './Processos.routes';
 import { reiteracaoRoutes } from './Reiteracao.routes';
 import { responsaveisRoutes } from './Responsaveis.routes';
+import { statusRoutes } from './Status.routes';
+import { tiposEventosRoutes } from './TiposEventos.routes';
 import { tiposProcessoRoutes } from './TiposProcesso.routes';
 
 const routes = Router();
@@ -23,5 +25,7 @@ routes.use('/feriados', feriadosRoutes);
 routes.use('/orgaos-demandantes', orgaoDemandanteRoutes);
 routes.use('/reiteracoes', reiteracaoRoutes);
 routes.use('/responsaveis', responsaveisRoutes);
+routes.use('/tipo-evento', tiposEventosRoutes);
+routes.use('/status', statusRoutes);
 
 export { routes };

@@ -9,9 +9,9 @@ class TiposEventoController {
   }
 
   async create(request: Request, response: Response): Promise<Response> {
-    const { desc_tipoevento } = request.body;
+    const { descTipoEvento } = request.body;
     const service = await TiposEventoController.service.create({
-      desc_tipoevento,
+      desc_tipoevento: descTipoEvento,
     });
 
     return response.status(201).json(service);
@@ -27,6 +27,26 @@ class TiposEventoController {
   async read(request: Request, response: Response): Promise<Response> {
     const data = await TiposEventoController.service.read();
     return response.status(200).json(data);
+  }
+
+  async readById(request: Request, response: Response): Promise<Response> {
+    const { id_tipoevento } = request.params;
+    const data = await TiposEventoController.service.readById(
+      Number(id_tipoevento),
+    );
+
+    return response.status(200).json(data);
+  }
+
+  async update(request: Request, response: Response): Promise<Response> {
+    const { id_tipoevento } = request.params;
+    const { descTipoEvento } = request.body;
+
+    await TiposEventoController.service.update({
+      id_tipoevento: Number(id_tipoevento),
+      desc_tipoevento: descTipoEvento,
+    });
+    return response.status(204).send();
   }
 }
 
