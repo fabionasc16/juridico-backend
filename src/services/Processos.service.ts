@@ -425,8 +425,169 @@ class ProcessosService {
     const data = await client.search({
       index: 'siged_processos',
       body: {
+        aggs: {
+          '2': {
+            terms: {
+              field: 'processo.keyword',
+              order: {
+                '2-orderAgg': 'desc',
+              },
+              size: 1,
+            },
+            aggs: {
+              '3': {
+                terms: {
+                  field: 'data_entrada',
+                  order: {
+                    _key: 'desc',
+                  },
+                  size: 1,
+                },
+                aggs: {
+                  '4': {
+                    terms: {
+                      field: 'dias_ate_hoje',
+                      order: {
+                        '1': 'desc',
+                      },
+                      size: 1,
+                    },
+                    aggs: {
+                      '1': {
+                        max: {
+                          field: 'entrada_no_setor',
+                        },
+                      },
+                      '5': {
+                        terms: {
+                          field: 'interessado.keyword',
+                          order: {
+                            '1': 'desc',
+                          },
+                          size: 1,
+                        },
+                        aggs: {
+                          '1': {
+                            max: {
+                              field: 'entrada_no_setor',
+                            },
+                          },
+                          '6': {
+                            terms: {
+                              field: 'evento_atual.keyword',
+                              order: {
+                                '1': 'desc',
+                              },
+                              size: 1,
+                            },
+                            aggs: {
+                              '1': {
+                                max: {
+                                  field: 'entrada_no_setor',
+                                },
+                              },
+                              '7': {
+                                terms: {
+                                  field: 'unidade.keyword',
+                                  order: {
+                                    '1': 'desc',
+                                  },
+                                  size: 1,
+                                },
+                                aggs: {
+                                  '1': {
+                                    max: {
+                                      field: 'entrada_no_setor',
+                                    },
+                                  },
+                                  '8': {
+                                    terms: {
+                                      field: 'setor_atual.keyword',
+                                      order: {
+                                        '1': 'desc',
+                                      },
+                                      size: 1,
+                                    },
+                                    aggs: {
+                                      '1': {
+                                        max: {
+                                          field: 'entrada_no_setor',
+                                        },
+                                      },
+                                      '9': {
+                                        terms: {
+                                          field: 'dias_setor_atual',
+                                          order: {
+                                            '1': 'desc',
+                                          },
+                                          size: 1,
+                                        },
+                                        aggs: {
+                                          '1': {
+                                            max: {
+                                              field: 'entrada_no_setor',
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              '2-orderAgg': {
+                max: {
+                  field: 'entrada_no_setor',
+                },
+              },
+            },
+          },
+        },
+        size: 0,
+        _source: {
+          excludes: [],
+        },
+        stored_fields: ['*'],
+        script_fields: {},
+        docvalue_fields: [
+          {
+            field: '@timestamp',
+            format: 'date_time',
+          },
+          {
+            field: 'data_entrada',
+            format: 'date_time',
+          },
+          {
+            field: 'entrada_no_setor',
+            format: 'date_time',
+          },
+        ],
         query: {
-          match: { processo: numero_processo },
+          bool: {
+            must: [],
+            filter: [
+              {
+                match_all: {},
+              },
+              {
+                match_phrase: {
+                  'processo.keyword': {
+                    query: numero_processo.trim(),
+                  },
+                },
+              },
+            ],
+            should: [],
+            must_not: [],
+          },
         },
       },
     });
