@@ -115,7 +115,7 @@ class ProcessosController {
       id_processo: Number(id_processo),
       num_procedimento: numProcedimento,
       fk_tipoprocesso: idTipoProcesso,
-      prazo_total: prazoTotal,
+      prazo_total: Number(prazoTotal),
       fk_orgaodemandante: idOrgaoDemandante,
       data_processo: dataProcesso,
       data_recebimento: dataRecebimento,
@@ -123,7 +123,7 @@ class ProcessosController {
       fk_assunto: idAssunto,
       fk_classificacao: idClassificacao,
       objeto,
-      requer_siged: requerSIGED,
+      requer_siged: requerSIGED === true ? 'S' : 'N',
       numero_siged: numProcessoSIGED,
       data_processo_siged: dataProcessoSIGED,
       permanencia_siged: permanenciaSIGED,
@@ -133,9 +133,9 @@ class ProcessosController {
       observacao,
       descricao,
       status_prazo: statusPrazo,
-      sigiloso,
+      sigiloso: sigiloso === true ? 'S' : 'N',
       fk_status: statusProcesso,
-      valor_multa: valorMulta,
+      valor_multa: valorMulta === '' ? 0 : Number(valorMulta),
     });
 
     return response.status(204).send();
