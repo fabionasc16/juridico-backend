@@ -163,6 +163,14 @@ class ProcessosRepository implements IPrismaSource<Processos> {
       where: {
         id_processo,
       },
+      include: {
+        tipoProcesso: true,
+        status: true,
+        assunto: true,
+        classificacao: true,
+        orgaoDemandante: true,
+        responsavel: true,
+      },
     });
   }
 
@@ -170,6 +178,14 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     return prisma.processos.findFirst({
       where: {
         num_procedimento,
+      },
+      include: {
+        tipoProcesso: true,
+        status: true,
+        assunto: true,
+        classificacao: true,
+        orgaoDemandante: true,
+        responsavel: true,
       },
     });
   }
