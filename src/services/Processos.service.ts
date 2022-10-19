@@ -627,8 +627,9 @@ class ProcessosService {
       throw new AppError('Informe o Identificador do Status do Processo');
     }
 
-    const dataArquivamento =
-      new Date(moment(data_arquivamento).format('YYYY-MM-DD')) || null;
+    const dataArquivamento = data_arquivamento
+      ? new Date(moment(data_arquivamento).format('YYYY-MM-DD'))
+      : null;
 
     await this.processos.updateStatusProcesso(
       id_processo,
