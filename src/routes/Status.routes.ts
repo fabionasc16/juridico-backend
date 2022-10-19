@@ -9,6 +9,7 @@ statusRoutes.post('/', controller.create);
 statusRoutes.delete('/:id_status', controller.delete);
 statusRoutes.get('/', controller.read);
 statusRoutes.get('/id/:id_status', controller.readById);
+statusRoutes.get('/aplicacaostatus', controller.readByAplicacao);
 statusRoutes.put('/:id_status', controller.update);
 
 export { statusRoutes };

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { StatusSerivce } from '../services/Status.serivce';
+import { StatusSerivce } from '../services/Status.service';
 
 class StatusController {
   static service: StatusSerivce;
@@ -33,6 +33,18 @@ class StatusController {
   async readById(request: Request, response: Response): Promise<Response> {
     const { id_status } = request.params;
     const data = await StatusController.service.readById(Number(id_status));
+
+    return response.status(200).json(data);
+  }
+
+  async readByAplicacao(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { aplicaA } = request.query;
+    const data = await StatusController.service.readByAplicacao(
+      aplicaA as string,
+    );
 
     return response.status(200).json(data);
   }

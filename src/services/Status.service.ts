@@ -49,6 +49,21 @@ class StatusSerivce {
     return status;
   }
 
+  async readByAplicacao(aplica_a: string): Promise<any> {
+    if (!aplica_a) {
+      throw new AppError('Informe a qual categoria os statuses pertencem');
+    }
+    const status = await this.status.loadAplica(aplica_a);
+    if (status.length === 0) {
+      throw new AppError(
+        'Nenhum status foi encontrado no sistema com a descrição da aplicação informada',
+        404,
+      );
+    }
+
+    return status;
+  }
+
   async readById(id_status: number): Promise<any> {
     if (!id_status) {
       throw new AppError('Informe o Identificador do Status');
