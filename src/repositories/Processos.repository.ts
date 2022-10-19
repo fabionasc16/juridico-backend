@@ -13,6 +13,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         data_processo: args.data_processo,
         data_recebimento: args.data_recebimento,
         hora_recebimento: args.hora_recebimento,
+        data_arquivamento: args.data_arquivamento,
         fk_assunto: args.fk_assunto,
         fk_classificacao: args.fk_classificacao,
         objeto: args.objeto,
@@ -136,6 +137,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         data_processo: args.data_processo,
         data_recebimento: args.data_recebimento,
         hora_recebimento: args.hora_recebimento,
+        data_arquivamento: args.data_arquivamento,
         fk_assunto: args.fk_assunto,
         fk_classificacao: args.fk_classificacao,
         objeto: args.objeto,
@@ -187,6 +189,17 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         orgaoDemandante: true,
         responsavel: true,
       },
+    });
+  }
+
+  async updateStatusProcesso(
+    id_processo: number,
+    data_arquivamento: Date,
+    fk_status: number,
+  ): Promise<void> {
+    await prisma.processos.update({
+      where: { id_processo },
+      data: { fk_status, data_arquivamento },
     });
   }
 }

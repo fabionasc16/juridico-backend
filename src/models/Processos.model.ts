@@ -7,6 +7,7 @@ export type Processos = {
   data_processo: Date | string;
   data_recebimento: Date | string;
   hora_recebimento: string;
+  data_arquivamento?: Date | string | null;
   fk_assunto: number;
   fk_classificacao: number;
   objeto: string;

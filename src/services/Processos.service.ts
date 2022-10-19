@@ -177,6 +177,7 @@ class ProcessosService {
         moment(args.data_recebimento).format('YYYY-MM-DD'),
       ),
       hora_recebimento: args.hora_recebimento,
+      data_arquivamento: args.data_arquivamento,
       fk_assunto: args.fk_assunto,
       fk_classificacao: args.fk_classificacao,
       objeto: args.objeto,
@@ -293,6 +294,10 @@ class ProcessosService {
 
     if (args.hora_recebimento) {
       processo.hora_recebimento = args.hora_recebimento;
+    }
+
+    if (args.data_arquivamento) {
+      processo.data_arquivamento = args.data_arquivamento;
     }
 
     if (args.fk_assunto) {
@@ -607,6 +612,29 @@ class ProcessosService {
         data.body.aggregations[2].buckets[0][3].buckets[0][4].buckets[0][5]
           .buckets[0][6].buckets[0].key,
     };
+  }
+
+  async updateStatusProcesso(
+    id_processo: number,
+    data_arquivamento: string,
+    fk_status: number,
+  ): Promise<void> {
+    if (!id_processo) {
+      throw new AppError('Informe o Identificador do Processo');
+    }
+
+    if (!fk_status) {
+      throw new AppError('Informe o Identificador do Status do Processo');
+    }
+
+    const dataArquivamento =
+      new Date(moment(data_arquivamento).format('YYYY-MM-DD')) || null;
+
+    await this.processos.updateStatusProcesso(
+      id_processo,
+      dataArquivamento,
+      fk_status,
+    );
   }
 }
 

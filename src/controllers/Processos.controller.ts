@@ -152,6 +152,22 @@ class ProcessosController {
 
     return response.status(200).json(data);
   }
+
+  async updateStatusProcesso(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { idProcesso } = request.query;
+    const { idStatusProcesso, dataArquivamento } = request.body;
+
+    await ProcessosController.service.updateStatusProcesso(
+      Number(idProcesso),
+      dataArquivamento,
+      idStatusProcesso,
+    );
+
+    return response.status(204).send();
+  }
 }
 
 export { ProcessosController };

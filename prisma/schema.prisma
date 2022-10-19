@@ -99,6 +99,7 @@ model Processos {
   data_processo       DateTime     @db.Date
   data_recebimento    DateTime     @db.Date
   hora_recebimento    String       @db.VarChar(10)
+  data_arquivamento   DateTime?    @db.Date
   fk_assunto          Int
   fk_classificacao    Int
   objeto              String       @db.MediumText
