@@ -1,3 +1,4 @@
+import { Console } from 'console';
 import moment from 'moment';
 
 import { AppError } from '../errors/AppError.class';
@@ -41,19 +42,32 @@ class ReiteracaoService {
         );
       }
     }
+    let dataProcesso: any = '';
+    if (args.data_processo) {
+      dataProcesso = new Date(
+        moment(args.data_processo).utc().format('YYYY-MM-DD'),
+      );
+    } else {
+      dataProcesso = null;
+    }
+
+    let dataRecebimento: any = '';
+    if (args.data_recebimento) {
+      dataRecebimento = new Date(
+        moment(args.data_recebimento).utc().format('YYYY-MM-DD'),
+      );
+    } else {
+      dataRecebimento = null;
+    }
 
     return this.reiteracao.create({
       num_procedimento: args.num_procedimento,
       numero_siged: args.numero_siged,
-      data_processo: new Date(
-        moment(args.data_processo).utc().format('YYYY-MM-DD'),
-      ),
+      data_processo: dataProcesso,
       prazo: args.prazo,
       fk_status: args.fk_status,
-      data_recebimento: new Date(
-        moment(args.data_recebimento).utc().format('YYYY-MM-DD'),
-      ),
-      hora_recebimento: moment(args.hora_recebimento).utc().format('HH:mm'),
+      data_recebimento: dataRecebimento,
+      hora_recebimento: args.hora_recebimento,
       reiteracao: args.reiteracao,
       fk_processo: args.fk_processo,
     });
