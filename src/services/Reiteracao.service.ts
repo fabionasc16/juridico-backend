@@ -53,7 +53,7 @@ class ReiteracaoService {
       data_recebimento: new Date(
         moment(args.data_recebimento).utc().format('YYYY-MM-DD'),
       ),
-      hora_recebimento: args.hora_recebimento,
+      hora_recebimento: moment(args.hora_recebimento).utc().format('HH:mm'),
       reiteracao: args.reiteracao,
       fk_processo: args.fk_processo,
     });
