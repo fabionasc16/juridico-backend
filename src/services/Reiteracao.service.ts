@@ -1,4 +1,3 @@
-import { Console } from 'console';
 import moment from 'moment';
 
 import { AppError } from '../errors/AppError.class';
@@ -103,10 +102,6 @@ class ReiteracaoService {
     return this.reiteracao.read(args);
   }
 
-  async readById(id_reiteracao: number): Promise<any> {
-    return this.reiteracao.loadId(id_reiteracao);
-  }
-
   async update(args: any): Promise<void> {
     if (!args.id_reiteracao) {
       throw new AppError('Informe o Identificador da Reiteração');
@@ -125,6 +120,21 @@ class ReiteracaoService {
     }
 
     await this.reiteracao.update(reiteracao);
+  }
+
+  async loadById(id_reiteracao: number): Promise<any> {
+    if (!id_reiteracao) {
+      throw new AppError('Informe o Identificador da Reiteração');
+    }
+    const reiteracao = await this.reiteracao.loadId(id_reiteracao);
+    if (!reiteracao) {
+      throw new AppError(
+        'Identificador da Reiteração não foi localizado na base de dados',
+        404,
+      );
+    }
+
+    return reiteracao;
   }
 }
 

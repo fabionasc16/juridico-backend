@@ -49,7 +49,7 @@ class ReiteracaoController {
 
   async readById(request: Request, response: Response): Promise<Response> {
     const { id_reiteracao } = request.params;
-    const data = await ReiteracaoController.service.readById(
+    const data = await ReiteracaoController.service.loadById(
       Number(id_reiteracao),
     );
 
