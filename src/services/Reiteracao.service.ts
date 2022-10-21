@@ -42,6 +42,16 @@ class ReiteracaoService {
         );
       }
     }
+
+    const numProcedimento = await this.reiteracao.loadNumProcedimento(
+      args.num_procedimento,
+    );
+    if (numProcedimento) {
+      throw new AppError(
+        'O Número de Procedimento informado já existe no sistema',
+      );
+    }
+
     let dataProcesso: any = '';
     if (args.data_processo) {
       dataProcesso = new Date(

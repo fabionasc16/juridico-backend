@@ -35,6 +35,14 @@ class ReiteracaoRepository implements IPrismaSource<Reiteracao> {
     });
   }
 
+  async loadNumProcedimento(num_procedimento: string): Promise<any> {
+    return prisma.reiteracao.findFirst({
+      where: {
+        num_procedimento,
+      },
+    });
+  }
+
   async read(args: any): Promise<any> {
     const page = args.currentPage != null ? `${args.currentPage - 1}` : '0';
     const pageSize = args.perPage != null ? args.perPage : '10';
