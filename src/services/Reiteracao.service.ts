@@ -119,6 +119,56 @@ class ReiteracaoService {
       reiteracao.num_procedimento = args.num_procedimento;
     }
 
+    if (args.numero_siged) {
+      reiteracao.numero_siged = args.numero_siged;
+    }
+
+    if (args.data_processo) {
+      reiteracao.data_processo = new Date(
+        moment(args.data_processo).utc().format('YYYY-MM-DD'),
+      );
+    }
+
+    if (args.prazo) {
+      reiteracao.prazo = args.prazo;
+    }
+
+    if (args.fk_status) {
+      const statuses = await this.status.loadId(args.fk_status);
+      if (!statuses) {
+        throw new AppError(
+          'Não foram encontrados status cadastrados para o Identificador informado',
+          404,
+        );
+      }
+      reiteracao.fk_status = args.fk_status;
+    }
+
+    if (args.data_recebimento) {
+      reiteracao.data_recebimento = new Date(
+        moment(args.data_recebimento).utc().format('YYYY-MM-DD'),
+      );
+    }
+
+    if (args.hora_recebimento) {
+      reiteracao.hora_recebimento = args.hora_recebimento;
+    }
+
+    if (args.reiteracao) {
+      reiteracao.reiteracao = args.reiteracao;
+    }
+
+    if (args.fk_processo) {
+      const processos = await this.processos.loadId(args.fk_processo);
+      if (!processos) {
+        throw new AppError(
+          'Não foram encontrados Processos cadastrados para o Identificador informado',
+          404,
+        );
+      }
+      reiteracao.fk_processo = args.fk_processo;
+    }
+
     await this.reiteracao.update(reiteracao);
   }
 
