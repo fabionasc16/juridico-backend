@@ -84,6 +84,18 @@ class ReiteracaoController {
 
     return response.status(204).send();
   }
+
+  async readByProcesso(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { id_processo } = request.params;
+    const data = await ReiteracaoController.service.loadByProcesso(
+      Number(id_processo),
+    );
+
+    return response.status(200).json(data);
+  }
 }
 
 export { ReiteracaoController };

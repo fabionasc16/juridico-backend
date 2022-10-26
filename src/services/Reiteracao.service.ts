@@ -186,6 +186,22 @@ class ReiteracaoService {
 
     return reiteracao;
   }
+
+  async loadByProcesso(fk_processo: number): Promise<any> {
+    if (!fk_processo) {
+      throw new AppError('Informe o Identificador do Processo para consulta');
+    }
+
+    const data = await this.reiteracao.readByProcessos(fk_processo);
+    if (data.length === 0) {
+      throw new AppError(
+        'Não foram encontradas Reiterações para o Processo informado',
+        404,
+      );
+    }
+
+    return data;
+  }
 }
 
 export { ReiteracaoService };

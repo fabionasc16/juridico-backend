@@ -92,6 +92,14 @@ class ReiteracaoRepository implements IPrismaSource<Reiteracao> {
       },
     });
   }
+
+  async readByProcessos(fk_processo: number): Promise<any> {
+    return prisma.reiteracao.findMany({
+      where: {
+        fk_processo,
+      },
+    });
+  }
 }
 
 export { ReiteracaoRepository };

@@ -5,9 +5,11 @@ import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 import 'express-async-errors';
 import YAML from 'yamljs';
+import { schedule } from 'node-cron';
 
 import { AppError } from './errors/AppError.class';
 import { routes } from './routes/index.routes';
+import { cronSIGED } from './seeds/UpdateProcessosSIGED.seed';
 
 const app = express();
 const swaggerDocument = YAML.load('./src/docs/swagger.yaml');
@@ -46,5 +48,9 @@ app.use(
     });
   },
 );
+
+// schedule('30 * * * * *', () => {
+//   cronSIGED();
+// });
 
 export { app };
