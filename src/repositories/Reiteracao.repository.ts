@@ -93,19 +93,12 @@ class ReiteracaoRepository implements IPrismaSource<Reiteracao> {
     });
   }
 
-  async readByProcessos(args: any): Promise<any> {
+  async readByProcessos(fk_processo: number, args: any): Promise<any> {
     const page = args.currentPage != null ? `${args.currentPage - 1}` : '0';
     const pageSize = args.perPage != null ? args.perPage : '10';
-    const search = args.search != null ? args.search : '';
-    let filters = {};
-    if (search) {
-      filters = {
-        fk_processo: args.search,
-      };
-    }
 
     const total = await prisma.reiteracao.count({
-      where: filters,
+      where: { fk_processo },
     });
     const pageNumber = Number(page);
     const pageSizeNumber = Number(pageSize);
@@ -113,7 +106,7 @@ class ReiteracaoRepository implements IPrismaSource<Reiteracao> {
     const data = await prisma.reiteracao.findMany({
       skip: pageNumber * pageSizeNumber,
       take: pageSizeNumber,
-      where: filters,
+      where: { fk_processo },
     });
 
     return {

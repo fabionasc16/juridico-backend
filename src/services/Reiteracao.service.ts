@@ -187,8 +187,8 @@ class ReiteracaoService {
     return reiteracao;
   }
 
-  async loadByProcesso(args: any): Promise<any> {
-    return this.reiteracao.readByProcessos(args);
+  async loadByProcesso(fk_processo: number, args: any): Promise<any> {
+    return this.reiteracao.readByProcessos(fk_processo, args);
   }
 }
 

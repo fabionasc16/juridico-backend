@@ -90,6 +90,7 @@ class ReiteracaoController {
     response: Response,
   ): Promise<Response> {
     const data = await ReiteracaoController.service.loadByProcesso(
+      Number(request.params.fk_processo),
       request.query,
     );
 
