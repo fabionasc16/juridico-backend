@@ -71,7 +71,7 @@ class ProcessosController {
   }
 
   async read(request: Request, response: Response): Promise<Response> {
-    const data = await ProcessosController.service.read(request.body);
+    const data = await ProcessosController.service.read(request);
     return response.status(200).json(data);
   }
 

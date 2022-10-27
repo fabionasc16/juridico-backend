@@ -46,9 +46,10 @@ class ProcessosRepository implements IPrismaSource<Processos> {
   }
 
   async read(args: any): Promise<any> {
-    const page = args.currentPage != null ? `${args.currentPage - 1}` : '0';
-    const pageSize = args.perPage != null ? args.perPage : '10';
-    const search = args.search != null ? args.search : '';
+    const page =
+      args.query.currentPage != null ? `${args.query.currentPage - 1}` : '0';
+    const pageSize = args.query.perPage != null ? args.query.perPage : '10';
+    const search = args.query.search != null ? args.query.search : '';
     let filters = {};
     if (search) {
       filters = {
@@ -58,36 +59,36 @@ class ProcessosRepository implements IPrismaSource<Processos> {
 
     const AND = [];
 
-    if (args.idTipoProcesso) {
-      AND.push({ fk_tipoprocesso: Number(args.idTipoProcesso) });
+    if (args.body.idTipoProcesso) {
+      AND.push({ fk_tipoprocesso: Number(args.body.idTipoProcesso) });
     }
 
-    if (args.statusProcesso) {
-      AND.push({ fk_status: Number(args.statusProcesso) });
+    if (args.body.statusProcesso) {
+      AND.push({ fk_status: Number(args.body.statusProcesso) });
     }
 
-    if (args.statusPrazo) {
-      AND.push({ status_prazo: args.statusPrazo });
+    if (args.body.statusPrazo) {
+      AND.push({ status_prazo: args.body.statusPrazo });
     }
 
-    if (args.idOrgaoDemandante) {
-      AND.push({ fk_orgaodemandante: Number(args.idOrgaoDemandante) });
+    if (args.body.idOrgaoDemandante) {
+      AND.push({ fk_orgaodemandante: Number(args.body.idOrgaoDemandante) });
     }
 
-    if (args.idClassificacao) {
-      AND.push({ fk_classificacao: Number(args.idClassificacao) });
+    if (args.body.idClassificacao) {
+      AND.push({ fk_classificacao: Number(args.body.idClassificacao) });
     }
 
-    if (args.idResponsavel) {
-      AND.push({ fk_responsavel: Number(args.idResponsavel) });
+    if (args.body.idResponsavel) {
+      AND.push({ fk_responsavel: Number(args.body.idResponsavel) });
     }
 
-    if (args.idAssunto) {
-      AND.push({ fk_assunto: Number(args.idAssunto) });
+    if (args.body.idAssunto) {
+      AND.push({ fk_assunto: Number(args.body.idAssunto) });
     }
 
-    if (args.caixaAtualSIGED) {
-      AND.push({ caixa_atual_siged: args.caixaAtualSIGED });
+    if (args.body.caixaAtualSIGED) {
+      AND.push({ caixa_atual_siged: args.body.caixaAtualSIGED });
     }
 
     if (AND.length) {
