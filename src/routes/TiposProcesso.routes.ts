@@ -7,6 +7,7 @@ const controller = new TiposProcessoController();
 
 tiposProcessoRoutes.post('/', controller.create);
 tiposProcessoRoutes.get('/', controller.read);
+tiposProcessoRoutes.get('/id/:id_tipoprocesso', controller.readById);
 tiposProcessoRoutes.put('/:id_tipoprocesso', controller.update);
 tiposProcessoRoutes.delete('/:id_tipoprocesso', controller.delete);
 
