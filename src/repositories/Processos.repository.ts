@@ -94,8 +94,6 @@ class ProcessosRepository implements IPrismaSource<Processos> {
       Object.assign(filters, { AND });
     }
 
-    console.log(filters);
-
     const total = await prisma.processos.count({
       where: filters,
     });
