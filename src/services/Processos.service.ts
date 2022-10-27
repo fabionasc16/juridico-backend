@@ -248,11 +248,17 @@ class ProcessosService {
       throw new AppError('Processo não localizado no sistema', 404);
     }
 
-    if (args.num_procedimento) {
+    if (!args.num_procedimento) {
+      throw new AppError('Informe um Número de Procedimento para atualização');
+    } else {
       processo.num_procedimento = args.num_procedimento;
     }
 
-    if (args.fk_tipoprocesso) {
+    if (!args.fk_tipoprocesso) {
+      throw new AppError(
+        'Informe o Identificador do Tipo de Processo para atualização',
+      );
+    } else {
       const tiposProcesso = await this.tiposProcesso.loadId(
         args.fk_tipoprocesso,
       );
@@ -265,11 +271,17 @@ class ProcessosService {
       processo.fk_tipoprocesso = args.fk_tipoprocesso;
     }
 
-    if (args.prazo_total) {
+    if (!args.prazo_total) {
+      throw new AppError('Informe um Prazo Total para atualização');
+    } else {
       processo.prazo_total = args.prazo_total;
     }
 
-    if (args.fk_orgaodemandante) {
+    if (!args.fk_orgaodemandante) {
+      throw new AppError(
+        'Informe o Identificador do Órgão Demandante para atualização',
+      );
+    } else {
       const orgao = await this.orgaoDemandante.loadId(args.fk_orgaodemandante);
       if (!orgao) {
         throw new AppError(
@@ -280,19 +292,25 @@ class ProcessosService {
       processo.fk_orgaodemandante = args.fk_orgaodemandante;
     }
 
-    if (args.data_processo) {
+    if (!args.data_processo) {
+      throw new AppError('Informe uma Data de Processo para atualização');
+    } else {
       processo.data_processo = new Date(
         moment(args.data_processo).format('YYYY-MM-DD'),
       );
     }
 
-    if (args.data_recebimento) {
+    if (!args.data_recebimento) {
+      throw new AppError('Informe uma Data de Recebimento para atualização');
+    } else {
       processo.data_recebimento = new Date(
         moment(args.data_recebimento).format('YYYY-MM-DD'),
       );
     }
 
-    if (args.hora_recebimento) {
+    if (!args.hora_recebimento) {
+      throw new AppError('Informe uma Hora de Recebimento para atualização');
+    } else {
       processo.hora_recebimento = args.hora_recebimento;
     }
 
@@ -300,7 +318,9 @@ class ProcessosService {
       processo.data_arquivamento = args.data_arquivamento;
     }
 
-    if (args.fk_assunto) {
+    if (!args.fk_assunto) {
+      throw new AppError('Informe o Identificador do Assunto para atualização');
+    } else {
       const assunto = await this.assunto.loadId(args.fk_assunto);
       if (!assunto) {
         throw new AppError(
@@ -311,7 +331,11 @@ class ProcessosService {
       processo.fk_assunto = args.fk_assunto;
     }
 
-    if (args.fk_classificacao) {
+    if (!args.fk_classificacao) {
+      throw new AppError(
+        'Informe o Identificador da Classificação para atualização',
+      );
+    } else {
       const classificacao = await this.classificacao.loadId(
         args.fk_classificacao,
       );
@@ -324,7 +348,9 @@ class ProcessosService {
       processo.fk_classificacao = args.fk_classificacao;
     }
 
-    if (args.objeto) {
+    if (!args.objeto) {
+      throw new AppError('Informe o Objeto para atualização');
+    } else {
       processo.objeto = args.objeto;
     }
 
@@ -354,7 +380,11 @@ class ProcessosService {
       processo.tramitacao_siged = args.tramitacao_siged;
     }
 
-    if (args.fk_responsavel) {
+    if (!args.fk_responsavel) {
+      throw new AppError(
+        'Informe o Identificador do Responsável para atualização',
+      );
+    } else {
       const responsavel = await this.responsavel.loadId(args.fk_responsavel);
       if (!responsavel) {
         throw new AppError(
@@ -369,9 +399,12 @@ class ProcessosService {
       processo.observacao = args.observacao;
     }
 
-    if (args.descicao) {
+    if (!args.descicao) {
+      throw new AppError('Informe uma Descrição para atualização');
+    } else {
       processo.descicao = args.descicao;
     }
+
     const limitePrazo = (
       await calculateDays(args.data_recebimento, args.prazo_total)
     ).format('YYYY-MM-DD');
