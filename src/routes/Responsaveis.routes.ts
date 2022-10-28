@@ -7,7 +7,7 @@ const controller = new ResponsaveisController();
 
 responsaveisRoutes.post('/', controller.create);
 responsaveisRoutes.delete('/:id_responsavel', controller.delete);
-responsaveisRoutes.get('/', controller.read);
+responsaveisRoutes.post('/list', controller.read);
 responsaveisRoutes.get('/id/:id_responsavel', controller.readById);
 responsaveisRoutes.put('/:id_responsavel', controller.update);
 

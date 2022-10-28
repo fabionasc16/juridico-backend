@@ -106,6 +106,11 @@ class ProcessosRepository implements IPrismaSource<Processos> {
       take: pageSizeNumber,
       where: filters,
       include: {
+        _count: {
+          select: {
+            Reiteracao: true,
+          },
+        },
         tipoProcesso: true,
         status: true,
         assunto: true,
