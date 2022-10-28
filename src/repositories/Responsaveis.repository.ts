@@ -16,18 +16,21 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
   }
 
   async read(args: any): Promise<any> {
-    const page = args.currentPage != null ? `${args.currentPage - 1}` : '0';
-    const pageSize = args.perPage != null ? args.perPage : '10';
-    const search = args.search != null ? args.search : '';
-    let filters = {};
-    if (search) {
-      filters = {
-        cpf_responsavel: args.search,
-      };
+    const page =
+      args.query.currentPage != null ? `${args.query.currentPage - 1}` : '0';
+    const pageSize = args.query.perPage != null ? args.query.perPage : '10';
+
+    const AND = [];
+    if (args.body.cpfResponsavel) {
+      AND.push({ cpf_responsavel: args.body.cpfResponsavel });
+    }
+
+    if (args.body.nomeResponsavel) {
+      AND.push({ nome_responsavel: args.body.nomeResponsavel });
     }
 
     const total = await prisma.responsaveis.count({
-      where: filters,
+      where: { AND },
     });
     const pageNumber = Number(page);
     const pageSizeNumber = Number(pageSize);
@@ -35,7 +38,7 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
     const data = await prisma.responsaveis.findMany({
       skip: pageNumber * pageSizeNumber,
       take: pageSizeNumber,
-      where: filters,
+      where: { AND },
     });
 
     return {

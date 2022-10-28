@@ -30,7 +30,7 @@ class ResponsaveisService {
     }
 
     const responsavel = await this.responsaveis.loadResponsavel(
-      args.cpf_responsavel,
+      args.cpf_responsavel.replaceAll('.', '').replaceAll('-', ''),
     );
     if (responsavel) {
       throw new AppError('Responsável já cadastrado no sistema');

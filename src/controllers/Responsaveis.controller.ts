@@ -30,7 +30,7 @@ class ResponsaveisController {
   }
 
   async read(request: Request, response: Response): Promise<Response> {
-    const data = await ResponsaveisController.service.read(request.query);
+    const data = await ResponsaveisController.service.read(request);
     return response.status(200).json(data);
   }
 
