@@ -26,7 +26,7 @@ class FeriadosController {
   }
 
   async read(request: Request, response: Response): Promise<Response> {
-    const data = await FeriadosController.service.read(request.query);
+    const data = await FeriadosController.service.read(request);
     return response.status(200).json(data);
   }
 

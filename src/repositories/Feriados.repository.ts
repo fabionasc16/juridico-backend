@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { prisma } from '../config/Prisma.config';
 import { IPrismaSource } from '../generics/IPrismaSource';
 import { Feriados } from '../models/Feriados.model';
@@ -41,18 +43,29 @@ class FeriadosRepository implements IPrismaSource<Feriados> {
   }
 
   async read(args: any): Promise<any> {
-    const page = args.currentPage != null ? `${args.currentPage - 1}` : '0';
-    const pageSize = args.perPage != null ? args.perPage : '10';
-    const search = args.search != null ? args.search : '';
-    let filters = {};
-    if (search) {
-      filters = {
-        data_feriado: args.search,
-      };
+    const page =
+      args.query.currentPage != null ? `${args.query.currentPage - 1}` : '0';
+    const pageSize = args.query.perPage != null ? args.query.perPage : '10';
+
+    const AND = [];
+    if (args.body.dataFeriado) {
+      AND.push({
+        data_feriado: new Date(
+          moment(args.body.dataFeriado).utc().format('YYYY-MM-DD'),
+        ),
+      });
+    }
+
+    if (args.body.tipoFeriado) {
+      AND.push({ tipo_feriado: args.body.tipoFeriado });
+    }
+
+    if (args.body.anoFeriado) {
+      AND.push({ ano_feriado: args.body.anoFeriado });
     }
 
     const total = await prisma.feriados.count({
-      where: filters,
+      where: { AND },
     });
     const pageNumber = Number(page);
     const pageSizeNumber = Number(pageSize);
@@ -60,7 +73,7 @@ class FeriadosRepository implements IPrismaSource<Feriados> {
     const data = await prisma.feriados.findMany({
       skip: pageNumber * pageSizeNumber,
       take: pageSizeNumber,
-      where: filters,
+      where: { AND },
     });
 
     return {
