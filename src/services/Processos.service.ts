@@ -399,10 +399,10 @@ class ProcessosService {
       processo.observacao = args.observacao;
     }
 
-    if (!args.descicao) {
+    if (!args.descricao) {
       throw new AppError('Informe uma Descrição para atualização');
     } else {
-      processo.descicao = args.descicao;
+      processo.descricao = args.descricao;
     }
 
     const limitePrazo = (

@@ -53,7 +53,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     let filters = {};
     if (search) {
       filters = {
-        OR: [{ num_procedimento: search }, { numero_siged: search }],
+        id_processo: args.query.search,
       };
     }
 
@@ -61,6 +61,14 @@ class ProcessosRepository implements IPrismaSource<Processos> {
 
     if (args.body.idTipoProcesso) {
       AND.push({ fk_tipoprocesso: Number(args.body.idTipoProcesso) });
+    }
+
+    if (args.body.numProcedimento) {
+      AND.push({ num_procedimento: Number(args.body.numProcedimento) });
+    }
+
+    if (args.body.numProcessoSIGED) {
+      AND.push({ numero_siged: Number(args.body.numProcessoSIGED) });
     }
 
     if (args.body.statusProcesso) {
