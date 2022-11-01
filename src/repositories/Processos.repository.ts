@@ -64,11 +64,11 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     }
 
     if (args.body.numProcedimento) {
-      AND.push({ num_procedimento: Number(args.body.numProcedimento) });
+      AND.push({ num_procedimento: args.body.numProcedimento });
     }
 
     if (args.body.numProcessoSIGED) {
-      AND.push({ numero_siged: Number(args.body.numProcessoSIGED) });
+      AND.push({ numero_siged: args.body.numProcessoSIGED });
     }
 
     if (args.body.statusProcesso) {
