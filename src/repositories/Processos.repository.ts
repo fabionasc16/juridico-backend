@@ -136,6 +136,17 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     };
   }
 
+  async readCaixasSIGED(): Promise<any> {
+    return prisma.$queryRaw`
+      SELECT DISTINCT 
+        caixa_atual_siged 
+      FROM 
+        processos 
+      WHERE 
+        caixa_atual_siged IS NOT NULL AND TRIM(caixa_atual_siged) <> ''
+    `;
+  }
+
   async update(args: Processos): Promise<void> {
     await prisma.processos.update({
       where: {

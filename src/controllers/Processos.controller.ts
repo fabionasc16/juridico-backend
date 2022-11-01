@@ -153,6 +153,14 @@ class ProcessosController {
     return response.status(200).json(data);
   }
 
+  async readCaixasSIGED(
+    _request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const data = await ProcessosController.service.readCaixasSIGEDProcesso();
+    return response.status(200).json(data);
+  }
+
   async updateStatusProcesso(
     request: Request,
     response: Response,

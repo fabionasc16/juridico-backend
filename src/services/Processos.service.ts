@@ -238,6 +238,10 @@ class ProcessosService {
     return result;
   }
 
+  async readCaixasSIGEDProcesso(): Promise<any> {
+    return this.processos.readCaixasSIGED();
+  }
+
   async update(args: any): Promise<void> {
     if (!args.id_processo) {
       throw new AppError('Informe o Identificador do procedimento');

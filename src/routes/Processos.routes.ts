@@ -9,6 +9,7 @@ processosRoutes.post('/', controller.create);
 processosRoutes.post('/list', controller.read);
 processosRoutes.get('/busca-processo', controller.retrieveSIGEDData);
 processosRoutes.get('/id/:id_processo', controller.readById);
+processosRoutes.get('/caixas-siged', controller.readCaixasSIGED);
 processosRoutes.delete('/:id_processo', controller.delete);
 processosRoutes.put('/:id_processo', controller.update);
 processosRoutes.patch('/atualiza-status', controller.updateStatusProcesso);
