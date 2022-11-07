@@ -216,6 +216,14 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     });
   }
 
+  async loadProcesso(numero_siged: string): Promise<any> {
+    return prisma.processos.findFirst({
+      where: {
+        numero_siged,
+      },
+    });
+  }
+
   async updateStatusProcesso(
     id_processo: number,
     data_arquivamento: Date,
