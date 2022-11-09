@@ -662,6 +662,108 @@ class ProcessosService {
     };
   }
 
+  async retrieveMovimentacoesProcesso(numero_processo: string): Promise<any> {
+    if (!numero_processo) {
+      throw new AppError('Informe o Número do Processo para consulta');
+    }
+
+    const data: any = await client.search({
+      index: 'siged_processos',
+      body: {
+        aggs: {
+          '6': {
+            terms: {
+              field: 'entrada_no_setor',
+              order: {
+                _key: 'desc',
+              },
+              size: 999,
+            },
+            aggs: {
+              '9': {
+                terms: {
+                  field: 'evento_tramitado.keyword',
+                  order: {
+                    _key: 'desc',
+                  },
+                  size: 5,
+                },
+                aggs: {
+                  '7': {
+                    terms: {
+                      field: 'setor_tramitacao.keyword',
+                      order: {
+                        _key: 'desc',
+                      },
+                      size: 5,
+                    },
+                    aggs: {
+                      '1': {
+                        max: {
+                          field: 'dias_setor_atual',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        size: 0,
+        _source: {
+          excludes: [],
+        },
+        stored_fields: ['*'],
+        script_fields: {},
+        docvalue_fields: [
+          {
+            field: '@timestamp',
+            format: 'date_time',
+          },
+          {
+            field: 'data_entrada',
+            format: 'date_time',
+          },
+          {
+            field: 'entrada_no_setor',
+            format: 'date_time',
+          },
+        ],
+        query: {
+          bool: {
+            must: [],
+            filter: [
+              {
+                match_all: {},
+              },
+              {
+                match_phrase: {
+                  'processo.keyword': {
+                    query: numero_processo,
+                  },
+                },
+              },
+            ],
+            should: [],
+            must_not: [],
+          },
+        },
+      },
+    });
+
+    const searchData = data.body.aggregations[6].buckets.map(item => {
+      return {
+        entrada_no_setor: item.key_as_string,
+        evento_tramitado: item[9].buckets[0].key,
+        setor_tramitacao: item[9].buckets[0][7].buckets[0].key,
+        dias_no_setor: item[9].buckets[0][7].buckets[0][1].value,
+      };
+    });
+
+    return searchData;
+  }
+
   async updateStatusProcesso(
     id_processo: number,
     data_arquivamento: string,

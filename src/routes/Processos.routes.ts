@@ -8,6 +8,10 @@ const controller = new ProcessosController();
 processosRoutes.post('/', controller.create);
 processosRoutes.post('/list', controller.read);
 processosRoutes.get('/busca-processo', controller.retrieveSIGEDData);
+processosRoutes.get(
+  '/movimentacoes-processo',
+  controller.retrieveMovimentacoesProcesso,
+);
 processosRoutes.get('/id/:id_processo', controller.readById);
 processosRoutes.get('/caixas-siged', controller.readCaixasSIGED);
 processosRoutes.delete('/:id_processo', controller.delete);

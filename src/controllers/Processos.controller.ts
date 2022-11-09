@@ -153,6 +153,19 @@ class ProcessosController {
     return response.status(200).json(data);
   }
 
+  async retrieveMovimentacoesProcesso(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { numero_processo } = request.query;
+    const data =
+      await ProcessosController.service.retrieveMovimentacoesProcesso(
+        numero_processo as string,
+      );
+
+    return response.status(200).json(data);
+  }
+
   async readCaixasSIGED(
     _request: Request,
     response: Response,
