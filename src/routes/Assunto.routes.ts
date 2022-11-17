@@ -8,6 +8,7 @@ const controller = new AssuntoController();
 assuntoRoutes.post('/', controller.create);
 assuntoRoutes.delete('/:id_assunto', controller.delete);
 assuntoRoutes.get('/', controller.read);
+assuntoRoutes.get('/id/:id_asssunto', controller.readById);
 assuntoRoutes.put('/:id_assunto', controller.update);
 
 export { assuntoRoutes };
