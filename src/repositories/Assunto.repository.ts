@@ -19,7 +19,7 @@ class AssuntoRepository implements IPrismaSource<Assunto> {
     let filters = {};
     if (search) {
       filters = {
-        codigo_siged: args.search,
+        codigo_siged: Number(args.search),
       };
     }
 
