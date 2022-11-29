@@ -84,6 +84,13 @@ class ProcessosController {
     return response.status(200).json(data);
   }
 
+  async readByObjeto(request: Request, response: Response): Promise<Response> {
+    const { objetoProcesso } = request.body;
+    const data = await ProcessosController.service.readByObjeto(objetoProcesso);
+
+    return response.status(200).json(data);
+  }
+
   async update(request: Request, response: Response): Promise<Response> {
     const { id_processo } = request.params;
     const {
@@ -188,6 +195,18 @@ class ProcessosController {
     );
 
     return response.status(204).send();
+  }
+
+  async readByDescricao(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { descricaoProcesso } = request.body;
+    const data = await ProcessosController.service.readByDescricao(
+      descricaoProcesso,
+    );
+
+    return response.status(200).json(data);
   }
 }
 

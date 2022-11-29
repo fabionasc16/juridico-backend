@@ -787,6 +787,38 @@ class ProcessosService {
       fk_status,
     );
   }
+
+  async readByObjeto(objeto: string): Promise<any> {
+    if (!objeto) {
+      throw new AppError('Informe o objeto para pesquisa');
+    }
+
+    const result = await this.processos.loadObjeto(objeto);
+    if (!result) {
+      throw new AppError(
+        'Nenhum processo foi localizado com o objeto informado',
+        404,
+      );
+    }
+
+    return result;
+  }
+
+  async readByDescricao(descricao: string): Promise<any> {
+    if (!descricao) {
+      throw new AppError('Informe uma descrição para pesquisa');
+    }
+
+    const result = await this.processos.loadDescricao(descricao);
+    if (!result) {
+      throw new AppError(
+        'Nenhum processo foi localizado com o objeto informado',
+        404,
+      );
+    }
+
+    return result;
+  }
 }
 
 export { ProcessosService };

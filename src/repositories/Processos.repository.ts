@@ -216,6 +216,22 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     });
   }
 
+  async loadObjeto(objeto: string): Promise<any> {
+    return prisma.processos.findFirst({
+      where: {
+        objeto,
+      },
+    });
+  }
+
+  async loadDescricao(descricao: string): Promise<any> {
+    return prisma.processos.findFirst({
+      where: {
+        descricao,
+      },
+    });
+  }
+
   async loadProcesso(numero_siged: string): Promise<any> {
     return prisma.processos.findFirst({
       where: {

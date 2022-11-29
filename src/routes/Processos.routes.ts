@@ -17,5 +17,7 @@ processosRoutes.get('/caixas-siged', controller.readCaixasSIGED);
 processosRoutes.delete('/:id_processo', controller.delete);
 processosRoutes.put('/:id_processo', controller.update);
 processosRoutes.patch('/atualiza-status', controller.updateStatusProcesso);
+processosRoutes.post('/search/descricao', controller.readByDescricao);
+processosRoutes.post('/search/objeto', controller.readByObjeto);
 
 export { processosRoutes };
