@@ -1,11 +1,6 @@
 import axios from 'axios';
-import * as dotenv from 'dotenv';
 import { Response, Request } from 'express';
 import { sign, verify } from 'jsonwebtoken';
-
-dotenv.config({
-  path: './.env.dev',
-});
 
 export class AuthService {
   private url = process.env.SSO_URL;
@@ -212,7 +207,6 @@ export class AuthService {
     }
   }
 
-  // OK-testado - Somente quando envia todos os campos
   async updateUsuario(request: Request, response: Response): Promise<any> {
     try {
       const url = process.env.SSO_URL;

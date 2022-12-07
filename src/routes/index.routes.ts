@@ -11,6 +11,7 @@ import { responsaveisRoutes } from './Responsaveis.routes';
 import { statusRoutes } from './Status.routes';
 import { tiposEventosRoutes } from './TiposEventos.routes';
 import { tiposProcessoRoutes } from './TiposProcesso.routes';
+import { userRoutes } from './Usuarios.routes';
 
 const routes = Router();
 
@@ -29,5 +30,6 @@ routes.use('/responsaveis', responsaveisRoutes);
 routes.use('/tipo-evento', tiposEventosRoutes);
 routes.use('/status', statusRoutes);
 routes.use('/login', authRoutes);
+routes.use('/usuarios', userRoutes);
 
 export { routes };
