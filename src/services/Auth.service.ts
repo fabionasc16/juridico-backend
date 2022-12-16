@@ -171,7 +171,9 @@ export class AuthService {
 
     try {
       if (AuthService.checkRoles(AuthService.ROLES.ADMIN, request.user.roles)) {
-        const { status, data } = await axios.get(`${url}/users${queryParams}`);
+        const { status, data } = await axios.get(
+          `${url}/users/system?nomeSistema=SAPEJ`,
+        );
         return await response.status(status).json(data);
       }
 
