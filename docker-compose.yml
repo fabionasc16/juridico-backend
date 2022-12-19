@@ -12,10 +12,11 @@ services:
       - ELASTIC_USERNAME=sapej_siged
       - ELASTIC_PASS=oKr11Nq70ntTH6x7A9CEbDv3ZW
       - SSO_URL=https://sistemas.saude.am.gov.br/ses-sso/api/v1
+      - JWT_KEY=*uDx^m9x8tbPdxU
     volumes:
-      - ".:/app"
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
-    ports: 
-      - "3302:3302"
+      - '.:/app'
+      - '/etc/timezone:/etc/timezone:ro'
+      - '/etc/localtime:/etc/localtime:ro'
+    ports:
+      - '3302:3302'
     network_mode: bridge
