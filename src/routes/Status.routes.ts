@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { checkJWT } from 'middlewares/CheckJWT.middleware';
-import { checkRole } from 'middlewares/CheckRoles.middleware';
-import { AuthService } from 'services/Auth.service';
 
 import { StatusController } from '../controllers/Status.controller';
+import { checkJWT } from '../middlewares/CheckJWT.middleware';
+import { checkRole } from '../middlewares/CheckRoles.middleware';
+import { AuthService } from '../services/Auth.service';
 
 const statusRoutes = Router();
 const controller = new StatusController();

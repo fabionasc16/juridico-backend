@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { checkJWT } from 'middlewares/CheckJWT.middleware';
-import { checkRole } from 'middlewares/CheckRoles.middleware';
-import { AuthService } from 'services/Auth.service';
 
 import { TiposProcessoController } from '../controllers/TiposProcesso.controller';
+import { checkJWT } from '../middlewares/CheckJWT.middleware';
+import { checkRole } from '../middlewares/CheckRoles.middleware';
+import { AuthService } from '../services/Auth.service';
 
 const tiposProcessoRoutes = Router();
 const controller = new TiposProcessoController();
