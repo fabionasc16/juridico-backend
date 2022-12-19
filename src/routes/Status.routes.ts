@@ -1,15 +1,53 @@
 import { Router } from 'express';
+import { checkJWT } from 'middlewares/CheckJWT.middleware';
+import { checkRole } from 'middlewares/CheckRoles.middleware';
+import { AuthService } from 'services/Auth.service';
 
 import { StatusController } from '../controllers/Status.controller';
 
 const statusRoutes = Router();
 const controller = new StatusController();
 
-statusRoutes.post('/', controller.create);
-statusRoutes.delete('/:id_status', controller.delete);
-statusRoutes.get('/', controller.read);
-statusRoutes.get('/id/:id_status', controller.readById);
-statusRoutes.get('/aplicacaostatus', controller.readByAplicacao);
-statusRoutes.put('/:id_status', controller.update);
+statusRoutes.post(
+  '/',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.create,
+);
+
+statusRoutes.delete(
+  '/:id_status',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.delete,
+);
+
+statusRoutes.get(
+  '/',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.read,
+);
+
+statusRoutes.get(
+  '/id/:id_status',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.readById,
+);
+
+statusRoutes.get(
+  '/aplicacaostatus',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.readByAplicacao,
+);
+
+statusRoutes.put(
+  '/:id_status',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.update,
+);
 
 export { statusRoutes };

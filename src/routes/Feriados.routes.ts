@@ -1,14 +1,46 @@
 import { Router } from 'express';
+import { checkJWT } from 'middlewares/CheckJWT.middleware';
+import { checkRole } from 'middlewares/CheckRoles.middleware';
+import { AuthService } from 'services/Auth.service';
 
 import { FeriadosController } from '../controllers/Feriados.controller';
 
 const feriadosRoutes = Router();
 const controller = new FeriadosController();
 
-feriadosRoutes.post('/', controller.create);
-feriadosRoutes.delete('/:id_feriado', controller.delete);
-feriadosRoutes.post('/list', controller.read);
-feriadosRoutes.get('/id/:id_feriado', controller.readById);
-feriadosRoutes.put('/:id_feriado', controller.update);
+feriadosRoutes.post(
+  '/',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.create,
+);
+
+feriadosRoutes.delete(
+  '/:id_feriado',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.delete,
+);
+
+feriadosRoutes.post(
+  '/list',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.read,
+);
+
+feriadosRoutes.get(
+  '/id/:id_feriado',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.readById,
+);
+
+feriadosRoutes.put(
+  '/:id_feriado',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
+  controller.update,
+);
 
 export { feriadosRoutes };
