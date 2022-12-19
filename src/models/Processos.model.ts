@@ -20,6 +20,7 @@ export type Processos = {
   fk_responsavel: number;
   observacao: string;
   descricao: string;
+  diasCorridos?: boolean;
   dia_limite_prazo?: Date | string;
   dias_percorridos?: number;
   dias_expirados?: number;

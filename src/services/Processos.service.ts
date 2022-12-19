@@ -141,9 +141,16 @@ class ProcessosService {
       );
     }
 
-    const limiteProcesso = (
-      await calculateDays(args.data_recebimento, args.prazo_total)
-    ).format('YYYY-MM-DD');
+    let limiteProcesso: any = '';
+    if (args.diasCorridos) {
+      limiteProcesso = moment(args.data_recebimento)
+        .add(args.dias_percorridos, 'd')
+        .format('YYYY-MM-DD');
+    } else {
+      limiteProcesso = (
+        await calculateDays(args.data_recebimento, args.prazo_total)
+      ).format('YYYY-MM-DD');
+    }
 
     const diasPercorridos = moment(new Date(), 'YYYY-MM-DD').diff(
       moment(args.data_recebimento, 'YYYY-MM-DD'),
@@ -420,9 +427,17 @@ class ProcessosService {
       processo.descricao = args.descricao;
     }
 
-    const limitePrazo = (
-      await calculateDays(args.data_recebimento, args.prazo_total)
-    ).format('YYYY-MM-DD');
+    let limitePrazo: any = '';
+    if (args.diasCorridos) {
+      limitePrazo = moment(args.data_recebimento)
+        .add(args.dias_percorridos, 'd')
+        .format('YYYY-MM-DD');
+    } else {
+      limitePrazo = (
+        await calculateDays(args.data_recebimento, args.prazo_total)
+      ).format('YYYY-MM-DD');
+    }
+
     processo.dia_limite_prazo = new Date(
       moment(limitePrazo as string).format('YYYY-MM-DD'),
     );
