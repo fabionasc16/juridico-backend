@@ -3,6 +3,7 @@ export type Processos = {
   num_procedimento: string;
   fk_tipoprocesso: number;
   prazo_total: number;
+  dias_corridos: string;
   fk_orgaodemandante: number;
   data_processo: Date | string;
   data_recebimento: Date | string;
@@ -20,7 +21,6 @@ export type Processos = {
   fk_responsavel: number;
   observacao: string;
   descricao: string;
-  diasCorridos?: boolean;
   dia_limite_prazo?: Date | string;
   dias_percorridos?: number;
   dias_expirados?: number;

@@ -114,6 +114,10 @@ class ProcessosService {
       }
     }
 
+    if (!args.dias_corridos) {
+      throw new AppError('Informe se o prazo será em dias corridos ou não');
+    }
+
     if (!args.data_processo) {
       throw new AppError('Informe a Data de Abertura do Processo');
     }
@@ -142,7 +146,7 @@ class ProcessosService {
     }
 
     let limiteProcesso: any = '';
-    if (args.diasCorridos) {
+    if (args.dias_corridos === 'S') {
       limiteProcesso = moment(args.data_recebimento)
         .add(args.dias_percorridos, 'd')
         .format('YYYY-MM-DD');
@@ -189,6 +193,7 @@ class ProcessosService {
       num_procedimento: args.num_procedimento,
       fk_tipoprocesso: args.fk_tipoprocesso,
       prazo_total: args.prazo_total,
+      dias_corridos: args.dias_corridos,
       fk_orgaodemandante: args.fk_orgaodemandante,
       data_processo: new Date(moment(args.data_processo).format('YYYY-MM-DD')),
       data_recebimento: new Date(
@@ -260,7 +265,7 @@ class ProcessosService {
     return this.processos.readCaixasSIGED();
   }
 
-  async update(args: any): Promise<void> {
+  async update(args: Processos): Promise<void> {
     if (!args.id_processo) {
       throw new AppError('Informe o Identificador do procedimento');
     }
@@ -428,7 +433,7 @@ class ProcessosService {
     }
 
     let limitePrazo: any = '';
-    if (args.diasCorridos) {
+    if (args.dias_corridos === 'S') {
       limitePrazo = moment(args.data_recebimento)
         .add(args.dias_percorridos, 'd')
         .format('YYYY-MM-DD');

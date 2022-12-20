@@ -95,6 +95,7 @@ model Processos {
   num_procedimento    String       @db.VarChar(100)
   fk_tipoprocesso     Int
   prazo_total         Int
+  dias_corridos       String       @db.Char(1)
   fk_orgaodemandante  Int
   data_processo       DateTime     @db.Date
   data_recebimento    DateTime     @db.Date
