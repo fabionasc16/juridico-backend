@@ -148,7 +148,7 @@ class ProcessosService {
     let limiteProcesso: any = '';
     if (args.dias_corridos === 'S') {
       limiteProcesso = moment(args.data_recebimento)
-        .add(args.dias_percorridos, 'd')
+        .add(args.prazo_total, 'd')
         .format('YYYY-MM-DD');
     } else {
       limiteProcesso = (
@@ -435,7 +435,7 @@ class ProcessosService {
     let limitePrazo: any = '';
     if (args.dias_corridos === 'S') {
       limitePrazo = moment(args.data_recebimento)
-        .add(args.dias_percorridos, 'd')
+        .add(args.prazo_total, 'd')
         .format('YYYY-MM-DD');
     } else {
       limitePrazo = (
