@@ -62,6 +62,12 @@ class AssuntoService {
     }
 
     if (args.codigo_siged) {
+      const assunto = await this.assunto.loadCodigo(args.codigo_siged);
+      if (assunto) {
+        throw new AppError(
+          'O Código do SIGED informado já existe na base de dados',
+        );
+      }
       assunto.codigo_siged = args.codigo_siged;
     }
 
