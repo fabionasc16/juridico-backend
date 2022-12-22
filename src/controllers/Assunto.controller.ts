@@ -26,7 +26,7 @@ class AssuntoController {
   }
 
   async read(request: Request, response: Response): Promise<Response> {
-    const data = await AssuntoController.service.read(request.query);
+    const data = await AssuntoController.service.read(request);
     return response.status(200).json(data);
   }
 

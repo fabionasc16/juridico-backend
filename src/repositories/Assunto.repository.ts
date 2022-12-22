@@ -13,14 +13,29 @@ class AssuntoRepository implements IPrismaSource<Assunto> {
   }
 
   async read(args: any): Promise<any> {
-    const page = args.currentPage != null ? `${args.currentPage - 1}` : '0';
-    const pageSize = args.perPage != null ? args.perPage : '10';
-    const search = args.search != null ? args.search : '';
+    const page =
+      args.query.currentPage != null ? `${args.query.currentPage - 1}` : '0';
+    const pageSize = args.query.perPage != null ? args.query.perPage : '10';
+    const search = args.query.search != null ? args.query.search : '';
     let filters = {};
     if (search) {
       filters = {
-        id_assunto: Number(args.search),
+        id_assunto: Number(args.query.search),
       };
+    }
+
+    const AND = [];
+
+    if (args.body.codigoSIGED) {
+      AND.push({ codigo_siged: Number(args.body.codigoSIGED) });
+    }
+
+    if (args.body.descricaoAssunto) {
+      AND.push({ desc_assunto: args.body.descricaoAssunto });
+    }
+
+    if (AND.length) {
+      Object.assign(filters, { AND });
     }
 
     const total = await prisma.assunto.count({

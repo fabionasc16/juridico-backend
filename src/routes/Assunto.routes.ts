@@ -22,8 +22,8 @@ assuntoRoutes.delete(
   controller.delete,
 );
 
-assuntoRoutes.get(
-  '/',
+assuntoRoutes.post(
+  '/list',
   checkJWT,
   checkRole([AuthService.ROLES.ADMIN]),
   controller.read,
