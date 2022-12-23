@@ -67,6 +67,16 @@ class ClassificacaoService {
     }
 
     if (args.desc_classificacao) {
+      if (args.desc_classificacao !== classificacao.desc_classificacao) {
+        const dataExists = await this.classificacao.loadClassificacao(
+          args.desc_classificacao,
+        );
+        if (dataExists) {
+          throw new AppError(
+            'Já existe uma Classificação informada no sistema com esta descrição',
+          );
+        }
+      }
       classificacao.desc_classificacao = args.desc_classificacao;
     }
 
