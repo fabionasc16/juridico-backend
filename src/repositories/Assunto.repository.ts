@@ -31,7 +31,7 @@ class AssuntoRepository implements IPrismaSource<Assunto> {
     }
 
     if (args.body.descricaoAssunto) {
-      AND.push({ desc_assunto: args.body.descricaoAssunto });
+      AND.push({ desc_assunto: { contains: args.body.descricaoAssunto } });
     }
 
     if (AND.length) {

@@ -26,7 +26,9 @@ class TiposProcessoRepository implements IPrismaSource<TiposProcesso> {
     let filters = {};
     if (search) {
       filters = {
-        desc_tipoprocesso: args.search,
+        desc_tipoprocesso: {
+          contains: args.search,
+        },
       };
     }
 
