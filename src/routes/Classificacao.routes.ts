@@ -24,8 +24,8 @@ classificacaoRoutes.delete(
 
 classificacaoRoutes.get(
   '/',
-  // checkJWT,
-  // checkRole([AuthService.ROLES.ADMIN]),
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN]),
   controller.read,
 );
 
