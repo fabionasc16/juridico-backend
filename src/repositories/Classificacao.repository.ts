@@ -18,7 +18,9 @@ class ClassificacaoRepository implements IPrismaSource<Classificacao> {
     let filters = {};
     if (search) {
       filters = {
-        desc_classificacao: args.search,
+        desc_classificacao: {
+          contains: args.search,
+        },
       };
     }
 
