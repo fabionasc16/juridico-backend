@@ -65,6 +65,16 @@ class TiposProcessoService {
     }
 
     if (args.desc_tipoprocesso) {
+      if (data.desc_tipoprocesso !== args.desc_tipoprocesso) {
+        const dataExists = await this.tiposProcesso.listDescription(
+          args.desc_tipoprocesso,
+        );
+        if (dataExists) {
+          throw new AppError(
+            'Já existem registros na base de dados com os parâmetros informados',
+          );
+        }
+      }
       data.desc_tipoprocesso = args.desc_tipoprocesso;
     }
 
