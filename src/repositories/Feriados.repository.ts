@@ -75,7 +75,7 @@ class FeriadosRepository implements IPrismaSource<Feriados> {
       take: pageSizeNumber,
       where: { AND },
       orderBy: {
-        ano_feriado: 'desc',
+        data_feriado: 'desc',
       },
     });
 
