@@ -46,7 +46,7 @@ class FeriadosRepository implements IPrismaSource<Feriados> {
     return prisma.feriados.findFirst({
       where: {
         NOT: [{ id_feriado }],
-        AND: [{ data_feriado }],
+        AND: [{ data_feriado: new Date(data_feriado) }],
       },
     });
   }
