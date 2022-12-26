@@ -93,6 +93,14 @@ class AssuntoRepository implements IPrismaSource<Assunto> {
       },
     });
   }
+
+  async loadDesc(desc_assunto: string): Promise<any> {
+    return prisma.assunto.findFirst({
+      where: {
+        desc_assunto,
+      },
+    });
+  }
 }
 
 export { AssuntoRepository };

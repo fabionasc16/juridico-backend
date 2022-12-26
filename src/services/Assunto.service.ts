@@ -24,6 +24,13 @@ class AssuntoService {
       );
     }
 
+    const dataExists = await this.assunto.loadDesc(args.desc_assunto);
+    if (dataExists) {
+      throw new AppError(
+        'A descrição informada já existe em um registro na base de dados',
+      );
+    }
+
     return this.assunto.create({
       codigo_siged: args.codigo_siged,
       desc_assunto: args.desc_assunto,
@@ -74,6 +81,14 @@ class AssuntoService {
     }
 
     if (args.desc_assunto) {
+      if (assunto.desc_assunto !== args.desc_assunto) {
+        const dataExists = await this.assunto.loadDesc(args.desc_assunto);
+        if (dataExists) {
+          throw new AppError(
+            'A descrição informada já existe em um registro na base de dados',
+          );
+        }
+      }
       assunto.desc_assunto = args.desc_assunto;
     }
 
