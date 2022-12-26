@@ -42,6 +42,15 @@ class FeriadosRepository implements IPrismaSource<Feriados> {
     });
   }
 
+  async loadNotData(data_feriado: string, id_feriado: number): Promise<any> {
+    return prisma.feriados.findFirst({
+      where: {
+        NOT: [{ id_feriado }],
+        AND: [{ data_feriado }],
+      },
+    });
+  }
+
   async read(args: any): Promise<any> {
     const page =
       args.query.currentPage != null ? `${args.query.currentPage - 1}` : '0';
