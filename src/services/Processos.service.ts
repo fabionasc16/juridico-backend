@@ -489,6 +489,17 @@ class ProcessosService {
       processo.valor_multa = args.valor_multa;
     }
 
+    const dataExists = await this.processos.loadExists(
+      args.num_procedimento,
+      args.fk_orgaodemandante,
+      args.fk_tipoprocesso,
+    );
+    if (dataExists) {
+      throw new AppError(
+        'Já existe um processo registrado no sistema com as informações de Numero de Procedimento, Órgão Demandante e Tipo de Processo informadas',
+      );
+    }
+
     await this.processos.update(processo);
   }
 
