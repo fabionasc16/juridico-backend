@@ -80,7 +80,9 @@ class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
   async loadOrgaoDemandante(orgao_demandante: string): Promise<any> {
     return prisma.orgaoDemandante.findFirst({
       where: {
-        orgao_demandante,
+        orgao_demandante: {
+          contains: orgao_demandante,
+        },
       },
     });
   }

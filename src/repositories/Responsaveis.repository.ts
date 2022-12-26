@@ -22,11 +22,11 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
 
     const AND = [];
     if (args.body.cpfResponsavel) {
-      AND.push({ cpf_responsavel: args.body.cpfResponsavel });
+      AND.push({ cpf_responsavel: { contains: args.body.cpfResponsavel } });
     }
 
     if (args.body.nomeResponsavel) {
-      AND.push({ nome_responsavel: args.body.nomeResponsavel });
+      AND.push({ nome_responsavel: { contains: args.body.nomeResponsavel } });
     }
 
     const total = await prisma.responsaveis.count({
@@ -83,7 +83,9 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
   async loadResponsavel(cpf_responsavel: string): Promise<any> {
     return prisma.responsaveis.findFirst({
       where: {
-        cpf_responsavel,
+        cpf_responsavel: {
+          contains: cpf_responsavel,
+        },
       },
     });
   }

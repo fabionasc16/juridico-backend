@@ -38,7 +38,9 @@ class ReiteracaoRepository implements IPrismaSource<Reiteracao> {
   async loadNumProcedimento(num_procedimento: string): Promise<any> {
     return prisma.reiteracao.findFirst({
       where: {
-        num_procedimento,
+        num_procedimento: {
+          contains: num_procedimento,
+        },
       },
     });
   }
@@ -50,7 +52,9 @@ class ReiteracaoRepository implements IPrismaSource<Reiteracao> {
     let filters = {};
     if (search) {
       filters = {
-        num_procedimento: args.search,
+        num_procedimento: {
+          contains: args.search,
+        },
       };
     }
 
