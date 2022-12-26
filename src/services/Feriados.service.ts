@@ -24,9 +24,7 @@ class FeriadosService {
       throw new AppError('Informe o Tipo de Feriado');
     }
 
-    const dataFeriado = new Date(
-      moment(args.data_feriado).format('YYYY-MM-DD'),
-    );
+    const dataFeriado = moment(args.data_feriado).format('YYYY-MM-DD');
     const feriado = await this.feriado.loadData(dataFeriado);
     if (feriado) {
       throw new AppError(
@@ -35,7 +33,7 @@ class FeriadosService {
     }
 
     return this.feriado.create({
-      data_feriado: dataFeriado,
+      data_feriado: new Date(moment(args.data_feriado).format('YYYY-MM-DD')),
       desc_feriado: args.desc_feriado,
       dia_feriado: Number(moment(args.data_feriado).format('DD')),
       mes_feriado: Number(moment(args.data_feriado).format('MM')),
@@ -83,7 +81,8 @@ class FeriadosService {
 
     if (args.data_feriado) {
       if (feriado.data_feriado !== args.data_feriado) {
-        const dataExists = await this.feriado.loadData(args.data_feriado);
+        const dataFeriado = moment(args.data_feriado).format('YYYY-MM-DD');
+        const dataExists = await this.feriado.loadData(dataFeriado);
         if (dataExists) {
           throw new AppError(
             'Já existe um Feriado registrado para a data informada',

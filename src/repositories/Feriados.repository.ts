@@ -34,10 +34,10 @@ class FeriadosRepository implements IPrismaSource<Feriados> {
     });
   }
 
-  async loadData(data_feriado: Date): Promise<any> {
+  async loadData(data_feriado: string): Promise<any> {
     return prisma.feriados.findFirst({
       where: {
-        data_feriado,
+        data_feriado: new Date(data_feriado),
       },
     });
   }
