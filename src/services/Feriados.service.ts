@@ -82,6 +82,14 @@ class FeriadosService {
     }
 
     if (args.data_feriado) {
+      if (feriado.data_feriado !== args.data_feriado) {
+        const dataExists = await this.feriado.loadData(args.data_feriado);
+        if (dataExists) {
+          throw new AppError(
+            'Já existe um Feriado registrado para a data informada',
+          );
+        }
+      }
       feriado.data_feriado = new Date(
         moment(args.data_feriado).format('YYYY-MM-DD'),
       );
