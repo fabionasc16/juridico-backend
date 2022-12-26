@@ -11,7 +11,7 @@ class StatusRepository implements IPrismaSource<Status> {
       },
     });
   }
-  // TODO Elaborar listagem por paginação
+
   async read(): Promise<any> {
     return prisma.status.findMany();
   }
@@ -56,7 +56,7 @@ class StatusRepository implements IPrismaSource<Status> {
 
   async loadAplica(aplica_a: string): Promise<any> {
     return prisma.status.findMany({
-      where: { aplica_a: { contains: aplica_a } },
+      where: { aplica_a },
     });
   }
 }
