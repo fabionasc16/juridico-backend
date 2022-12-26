@@ -171,8 +171,10 @@ class ProcessosService {
       diasExpirados = expirado;
     }
 
-    const dataExists = await this.processos.loadNumProcedimento(
+    const dataExists = await this.processos.loadExists(
       args.num_procedimento,
+      args.fk_orgaodemandante,
+      args.fk_tipoprocesso,
     );
     if (dataExists) {
       throw new AppError('O Processo informado já existe no Sistema');
