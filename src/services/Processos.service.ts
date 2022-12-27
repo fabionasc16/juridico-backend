@@ -108,7 +108,7 @@ class ProcessosService {
       const status = await this.status.loadId(args.status_prazo);
       if (!status) {
         throw new AppError(
-          'Nenhum Status foi localizado com os parâmetros informados',
+          'Nenhum Status de Prazo foi localizado com os parâmetros informados',
           404,
         );
       }
