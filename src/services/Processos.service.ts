@@ -171,7 +171,10 @@ class ProcessosService {
       diasExpirados = expirado;
     }
 
-    const statusPrazo = moment().diff(limiteProcesso as string, 'd');
+    const statusPrazo = moment(new Date(), 'YYYY-MM-DD').diff(
+      limiteProcesso as string,
+      'd',
+    );
     if (statusPrazo < 0) {
       args.status_prazo = 9;
     } else if (statusPrazo >= 0 && statusPrazo <= 3) {
