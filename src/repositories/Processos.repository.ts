@@ -242,6 +242,32 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     });
   }
 
+  async loadExistsNotId(
+    id_processo: number,
+    num_procedimento: string,
+    fk_orgaodemandante: number,
+    fk_tipoprocesso: number,
+  ): Promise<any> {
+    return prisma.processos.findFirst({
+      where: {
+        NOT: [{ id_processo }],
+        AND: [
+          { num_procedimento },
+          { fk_orgaodemandante },
+          { fk_tipoprocesso },
+        ],
+      },
+      include: {
+        tipoProcesso: true,
+        status: true,
+        assunto: true,
+        classificacao: true,
+        orgaoDemandante: true,
+        responsavel: true,
+      },
+    });
+  }
+
   async loadObjeto(objeto: string): Promise<any> {
     return prisma.processos.findFirst({
       where: {

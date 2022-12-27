@@ -500,7 +500,8 @@ class ProcessosService {
       processo.valor_multa = args.valor_multa;
     }
 
-    const dataExists = await this.processos.loadExists(
+    const dataExists = await this.processos.loadExistsNotId(
+      args.id_processo,
       args.num_procedimento,
       args.fk_orgaodemandante,
       args.fk_tipoprocesso,
