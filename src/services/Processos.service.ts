@@ -102,6 +102,18 @@ class ProcessosService {
       }
     }
 
+    if (!args.status_prazo) {
+      throw new AppError('Informe o Status do Prazo do Processo');
+    } else {
+      const status = await this.status.loadId(args.status_prazo);
+      if (!status) {
+        throw new AppError(
+          'Nenhum Status foi localizado com os parâmetros informados',
+          404,
+        );
+      }
+    }
+
     if (!args.fk_status) {
       throw new AppError('Informe o Status do Processo');
     } else {

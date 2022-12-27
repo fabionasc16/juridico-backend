@@ -80,12 +80,13 @@ model Responsaveis {
 }
 
 model Status {
-  id_status   Int          @id @default(autoincrement())
-  desc_status String       @db.VarChar(100)
-  aplica_a    String       @db.VarChar(100)
-  Reiteracao  Reiteracao[]
-  Historico   Historico[]
-  Processos   Processos[]
+  id_status         Int          @id @default(autoincrement())
+  desc_status       String       @db.VarChar(100)
+  aplica_a          String       @db.VarChar(100)
+  Reiteracao        Reiteracao[]
+  Historico         Historico[]
+  Processos         Processos[]  @relation("processos_fk_status_fkey")
+  ProcessosPrazos   Processos[]  @relation("processos_fk_statusprazo_fkey")
 
   @@map("status")
 }
@@ -116,7 +117,7 @@ model Processos {
   dia_limite_prazo    DateTime     @db.Date
   dias_percorridos    Int
   dias_expirados      Int
-  status_prazo        String       @db.VarChar(70)
+  status_prazo        Int
   sigiloso            String?      @db.Char(1)
   fk_status           Int
   valor_multa         Float?       @db.Double
@@ -128,7 +129,8 @@ model Processos {
   assunto         Assunto         @relation(fields: [fk_assunto], references: [id_assunto])
   classificacao   Classificacao   @relation(fields: [fk_classificacao], references: [id_classificacao])
   responsavel     Responsaveis    @relation(fields: [fk_responsavel], references: [id_responsavel])
-  status          Status          @relation(fields: [fk_status], references: [id_status])
+  status          Status          @relation(name: "processos_fk_status_fkey", fields: [fk_status], references: [id_status])
+  statusPrazo     Status          @relation(name: "processos_fk_statusprazo_fkey", fields: [status_prazo], references: [id_status])
 
   @@map("processos")
 }

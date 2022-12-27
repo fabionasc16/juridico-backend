@@ -38,8 +38,8 @@ statusRoutes.get(
 
 statusRoutes.get(
   '/aplicacaostatus',
-  checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  // checkJWT,
+  // checkRole([AuthService.ROLES.ADMIN]),
   controller.readByAplicacao,
 );
 
