@@ -30,7 +30,7 @@ class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
     const AND = [];
 
     if (args.body.orgaoDemandante) {
-      AND.push({ orgao_demandante: args.body.orgaoDemandante });
+      AND.push({ orgao_demandante: { contains: args.body.orgaoDemandante } });
     }
 
     if (args.body.siglaOrgao) {
