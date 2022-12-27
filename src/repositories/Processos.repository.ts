@@ -77,7 +77,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     }
 
     if (args.body.statusPrazo) {
-      AND.push({ status_prazo: args.body.statusPrazo });
+      AND.push({ status_prazo: Number(args.body.statusPrazo) });
     }
 
     if (args.body.idOrgaoDemandante) {
