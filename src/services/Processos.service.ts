@@ -102,18 +102,6 @@ class ProcessosService {
       }
     }
 
-    if (!args.status_prazo) {
-      throw new AppError('Informe o Status do Prazo do Processo');
-    } else {
-      const status = await this.status.loadId(args.status_prazo);
-      if (!status) {
-        throw new AppError(
-          'Nenhum Status de Prazo foi localizado com os parâmetros informados',
-          404,
-        );
-      }
-    }
-
     if (!args.fk_status) {
       throw new AppError('Informe o Status do Processo');
     } else {
@@ -181,6 +169,17 @@ class ProcessosService {
       diasExpirados = 0;
     } else {
       diasExpirados = expirado;
+    }
+
+    const statusPrazo = moment().diff(limiteProcesso as string, 'd');
+    if (statusPrazo < 0) {
+      args.status_prazo = 9;
+    } else if (statusPrazo >= 0 && statusPrazo <= 3) {
+      args.status_prazo = 1;
+    } else if (statusPrazo >= 4 && statusPrazo <= 5) {
+      args.status_prazo = 2;
+    } else {
+      args.status_prazo = 3;
     }
 
     const dataExists = await this.processos.loadExists(
