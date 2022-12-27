@@ -181,7 +181,7 @@ class ProcessosService {
       args.status_prazo = 1;
     } else if (statusPrazo >= 4 && statusPrazo <= 5) {
       args.status_prazo = 2;
-    } else {
+    } else if (statusPrazo >= 6) {
       args.status_prazo = 3;
     }
 
