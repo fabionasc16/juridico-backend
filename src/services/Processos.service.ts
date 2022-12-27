@@ -172,7 +172,7 @@ class ProcessosService {
     }
 
     const statusPrazo = moment(limiteProcesso as string).diff(
-      moment(new Date(), 'YYYY-MM-DD'),
+      moment(new Date()).format('YYYY-MM-DD'),
       'd',
     );
     if (statusPrazo < 0) {
@@ -480,8 +480,18 @@ class ProcessosService {
     }
     processo.dias_expirados = diasExpirados;
 
-    if (args.status_prazo) {
-      processo.status_prazo = args.status_prazo;
+    const statusPrazo = moment(processo.dia_limite_prazo as string).diff(
+      moment(new Date()).format('YYYY-MM-DD'),
+      'd',
+    );
+    if (statusPrazo < 0) {
+      processo.status_prazo = 9;
+    } else if (statusPrazo >= 0 && statusPrazo <= 3) {
+      processo.status_prazo = 1;
+    } else if (statusPrazo >= 4 && statusPrazo <= 5) {
+      processo.status_prazo = 2;
+    } else if (statusPrazo >= 6) {
+      processo.status_prazo = 3;
     }
 
     if (args.sigiloso) {
