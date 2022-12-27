@@ -16,14 +16,41 @@ class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
   }
 
   async read(args: any): Promise<any> {
-    const page = args.currentPage != null ? `${args.currentPage - 1}` : '0';
-    const pageSize = args.perPage != null ? args.perPage : '10';
-    const search = args.search != null ? args.search : '';
+    const page =
+      args.query.currentPage != null ? `${args.query.currentPage - 1}` : '0';
+    const pageSize = args.query.perPage != null ? args.query.perPage : '10';
+    const search = args.query.search != null ? args.query.search : '';
     let filters = {};
     if (search) {
       filters = {
-        orgao_demandante: args.search,
+        id_orgao: args.query.search,
       };
+    }
+
+    const AND = [];
+
+    if (args.body.orgaoDemandante) {
+      AND.push({ orgao_demandante: args.body.orgaoDemandante });
+    }
+
+    if (args.body.siglaOrgao) {
+      AND.push({ sigla_orgao: args.body.siglaOrgao });
+    }
+
+    if (args.body.esferaOrgao) {
+      AND.push({ esfera_orgao: args.body.esferaOrgao });
+    }
+
+    if (args.body.orgaoControle) {
+      AND.push({ orgao_controle: args.body.orgaoControle });
+    }
+
+    if (args.body.orgaoJustica) {
+      AND.push({ orgao_justica: args.body.orgaoJustica });
+    }
+
+    if (AND.length) {
+      Object.assign(filters, { AND });
     }
 
     const total = await prisma.orgaoDemandante.count({

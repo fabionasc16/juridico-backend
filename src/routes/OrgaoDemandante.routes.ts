@@ -22,8 +22,8 @@ orgaoDemandanteRoutes.delete(
   controller.delete,
 );
 
-orgaoDemandanteRoutes.get(
-  '/',
+orgaoDemandanteRoutes.post(
+  '/list',
   checkJWT,
   checkRole([AuthService.ROLES.ADMIN]),
   controller.read,

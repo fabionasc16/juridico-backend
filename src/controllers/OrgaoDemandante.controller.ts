@@ -35,7 +35,7 @@ class OrgaoDemandanteController {
   }
 
   async read(request: Request, response: Response): Promise<Response> {
-    const data = await OrgaoDemandanteController.service.read(request.query);
+    const data = await OrgaoDemandanteController.service.read(request);
     return response.status(200).json(data);
   }
 
