@@ -104,6 +104,16 @@ class ResponsaveisService {
       responsavel.registro_oab = args.registro_oab;
     }
 
+    const dataExists = await this.responsaveis.loadNotExists(
+      args.id_responsavel,
+      args.cpf_responsavel,
+    );
+    if (dataExists) {
+      throw new AppError(
+        'Já existe um registro na base de dados para os valores informados',
+      );
+    }
+
     await this.responsaveis.update(responsavel);
   }
 }

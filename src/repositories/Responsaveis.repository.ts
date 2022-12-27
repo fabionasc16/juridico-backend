@@ -83,9 +83,19 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
   async loadResponsavel(cpf_responsavel: string): Promise<any> {
     return prisma.responsaveis.findFirst({
       where: {
-        cpf_responsavel: {
-          contains: cpf_responsavel,
-        },
+        cpf_responsavel,
+      },
+    });
+  }
+
+  async loadNotExists(
+    id_responsavel: number,
+    cpf_responsavel: string,
+  ): Promise<any> {
+    return prisma.responsaveis.findFirst({
+      where: {
+        NOT: [{ id_responsavel }],
+        AND: [{ cpf_responsavel }],
       },
     });
   }
