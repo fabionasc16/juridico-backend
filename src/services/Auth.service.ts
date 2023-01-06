@@ -4,7 +4,7 @@ import { sign, verify } from 'jsonwebtoken';
 
 export class AuthService {
   private url = process.env.SSO_URL;
-
+ 
   static ROLES = {
     PROCESSO: 'SAPEJ_PROCESSO',
     RESPONSAVEL: 'SAPEJ_RESPONSAVEL',
@@ -18,7 +18,12 @@ export class AuthService {
     CLASSIFICACAO: 'SAPEJ_CLASSIFICACAO',
   };
 
-  constructor() {}
+  constructor() {
+   
+    // Adiciona no Headers de todas as requests
+    axios.defaults.headers.common['system'] =  process.env.SSO_SYSTEM; 
+    axios.defaults.headers.common['token_system'] =  process.env.SSO_TOKEN_SYSTEM; 
+  }
 
   async profiles(request: Request, response: Response): Promise<Response> {
     const url = process.env.SSO_URL;
@@ -257,7 +262,154 @@ export class AuthService {
       const url = process.env.SSO_URL;
       const user: UserSSO = dataFrontend;
 
+  
+
       const { data, status } = await axios.post(`${url}/auth`, user, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      return response.status(status).json(data);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
+  async forgoPassword(request: Request, response: Response): Promise<Response> {
+    try {
+      const dataFrontend: any = request.body;
+      const url = process.env.SSO_URL;
+      const user: UserSSO = dataFrontend;
+
+      const { data, status } = await axios.post(`${url}/forgotpassword`, user, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      return response.status(status).json(data);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
+  async resetPassword(request: Request, response: Response): Promise<Response> {
+    try {
+      const dataFrontend: any = request.body;
+      const url = process.env.SSO_URL;
+      const user: UserSSO = dataFrontend;
+
+      const { data, status } = await axios.post(`${url}/resetpassword`, user, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      return response.status(status).json(data);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
+  async cancelRequest(request: Request, response: Response): Promise<Response> {
+    try {
+      const dataFrontend: any = request.body;
+      const url = process.env.SSO_URL;
+      const user: UserSSO = dataFrontend;
+
+      const { data, status } = await axios.post(`${url}/cancelrequest`, user, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      return response.status(status).json(data);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
+
+  async verifyRole(request: Request, response: Response): Promise<Response> {
+    try {
+      const dataFrontend: any = request.body;
+      const url = process.env.SSO_URL;
+      const user: UserSSO = dataFrontend;
+
+      const { data, status } = await axios.post(`${url}/verify`, user, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      return response.status(status).json(data);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
+  async verifyJWT(request: Request, response: Response): Promise<Response> {
+    try {
+      const dataFrontend: any = request.body;
+      const url = process.env.SSO_URL;
+      const user: UserSSO = dataFrontend;
+
+      const { data, status } = await axios.post(`${url}/verify-token`, user, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      return response.status(status).json(data);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
+  async logout(request: Request, response: Response): Promise<Response> {
+    try {
+      const dataFrontend: any = request.body;
+      const url = process.env.SSO_URL;
+      const user: UserSSO = dataFrontend;
+
+      const { data, status } = await axios.post(`${url}/logout`, user, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      return response.status(status).json(data);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
+  async updatePassword(request: Request, response: Response): Promise<Response> {
+    try {
+      const dataFrontend: any = request.body;
+      const url = process.env.SSO_URL;
+      const user: UserSSO = dataFrontend;
+
+      const { data, status } = await axios.post(`${url}/reset-pass`, user, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      return response.status(status).json(data);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
+  async refreshToken(request: Request, response: Response): Promise<Response> {
+    try {
+      const dataFrontend: any = request.body;
+      const url = process.env.SSO_URL;
+      const {access_token} = dataFrontend;
+
+      const { data, status } = await axios.post(`${url}/auth/refresh-token`, {"access_token": access_token}, {
         headers: {
           Accept: 'application/json',
         },

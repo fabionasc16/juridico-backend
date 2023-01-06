@@ -29,7 +29,7 @@ routes.use('/reiteracoes', reiteracaoRoutes);
 routes.use('/responsaveis', responsaveisRoutes);
 routes.use('/tipo-evento', tiposEventosRoutes);
 routes.use('/status', statusRoutes);
-routes.use('/login', authRoutes);
+routes.use('/auth', authRoutes);
 routes.use('/usuarios', userRoutes);
 
 export { routes };
