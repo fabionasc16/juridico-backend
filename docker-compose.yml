@@ -13,6 +13,8 @@ services:
       - ELASTIC_PASS=oKr11Nq70ntTH6x7A9CEbDv3ZW
       - SSO_URL=https://sistemas.saude.am.gov.br/ses-sso/api/v1
       - JWT_KEY=*uDx^m9x8tbPdxU
+      - SSO_SYSTEM=SAPEJ
+      - SSO_TOKEN_SYSTEM=d220705f-c3ff-4640-bfd5-4c85e0c65e26
     volumes:
       - '.:/app'
       - '/etc/timezone:/etc/timezone:ro'
