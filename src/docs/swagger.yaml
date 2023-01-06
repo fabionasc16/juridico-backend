@@ -1,0 +1,33 @@
+openapi: 3.0.0
+info:
+  title: Jurídico API v1
+  description: API voltada ao Sistema de Acompanhamento de Processos Extra Judiciais
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3700/api/v1
+    description: Servidor de Homologação
+  - url: http://192.168.107.62:3700/api/v1
+    description: Servidor de Produção
+
+paths:
+  /v1:
+    get:
+      summary: Rota principal
+      description: Rota principal do Sistema Jurídico
+      responses:
+        '200':
+          description: Retorna um JSON com informações referente ao sistema
+          content:
+            application/json:
+              type: object
+              properties:
+                description:
+                  type: string
+                  example: Sistema Jurídico v1
+                author:
+                  type: string
+                  example: DETIN - Departamento de Tecnologia da Informação
+                version:
+                  type: string
+                  example: v1.0.0

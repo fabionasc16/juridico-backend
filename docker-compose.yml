@@ -1,35 +1,24 @@
-version: "3.7"
+version: '3.3'
 services:
-  juridico-db:
-    image: mysql:8.0.30
-    container_name: juridico-db
-    restart: always
-    environment:
-      - MYSQL_DATABASE=juridico_db
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-    volumes:
-      - juridico_data:/data/db
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
-    ports:
-      - "33070:3306"
-    networks:
-      - juridico_app
-
-  juridico-backend:
+  juridico-dev:
     image: node:16
-    container_name: juridico_backend
+    container_name: juridico_dev
     restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ".:/app"
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
+    working_dir: /app
+    command: bash -c 'yarn install && yarn generate && yarn development'
     environment:
-      - PORT=3700
+      - PORT=3302
+      - DATABASE_URL=mysql://root:1312Dashs@2020@192.168.107.55:3306/juridico-db
+      - ELASTIC_USERNAME=sapej_siged
+      - ELASTIC_PASS=oKr11Nq70ntTH6x7A9CEbDv3ZW
+      - SSO_URL=https://sistemas.saude.am.gov.br/ses-sso/api/v1
+      - JWT_KEY=*uDx^m9x8tbPdxU
+      - SSO_SYSTEM=SAPEJ
+      - SSO_TOKEN_SYSTEM=d220705f-c3ff-4640-bfd5-4c85e0c65e26
+    volumes:
+      - '.:/app'
+      - '/etc/timezone:/etc/timezone:ro'
+      - '/etc/localtime:/etc/localtime:ro'
     ports:
-      - "3700:3700"
-    networks:
-      - juridico_app
+      - '3302:3302'
+    network_mode: bridge
