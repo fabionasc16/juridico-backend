@@ -19,7 +19,7 @@ export type Processos = {
   caixa_atual_siged: string | null;
   tramitacao_siged: string | null;
   fk_responsavel: number;
-  observacao: string;
+  observacao: string | null;
   descricao: string;
   dia_limite_prazo?: Date | string;
   dias_percorridos?: number;

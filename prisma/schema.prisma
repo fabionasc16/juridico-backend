@@ -112,7 +112,7 @@ model Processos {
   caixa_atual_siged   String?      @db.VarChar(150)
   tramitacao_siged    String?      @db.VarChar(150)
   fk_responsavel      Int
-  observacao          String       @db.MediumText
+  observacao          String?       @db.MediumText
   descricao           String       @db.MediumText
   dia_limite_prazo    DateTime     @db.Date
   dias_percorridos    Int
