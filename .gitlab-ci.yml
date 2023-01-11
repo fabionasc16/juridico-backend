@@ -1,5 +1,5 @@
 stages:
-  - development-build
+  - deploy
 
 deploy:
   script:
