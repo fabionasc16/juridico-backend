@@ -389,11 +389,13 @@ export class AuthService {
     try {
       const dataFrontend: any = request.body;
       const url = process.env.SSO_URL;
-      const user: UserSSO = dataFrontend;
+      const {password} = dataFrontend;
+      const token = request.headers.authorization; 
 
-      const { data, status } = await axios.post(`${url}/reset-pass`, user, {
+      const { data, status } = await axios.post(`${url}/auth/reset-pass`, {"password":password}, {
         headers: {
           Accept: 'application/json',
+          Authorization:`${token}`
         },
       });
 
@@ -405,13 +407,13 @@ export class AuthService {
 
   async refreshToken(request: Request, response: Response): Promise<Response> {
     try {
-      const dataFrontend: any = request.body;
       const url = process.env.SSO_URL;
-      const {access_token} = dataFrontend;
+      const token = request.headers.authorization; 
 
-      const { data, status } = await axios.post(`${url}/auth/refresh-token`, {"access_token": access_token}, {
+      const { data, status } = await axios.post(`${url}/auth/refresh-token`, {}, {
         headers: {
           Accept: 'application/json',
+          Authorization:`${token}`
         },
       });
 
