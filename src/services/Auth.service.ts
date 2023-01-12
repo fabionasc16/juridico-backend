@@ -318,7 +318,7 @@ export class AuthService {
       const url = process.env.SSO_URL;
       
 
-      const { data, status } = await axios.post(`${url}/forgotpassword`, dataFrontend, {
+      const { data, status } = await axios.post(`${url}/auth/forgotpassword`, dataFrontend, {
         headers: {
           Accept: 'application/json',
         },
