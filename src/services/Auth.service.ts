@@ -312,6 +312,24 @@ export class AuthService {
     }
   }
 
+  async forgotPass(request: Request, response: Response): Promise<Response> {
+    try {
+      const dataFrontend: any = request.body;
+      const url = process.env.SSO_URL;
+      
+
+      const { data, status } = await axios.post(`${url}/forgotpassword`, dataFrontend, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      return response.status(status).json(data);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
   async cancelRequest(request: Request, response: Response): Promise<Response> {
     try {
       const dataFrontend: any = request.body;
