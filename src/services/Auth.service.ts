@@ -4,7 +4,7 @@ import { sign, verify } from 'jsonwebtoken';
 
 export class AuthService {
   private url = process.env.SSO_URL;
- 
+
   static ROLES = {
     PROCESSO: 'SAPEJ_PROCESSO',
     RESPONSAVEL: 'SAPEJ_RESPONSAVEL',
@@ -19,10 +19,9 @@ export class AuthService {
   };
 
   constructor() {
-   
     // Adiciona no Headers de todas as requests
-    axios.defaults.headers.common['system'] =  process.env.SSO_SYSTEM; 
-    axios.defaults.headers.common['token_system'] =  process.env.SSO_TOKEN_SYSTEM; 
+    axios.defaults.headers.common.system = process.env.SSO_SYSTEM;
+    axios.defaults.headers.common.token_system = process.env.SSO_TOKEN_SYSTEM;
   }
 
   async profiles(request: Request, response: Response): Promise<Response> {
@@ -42,6 +41,40 @@ export class AuthService {
           perfil.id = item._id;
           perfil.profile_name = item.profile_name;
           perfil.profile_description = item.profile_description;
+
+          perfis.push(perfil);
+        });
+      }
+
+      return await response.status(status).json(perfis);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
+  async profilesSapej(request: Request, response: Response): Promise<Response> {
+    const url = process.env.SSO_URL;
+    const perfis = [];
+    const nomeSistema = process.env.SSO_SYSTEM;
+
+    try {
+      const { data, status } = await axios.get(
+        `${url}profiles/system?nomeSistema=${nomeSistema}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      if (data) {
+        data.forEach(item => {
+          const perfil: any = {};
+          perfil.id = item._id;
+          perfil.profile_name = item.profile_name;
+          perfil.systems = item.systems;
+          perfil.profile_description = item.profile_description;
+          perfil.resources = item.resources;
 
           perfis.push(perfil);
         });
@@ -262,8 +295,6 @@ export class AuthService {
       const url = process.env.SSO_URL;
       const user: UserSSO = dataFrontend;
 
-  
-
       const { data, status } = await axios.post(`${url}/auth`, user, {
         headers: {
           Accept: 'application/json',
@@ -312,6 +343,27 @@ export class AuthService {
     }
   }
 
+  async forgotPass(request: Request, response: Response): Promise<Response> {
+    try {
+      const dataFrontend: any = request.body;
+      const url = process.env.SSO_URL;
+
+      const { data, status } = await axios.post(
+        `${url}/forgotpassword`,
+        dataFrontend,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      return response.status(status).json(data);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
   async cancelRequest(request: Request, response: Response): Promise<Response> {
     try {
       const dataFrontend: any = request.body;
@@ -329,7 +381,6 @@ export class AuthService {
       return AuthService.checkError(error, response);
     }
   }
-
 
   async verifyRole(request: Request, response: Response): Promise<Response> {
     try {
@@ -385,19 +436,26 @@ export class AuthService {
     }
   }
 
-  async updatePassword(request: Request, response: Response): Promise<Response> {
+  async updatePassword(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
     try {
       const dataFrontend: any = request.body;
       const url = process.env.SSO_URL;
-      const {password} = dataFrontend;
-      const token = request.headers.authorization; 
+      const { password } = dataFrontend;
+      const token = request.headers.authorization;
 
-      const { data, status } = await axios.post(`${url}/auth/reset-pass`, {"password":password}, {
-        headers: {
-          Accept: 'application/json',
-          Authorization:`${token}`
+      const { data, status } = await axios.post(
+        `${url}/auth/reset-pass`,
+        { password },
+        {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `${token}`,
+          },
         },
-      });
+      );
 
       return response.status(status).json(data);
     } catch (error) {
@@ -408,14 +466,18 @@ export class AuthService {
   async refreshToken(request: Request, response: Response): Promise<Response> {
     try {
       const url = process.env.SSO_URL;
-      const token = request.headers.authorization; 
+      const token = request.headers.authorization;
 
-      const { data, status } = await axios.post(`${url}/auth/refresh-token`, {}, {
-        headers: {
-          Accept: 'application/json',
-          Authorization:`${token}`
+      const { data, status } = await axios.post(
+        `${url}/auth/refresh-token`,
+        {},
+        {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `${token}`,
+          },
         },
-      });
+      );
 
       return response.status(status).json(data);
     } catch (error) {
