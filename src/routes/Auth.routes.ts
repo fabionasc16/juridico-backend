@@ -7,6 +7,7 @@ const authService = new AuthService();
 
 authRoutes.post('/login', authService.authenticate);
 authRoutes.get('/profiles', authService.profiles);
+authRoutes.get('/profiles/sapej', authService.profilesSapej);
 authRoutes.get('/user/exists/:cpf', authService.findUsuarioByCpf);
 authRoutes.post('/forgotpassword', authService.forgotPass);
 authRoutes.post('/resetpassword', authService.resetPassword);
