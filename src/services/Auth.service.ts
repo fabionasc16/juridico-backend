@@ -59,7 +59,7 @@ export class AuthService {
 
     try {
       const { data, status } = await axios.get(
-        `${url}profiles/system?nomeSistema=${nomeSistema}`,
+        `${url}/profiles/system?nomeSistema=${nomeSistema}`,
         {
           headers: {
             Accept: 'application/json',
