@@ -157,7 +157,7 @@ export class AuthService {
             return await response.status(edit.status).json(edit.data);
           } catch (error) {
             return response.status(400).send({
-              message: 'Não foi possível Atualizar dados de usuário',
+              message: 'Não foi possível Cadastrar de usuário',
             });
           }
         } catch (error) {
