@@ -178,7 +178,11 @@ export class AuthService {
   async listUsuarioByCPF(request: Request, response: Response): Promise<any> {
     const url = process.env.SSO_URL;
     try {
-      const result = await axios.get(`${url}/users/cpf/${request.params.cpf}`);
+      const strCPF = request.params.cpf
+        .replace('.', '')
+        .replace('.', '')
+        .replace('-', '');
+      const result = await axios.get(`${url}/users/cpf/${strCPF}`);
       return await response.status(result.status).json(result.data);
     } catch (error) {
       return AuthService.checkError(error, response);
