@@ -15,6 +15,8 @@ export class AuthService {
     ASSUNTO: 'SAPEJ_ASSUNTO',
     DASHBOARD: 'SAPEJ_DASHBOARD',
     ADMIN: 'SAPEJ_ADMINISTRADOR',
+    ADVOGADO: 'SAPEJ_ADVOGADO',
+    RECEPCAO: 'SAPEJ_RECEPCAO',
     CLASSIFICACAO: 'SAPEJ_CLASSIFICACAO',
   };
 
@@ -157,7 +159,7 @@ export class AuthService {
             return await response.status(edit.status).json(edit.data);
           } catch (error) {
             return response.status(400).send({
-              message: 'Não foi possível Atualizar dados de usuário',
+              message: 'Não foi possível Cadastrar de usuário',
             });
           }
         } catch (error) {
