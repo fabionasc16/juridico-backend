@@ -11,35 +11,35 @@ const controller = new ClassificacaoController();
 classificacaoRoutes.post(
   '/',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.create,
 );
 
 classificacaoRoutes.delete(
   '/:id_classificacao',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.delete,
 );
 
 classificacaoRoutes.get(
   '/',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.read,
 );
 
 classificacaoRoutes.get(
   '/id/:id_classificacao',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.readById,
 );
 
 classificacaoRoutes.put(
   '/:id_classificacao',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.update,
 );
 
