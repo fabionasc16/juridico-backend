@@ -11,35 +11,35 @@ const controller = new ResponsaveisController();
 responsaveisRoutes.post(
   '/',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.create,
 );
 
 responsaveisRoutes.delete(
   '/:id_responsavel',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.delete,
 );
 
 responsaveisRoutes.post(
   '/list',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.read,
 );
 
 responsaveisRoutes.get(
   '/id/:id_responsavel',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.readById,
 );
 
 responsaveisRoutes.put(
   '/:id_responsavel',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.update,
 );
 
