@@ -18,7 +18,7 @@ export type Processos = {
   permanencia_siged: string | null;
   caixa_atual_siged: string | null;
   tramitacao_siged: string | null;
-  fk_responsavel: number;
+  fk_responsavel: number | null;
   observacao: string | null;
   descricao: string;
   dia_limite_prazo?: Date | string;

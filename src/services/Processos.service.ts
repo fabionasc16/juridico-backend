@@ -90,9 +90,8 @@ class ProcessosService {
       }
     }
 
-    if (!args.fk_responsavel) {
-      throw new AppError('Informe um Responsável pelo Processo');
-    } else {
+    if (args.fk_responsavel) {
+      // throw new AppError('Informe um Responsável pelo Processo');
       const responsavel = await this.responsavel.loadId(args.fk_responsavel);
       if (!responsavel) {
         throw new AppError(
@@ -401,8 +400,12 @@ class ProcessosService {
       processo.requer_siged = args.requer_siged;
     }
 
-    if (args.numero_siged) {
+    if (args.requer_siged === 'S' && args.numero_siged !== '') {
       processo.numero_siged = args.numero_siged;
+    } else if (args.numero_siged === '' && args.requer_siged === 'N') {
+      processo.numero_siged = args.numero_siged;
+    } else {
+      throw new AppError('Informe o Número do Processo SIGED para atualização');
     }
 
     if (args.data_processo_siged) {
