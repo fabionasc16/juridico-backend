@@ -2,10 +2,14 @@ import { Request, Response } from 'express';
 
 import { ProcessosService } from '../services/Processos.service';
 
+import { LogsService } from '../services/Elasticsearch.service';
+
 class ProcessosController {
   static service: ProcessosService;
+  static logs: LogsService
   public constructor() {
     ProcessosController.service = new ProcessosService();
+    ProcessosController.logs = new LogsService();
   }
 
   async create(request: Request, response: Response): Promise<Response> {
@@ -62,6 +66,12 @@ class ProcessosController {
       valor_multa: valorMulta === '' ? 0 : Number(valorMulta),
     });
 
+    try {
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
     return response.status(201).send(service);
   }
 
@@ -69,11 +79,26 @@ class ProcessosController {
     const { id_processo } = request.params;
     await ProcessosController.service.delete(Number(id_processo));
 
+    try {
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
     return response.status(204).send();
   }
 
   async read(request: Request, response: Response): Promise<Response> {
     const data = await ProcessosController.service.read(request);
+
+    try {
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
     return response.status(200).json(data);
   }
 
@@ -83,12 +108,26 @@ class ProcessosController {
       Number(id_processo),
     );
 
+    try {
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
     return response.status(200).json(data);
   }
 
   async readByObjeto(request: Request, response: Response): Promise<Response> {
     const { objetoProcesso } = request.body;
     const data = await ProcessosController.service.readByObjeto(objetoProcesso);
+
+    try {
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
 
     return response.status(200).json(data);
   }
@@ -149,6 +188,14 @@ class ProcessosController {
       valor_multa: valorMulta === '' ? 0 : Number(valorMulta),
     });
 
+    try {
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
+
     return response.status(204).send();
   }
 
@@ -160,6 +207,14 @@ class ProcessosController {
     const data = await ProcessosController.service.retrieveSIGEDData(
       numero_processo as string,
     );
+
+    try {
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.BUSCAR_PROCESSO, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
 
     return response.status(200).json(data);
   }
@@ -174,6 +229,13 @@ class ProcessosController {
         numero_processo as string,
       );
 
+      try {
+        ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.MOVIMENTACOES_PROCESSO, request.user, request.user.unidadeUsuario.unit_name, request.body);
+  
+      } catch (error) {
+        console.error('ERROR AO GRAVAR O LOG');
+      }
+
     return response.status(200).json(data);
   }
 
@@ -182,6 +244,14 @@ class ProcessosController {
     response: Response,
   ): Promise<Response> {
     const data = await ProcessosController.service.readCaixasSIGEDProcesso();
+
+    try {
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CAIXAS_SIGED, _request.user, _request.user.unidadeUsuario.unit_name, _request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
     return response.status(200).json(data);
   }
 
@@ -198,6 +268,13 @@ class ProcessosController {
       idStatusProcesso,
     );
 
+    try {
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EDITAR_STATUS, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
     return response.status(204).send();
   }
 
@@ -209,6 +286,13 @@ class ProcessosController {
     const data = await ProcessosController.service.readByDescricao(
       descricaoProcesso,
     );
+
+    try {
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.BUSCAR_PROCESSO_DESCRICAO, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
 
     return response.status(200).json(data);
   }

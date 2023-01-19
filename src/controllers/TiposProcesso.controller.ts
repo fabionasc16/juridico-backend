@@ -2,10 +2,14 @@ import { Request, Response } from 'express';
 
 import { TiposProcessoService } from '../services/TiposProcesso.service';
 
+import { LogsService } from '../services/Elasticsearch.service';
+
 class TiposProcessoController {
   static service: TiposProcessoService;
+  static logs: LogsService
   public constructor() {
     TiposProcessoController.service = new TiposProcessoService();
+    TiposProcessoController.logs = new LogsService();
   }
 
   async create(request: Request, response: Response): Promise<Response> {
@@ -14,6 +18,12 @@ class TiposProcessoController {
       desc_tipoprocesso,
     });
 
+    try {
+      TiposProcessoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
     return response.status(201).send(service);
   }
 
