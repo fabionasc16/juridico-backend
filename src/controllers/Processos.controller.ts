@@ -190,12 +190,13 @@ class ProcessosController {
     response: Response,
   ): Promise<Response> {
     const { idProcesso } = request.query;
-    const { idStatusProcesso, dataArquivamento } = request.body;
+    const { idStatusProcesso, dataArquivamento, idResponsavel } = request.body;
 
     await ProcessosController.service.updateStatusProcesso(
       Number(idProcesso),
       dataArquivamento,
       idStatusProcesso,
+      idResponsavel,
     );
 
     return response.status(204).send();
