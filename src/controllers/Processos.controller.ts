@@ -52,7 +52,7 @@ class ProcessosController {
       permanencia_siged: permanenciaSIGED,
       caixa_atual_siged: caixaAtualSIGED,
       tramitacao_siged: tramitacaoSIGED,
-      fk_responsavel: idResponsavel || null,
+      fk_responsavel: idResponsavel === '' ? null : idResponsavel,
       observacao,
       descricao,
       status_prazo: statusPrazo,
