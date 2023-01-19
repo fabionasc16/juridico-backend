@@ -826,6 +826,7 @@ class ProcessosService {
     id_processo: number,
     data_arquivamento: string,
     fk_status: number,
+    fk_responsavel: number,
   ): Promise<void> {
     if (!id_processo) {
       throw new AppError('Informe o Identificador do Processo');
@@ -833,6 +834,12 @@ class ProcessosService {
 
     if (!fk_status) {
       throw new AppError('Informe o Identificador do Status do Processo');
+    }
+
+    if (!fk_responsavel) {
+      throw new AppError(
+        'Informe o Responsável de Alteração do Status do Processo',
+      );
     }
 
     const dataArquivamento = data_arquivamento
@@ -843,6 +850,7 @@ class ProcessosService {
       id_processo,
       dataArquivamento,
       fk_status,
+      fk_responsavel,
     );
   }
 
