@@ -836,7 +836,7 @@ class ProcessosService {
       throw new AppError('Informe o Identificador do Status do Processo');
     }
 
-    if (!fk_responsavel) {
+    if (fk_status === 11 && !fk_responsavel) {
       throw new AppError(
         'Informe o Responsável de Alteração do Status do Processo',
       );
@@ -850,7 +850,7 @@ class ProcessosService {
       id_processo,
       dataArquivamento,
       fk_status,
-      fk_responsavel,
+      !fk_responsavel ? null : fk_responsavel,
     );
   }
 
