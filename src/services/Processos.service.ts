@@ -846,11 +846,13 @@ class ProcessosService {
       ? new Date(moment(data_arquivamento).format('YYYY-MM-DD'))
       : null;
 
+    const idResponsavel = fk_responsavel || null;
+
     await this.processos.updateStatusProcesso(
       id_processo,
       dataArquivamento,
       fk_status,
-      !fk_responsavel ? null : fk_responsavel,
+      idResponsavel,
     );
   }
 
