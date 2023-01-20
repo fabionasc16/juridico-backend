@@ -413,7 +413,7 @@ class ProcessosService {
         moment(args.data_processo_siged).format('YYYY-MM-DD'),
       );
     } else {
-      processo.data_processo_siged = '';
+      processo.data_processo_siged = null;
     }
 
     if (args.permanencia_siged !== '' && args.requer_siged === 'S') {
