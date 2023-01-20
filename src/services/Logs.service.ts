@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import { Client } from '@elastic/elasticsearch';
 
@@ -11,8 +12,8 @@ type User = {
 export class LogsService {
   private static client: Client;
   public static SYSTEM = 'SAPEJ';
-  public static MODULE = {'PROCESSO':'PROCESSO',  'RESPONSAVEIS':'RESPONSÁVEIS','FERIADOS':'FERIADOS','ORGAOS':'ORGÃOS','TIPOS_PROCESSO':'TIPOS PROCESSO', 'USUARIOS':'USUÁRIOS','ASSUNTOS':'ASSUNTOS','CLASSIFICACAO':'CLASSIFICAÇÃO', 'REITERACAO':'REITERAÇÃO','STATUS':'STATUS', 'TIPO_EVENTO':'TIPO EVENTO'};
-  public static TRANSACTION = {'CADASTRAR':'CADASTRAR', 'EDITAR':'EDITAR', 'EDITAR_STATUS':'EDITAR STATUS','LISTAR':'LISTAR','EXCLUIR':'EXCLUIR','TRAMITAR':'TRAMITAR','VISUALIZAR':'VISUALIZAR','BUSCAR_PROCESSO':'BUSCAR PROCESSO','BUSCAR_PROCESSO_DESCRICAO':'BUSCAR PROCESSO DESCRICAO','MOVIMENTACOES_PROCESSO':'MOVIMENTACOES PROCESSO','CAIXAS_SIGED':'CAIXAS SIGED'};
+  public static MODULE = { 'PROCESSO': 'PROCESSO', 'RESPONSAVEIS': 'RESPONSÁVEIS', 'FERIADOS': 'FERIADOS', 'ORGAOS': 'ORGÃOS', 'TIPOS_PROCESSO': 'TIPOS PROCESSO', 'USUARIOS': 'USUÁRIOS', 'ASSUNTOS': 'ASSUNTOS', 'CLASSIFICACAO': 'CLASSIFICAÇÃO', 'REITERACAO': 'REITERAÇÃO', 'STATUS': 'STATUS', 'TIPO_EVENTO': 'TIPO EVENTO' };
+  public static TRANSACTION = { 'CADASTRAR': 'CADASTRAR', 'EDITAR': 'EDITAR', 'EDITAR_STATUS': 'EDITAR STATUS', 'LISTAR': 'LISTAR', 'EXCLUIR': 'EXCLUIR', 'TRAMITAR': 'TRAMITAR', 'VISUALIZAR': 'VISUALIZAR', 'BUSCAR_PROCESSO': 'BUSCAR PROCESSO', 'BUSCAR_PROCESSO_DESCRICAO': 'BUSCAR PROCESSO DESCRICAO', 'MOVIMENTACOES_PROCESSO': 'MOVIMENTACOES PROCESSO', 'CAIXAS_SIGED': 'CAIXAS SIGED' };
 
 
   constructor() {
@@ -20,7 +21,7 @@ export class LogsService {
       path: './.env',
     });
 
-    if( !LogsService.client){
+    if (!LogsService.client) {
       LogsService.client = new Client({
         node: `${process.env.ELASTIC_HOST}`,
         auth: {
@@ -35,7 +36,7 @@ export class LogsService {
     }
 
 
- 
+
 
   }
 
@@ -47,10 +48,7 @@ export class LogsService {
           'number_of_replicas': '0'
         }
       }
-      // this.client.indices.create({ index: 'system_logs', 'ignore': 400})
 
-      //console.log(await this.client.indices.getSettings());
-      //await this.client.cluster.putSettings( query_create_index);
       const result = await LogsService.client.index({
         index: 'system_logs',
         document: {
@@ -67,34 +65,56 @@ export class LogsService {
       console.error("ERRO AO ENVIAR LOG!");
     }
   }
-  public async sendLogPacient(system: string, module: string, transaction: string, user: string, unit: string, idPaciente:string,data: any) {
-    try {
-      const query_create_index = {
-        'settings': {
-          'index': 'system_logs',
-          'number_of_replicas': '0'
-        }
-      }
-      // this.client.indices.create({ index: 'system_logs', 'ignore': 400})
 
-      //console.log(await this.client.indices.getSettings());
-      //await this.client.cluster.putSettings( query_create_index);
-      const result = await LogsService.client.index({
-        index: 'system_logs',
-        document: {
-          transaction: transaction,
-          module: module,
-          user: user,
-          unit: unit,
-          data: data,
-          date: new Date,
-          system: system,
-          idPaciente: idPaciente
+
+  public async list(request: Request, response: Response): Promise<any> {
+    try {
+      const responseQueue = [];
+      const allLogs = [];
+
+      const result = await LogsService.client.search({
+        index: 'system_logs', 
+        scroll: '30s',
+        size: 500,
+        query: {
+          match: { system: LogsService.SYSTEM }
         }
-      })
+      });
+
+      responseQueue.push(result);
+      while (responseQueue.length) {
+        const body = responseQueue.shift()
+    
+        // collect the titles from this response
+        body.hits.hits.forEach(function (hit) {
+          allLogs.push({'system': hit._source.system,'date': hit._source.date,'transaction': hit._source.transaction, 'module': hit._source.module, 'user': hit._source.user.nome})
+        })
+    
+        // check to see if we have collected all of the quotes
+        if (body.hits.total.value === allLogs.length) {
+         // console.log('Every quote', allLogs)
+          break
+        }
+    
+        // get the next response if there are more quotes to fetch
+        responseQueue.push(
+          await LogsService.client.scroll({
+            scroll_id: body._scroll_id,
+            scroll: '30s'
+            
+          })
+        );
+      }
+
+      return response.status(201).json(allLogs);
+      // return await response.status(200).json(result.hits.hits);
+
     } catch (error) {
-      console.error("ERRO AO ENVIAR LOG!");
+      console.error("ERRO AO ENVIAR LOG!",error);
+      return response.status(500).send();
     }
+
+
   }
 
 
