@@ -408,22 +408,30 @@ class ProcessosService {
       throw new AppError('Informe o Número do Processo SIGED para atualização');
     }
 
-    if (args.data_processo_siged) {
+    if (args.data_processo_siged && args.requer_siged === 'S') {
       processo.data_processo_siged = new Date(
         moment(args.data_processo_siged).format('YYYY-MM-DD'),
       );
+    } else {
+      processo.data_processo_siged = '';
     }
 
-    if (args.permanencia_siged) {
+    if (args.permanencia_siged !== '' && args.requer_siged === 'S') {
       processo.permanencia_siged = args.permanencia_siged;
+    } else {
+      processo.permanencia_siged = '';
     }
 
-    if (args.caixa_atual_siged) {
+    if (args.caixa_atual_siged !== '' && args.requer_siged === 'S') {
       processo.caixa_atual_siged = args.caixa_atual_siged;
+    } else {
+      processo.caixa_atual_siged = '';
     }
 
-    if (args.tramitacao_siged) {
+    if (args.tramitacao_siged !== '' && args.requer_siged === 'S') {
       processo.tramitacao_siged = args.tramitacao_siged;
+    } else {
+      processo.tramitacao_siged = '';
     }
 
     if (!args.fk_responsavel) {
