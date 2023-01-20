@@ -434,11 +434,8 @@ class ProcessosService {
       processo.tramitacao_siged = '';
     }
 
-    if (!args.fk_responsavel) {
-      throw new AppError(
-        'Informe o Identificador do Responsável para atualização',
-      );
-    } else {
+    if (args.fk_responsavel) {
+      // throw new AppError('Informe um Responsável pelo Processo');
       const responsavel = await this.responsavel.loadId(args.fk_responsavel);
       if (!responsavel) {
         throw new AppError(
@@ -446,7 +443,6 @@ class ProcessosService {
           404,
         );
       }
-      processo.fk_responsavel = args.fk_responsavel;
     }
 
     if (args.observacao) {
