@@ -536,6 +536,17 @@ class ProcessosService {
       );
     }
 
+    if (args.numero_siged) {
+      const processoSIGEDExists = await this.processos.loadProcesso(
+        args.numero_siged,
+      );
+      if (processoSIGEDExists) {
+        throw new AppError(
+          'Já existe um Registro na base de dados atrelado a este número de processo SIGED',
+        );
+      }
+    }
+
     await this.processos.update(processo);
   }
 
