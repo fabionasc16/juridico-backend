@@ -2,10 +2,16 @@ import { Request, Response } from 'express';
 
 import { TiposEventoService } from '../services/TiposEvento.service';
 
+
+import { LogsService } from '../services/Logs.service';
+
 class TiposEventoController {
   static service: TiposEventoService;
+  static logs: LogsService;
+
   public constructor() {
     TiposEventoController.service = new TiposEventoService();
+    TiposEventoController.logs = new LogsService();
   }
 
   async create(request: Request, response: Response): Promise<Response> {
@@ -14,6 +20,13 @@ class TiposEventoController {
       desc_tipoevento: descTipoEvento,
     });
 
+     try {
+      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
     return response.status(201).json(service);
   }
 
@@ -21,11 +34,28 @@ class TiposEventoController {
     const { id_tipoevento } = request.params;
     await TiposEventoController.service.delete(Number(id_tipoevento));
 
+    try {
+      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
+
     return response.status(204).send();
   }
 
   async read(request: Request, response: Response): Promise<Response> {
     const data = await TiposEventoController.service.read();
+
+    try {
+      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
+
     return response.status(200).json(data);
   }
 
@@ -34,6 +64,13 @@ class TiposEventoController {
     const data = await TiposEventoController.service.readById(
       Number(id_tipoevento),
     );
+
+    try {
+      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
 
     return response.status(200).json(data);
   }
@@ -46,6 +83,15 @@ class TiposEventoController {
       id_tipoevento: Number(id_tipoevento),
       desc_tipoevento: descTipoEvento,
     });
+
+    try {
+      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
+
     return response.status(204).send();
   }
 }

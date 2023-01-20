@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { ProcessosService } from '../services/Processos.service';
 
-import { LogsService } from '../services/Elasticsearch.service';
+import { LogsService } from '../services/Logs.service';
 
 class ProcessosController {
   static service: ProcessosService;

@@ -2,10 +2,16 @@ import { Request, Response } from 'express';
 
 import { StatusSerivce } from '../services/Status.service';
 
+import { LogsService } from '../services/Logs.service';
+
+
 class StatusController {
   static service: StatusSerivce;
+  static logs: LogsService;
+
   public constructor() {
     StatusController.service = new StatusSerivce();
+    StatusController.logs = new LogsService();
   }
 
   async create(request: Request, response: Response): Promise<Response> {
@@ -15,6 +21,13 @@ class StatusController {
       aplica_a: aplicaA,
     });
 
+    try {
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
     return response.status(201).json(data);
   }
 
@@ -22,17 +35,40 @@ class StatusController {
     const { id_status } = request.params;
     await StatusController.service.delete(Number(id_status));
 
+    try {
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
     return response.status(204).send();
   }
 
   async read(request: Request, response: Response): Promise<Response> {
     const data = await StatusController.service.read();
+    try {
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
+
     return response.status(200).json(data);
   }
 
   async readById(request: Request, response: Response): Promise<Response> {
     const { id_status } = request.params;
     const data = await StatusController.service.readById(Number(id_status));
+
+    try {
+
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
 
     return response.status(200).json(data);
   }
@@ -46,6 +82,15 @@ class StatusController {
       aplicaA as string,
     );
 
+    try {
+      
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
+
     return response.status(200).json(data);
   }
 
@@ -57,6 +102,15 @@ class StatusController {
       desc_status: descStatus,
       aplica_a: aplicaA,
     });
+
+    try {
+      
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
 
     return response.status(204).send();
   }
