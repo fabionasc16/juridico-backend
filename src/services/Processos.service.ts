@@ -445,9 +445,7 @@ class ProcessosService {
       }
     }
 
-    if (args.observacao) {
-      processo.observacao = args.observacao;
-    }
+    processo.observacao = args.observacao;
 
     if (!args.descricao) {
       throw new AppError('Informe uma Descrição para atualização');
