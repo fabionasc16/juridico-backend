@@ -457,10 +457,12 @@ class ProcessosService {
 
     let limitePrazo: any = '';
     if (args.dias_corridos === 'S') {
+      processo.dias_corridos = 'S';
       limitePrazo = moment(args.data_recebimento)
         .add(args.prazo_total, 'd')
         .format('YYYY-MM-DD');
     } else {
+      processo.dias_corridos = 'N';
       limitePrazo = (
         await calculateDays(args.data_recebimento, args.prazo_total)
       ).format('YYYY-MM-DD');
