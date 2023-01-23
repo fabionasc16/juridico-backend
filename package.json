@@ -55,7 +55,8 @@
     "typescript": "^4.8.3"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "8.0.0",
+    "es7":"npm:@elastic/elasticsearch@7.5",
+    "es8":"npm:@elastic/elasticsearch@8.0.0",
     "@prisma/client": "^4.3.1",
     "axios": "^1.2.0",
     "cors": "^2.8.5",
