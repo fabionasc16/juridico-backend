@@ -12,6 +12,7 @@ import { statusRoutes } from './Status.routes';
 import { tiposEventosRoutes } from './TiposEventos.routes';
 import { tiposProcessoRoutes } from './TiposProcesso.routes';
 import { userRoutes } from './Usuarios.routes';
+import { logsRoutes } from './Logs.routes';
 
 const routes = Router();
 
@@ -31,5 +32,6 @@ routes.use('/tipo-evento', tiposEventosRoutes);
 routes.use('/status', statusRoutes);
 routes.use('/auth', authRoutes);
 routes.use('/usuarios', userRoutes);
+routes.use('/logs', logsRoutes);
 
 export { routes };

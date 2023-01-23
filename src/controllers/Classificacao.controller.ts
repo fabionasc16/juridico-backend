@@ -2,10 +2,15 @@ import { Request, Response } from 'express';
 
 import { ClassificacaoService } from '../services/Classificacao.service';
 
+import { LogsService } from '../services/Logs.service';
+
 class ClassificacaoController {
   static service: ClassificacaoService;
+  static logs: LogsService;
+
   public constructor() {
     ClassificacaoController.service = new ClassificacaoService();
+    ClassificacaoController.logs = new LogsService();
   }
 
   async create(request: Request, response: Response): Promise<Response> {
@@ -14,6 +19,14 @@ class ClassificacaoController {
       desc_classificacao: descClassificacao,
     });
 
+    try {
+      ClassificacaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.CLASSIFICACAO, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
+
     return response.status(201).json(service);
   }
 
@@ -21,11 +34,26 @@ class ClassificacaoController {
     const { id_classificacao } = request.params;
     await ClassificacaoController.service.delete(Number(id_classificacao));
 
+    try {
+      ClassificacaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.CLASSIFICACAO, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
     return response.status(204).send();
   }
 
   async read(request: Request, response: Response): Promise<Response> {
     const data = await ClassificacaoController.service.read(request.query);
+    try {
+
+      ClassificacaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.CLASSIFICACAO, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
     return response.status(200).json(data);
   }
 
@@ -34,6 +62,14 @@ class ClassificacaoController {
     const data = await ClassificacaoController.service.readById(
       Number(id_classificacao),
     );
+
+    try {
+
+      ClassificacaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.CLASSIFICACAO, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
 
     return response.status(200).json(data);
   }
@@ -46,6 +82,15 @@ class ClassificacaoController {
       id_classificacao: Number(id_classificacao),
       desc_classificacao: descClassificacao,
     });
+
+    try {
+
+      ClassificacaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.CLASSIFICACAO, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
 
     return response.status(204).send();
   }
