@@ -296,10 +296,11 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     id_processo: number,
     data_arquivamento: Date,
     fk_status: number,
+    fk_responsavel: number,
   ): Promise<void> {
     await prisma.processos.update({
       where: { id_processo },
-      data: { fk_status, data_arquivamento },
+      data: { fk_status, fk_responsavel, data_arquivamento },
     });
   }
 }

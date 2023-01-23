@@ -11,35 +11,35 @@ const controller = new TiposProcessoController();
 tiposProcessoRoutes.post(
   '/',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.create,
 );
 
 tiposProcessoRoutes.get(
   '/',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.read,
 );
 
 tiposProcessoRoutes.get(
   '/id/:id_tipoprocesso',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.readById,
 );
 
 tiposProcessoRoutes.put(
   '/:id_tipoprocesso',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.update,
 );
 
 tiposProcessoRoutes.delete(
   '/:id_tipoprocesso',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.delete,
 );
 

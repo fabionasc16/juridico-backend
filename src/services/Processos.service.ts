@@ -90,9 +90,8 @@ class ProcessosService {
       }
     }
 
-    if (!args.fk_responsavel) {
-      throw new AppError('Informe um Responsável pelo Processo');
-    } else {
+    if (args.fk_responsavel) {
+      // throw new AppError('Informe um Responsável pelo Processo');
       const responsavel = await this.responsavel.loadId(args.fk_responsavel);
       if (!responsavel) {
         throw new AppError(
@@ -401,33 +400,42 @@ class ProcessosService {
       processo.requer_siged = args.requer_siged;
     }
 
-    if (args.numero_siged) {
+    if (args.requer_siged === 'S' && args.numero_siged !== '') {
       processo.numero_siged = args.numero_siged;
+    } else if (args.numero_siged === '' && args.requer_siged === 'N') {
+      processo.numero_siged = args.numero_siged;
+    } else {
+      throw new AppError('Informe o Número do Processo SIGED para atualização');
     }
 
-    if (args.data_processo_siged) {
+    if (args.data_processo_siged && args.requer_siged === 'S') {
       processo.data_processo_siged = new Date(
         moment(args.data_processo_siged).format('YYYY-MM-DD'),
       );
-    }
-
-    if (args.permanencia_siged) {
-      processo.permanencia_siged = args.permanencia_siged;
-    }
-
-    if (args.caixa_atual_siged) {
-      processo.caixa_atual_siged = args.caixa_atual_siged;
-    }
-
-    if (args.tramitacao_siged) {
-      processo.tramitacao_siged = args.tramitacao_siged;
-    }
-
-    if (!args.fk_responsavel) {
-      throw new AppError(
-        'Informe o Identificador do Responsável para atualização',
-      );
     } else {
+      processo.data_processo_siged = null;
+    }
+
+    if (args.permanencia_siged !== '' && args.requer_siged === 'S') {
+      processo.permanencia_siged = args.permanencia_siged;
+    } else {
+      processo.permanencia_siged = '';
+    }
+
+    if (args.caixa_atual_siged !== '' && args.requer_siged === 'S') {
+      processo.caixa_atual_siged = args.caixa_atual_siged;
+    } else {
+      processo.caixa_atual_siged = '';
+    }
+
+    if (args.tramitacao_siged !== '' && args.requer_siged === 'S') {
+      processo.tramitacao_siged = args.tramitacao_siged;
+    } else {
+      processo.tramitacao_siged = '';
+    }
+
+    if (args.fk_responsavel) {
+      // throw new AppError('Informe um Responsável pelo Processo');
       const responsavel = await this.responsavel.loadId(args.fk_responsavel);
       if (!responsavel) {
         throw new AppError(
@@ -435,12 +443,9 @@ class ProcessosService {
           404,
         );
       }
-      processo.fk_responsavel = args.fk_responsavel;
     }
 
-    if (args.observacao) {
-      processo.observacao = args.observacao;
-    }
+    processo.observacao = args.observacao;
 
     if (!args.descricao) {
       throw new AppError('Informe uma Descrição para atualização');
@@ -450,10 +455,12 @@ class ProcessosService {
 
     let limitePrazo: any = '';
     if (args.dias_corridos === 'S') {
+      processo.dias_corridos = 'S';
       limitePrazo = moment(args.data_recebimento)
         .add(args.prazo_total, 'd')
         .format('YYYY-MM-DD');
     } else {
+      processo.dias_corridos = 'N';
       limitePrazo = (
         await calculateDays(args.data_recebimento, args.prazo_total)
       ).format('YYYY-MM-DD');
@@ -523,6 +530,17 @@ class ProcessosService {
       throw new AppError(
         'Já existe um processo registrado no sistema com as informações de Numero de Procedimento, Órgão Demandante e Tipo de Processo informadas',
       );
+    }
+
+    if (args.numero_siged) {
+      const processoSIGEDExists = await this.processos.loadProcesso(
+        args.numero_siged,
+      );
+      if (processoSIGEDExists) {
+        throw new AppError(
+          'Já existe um Registro na base de dados atrelado a este número de processo SIGED',
+        );
+      }
     }
 
     await this.processos.update(processo);
@@ -826,6 +844,7 @@ class ProcessosService {
     id_processo: number,
     data_arquivamento: string,
     fk_status: number,
+    fk_responsavel: number,
   ): Promise<void> {
     if (!id_processo) {
       throw new AppError('Informe o Identificador do Processo');
@@ -835,14 +854,23 @@ class ProcessosService {
       throw new AppError('Informe o Identificador do Status do Processo');
     }
 
+    if (fk_status === 11 && !fk_responsavel) {
+      throw new AppError(
+        'Informe o Responsável de Alteração do Status do Processo',
+      );
+    }
+
     const dataArquivamento = data_arquivamento
       ? new Date(moment(data_arquivamento).format('YYYY-MM-DD'))
       : null;
+
+    const idResponsavel = fk_responsavel || null;
 
     await this.processos.updateStatusProcesso(
       id_processo,
       dataArquivamento,
       fk_status,
+      idResponsavel,
     );
   }
 

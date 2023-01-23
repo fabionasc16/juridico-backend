@@ -4,7 +4,7 @@ import { sign, verify } from 'jsonwebtoken';
 
 export class AuthService {
   private url = process.env.SSO_URL;
- 
+
   static ROLES = {
     PROCESSO: 'SAPEJ_PROCESSO',
     RESPONSAVEL: 'SAPEJ_RESPONSAVEL',
@@ -15,14 +15,15 @@ export class AuthService {
     ASSUNTO: 'SAPEJ_ASSUNTO',
     DASHBOARD: 'SAPEJ_DASHBOARD',
     ADMIN: 'SAPEJ_ADMINISTRADOR',
+    ADVOGADO: 'SAPEJ_ADVOGADO',
+    RECEPCAO: 'SAPEJ_RECEPCAO',
     CLASSIFICACAO: 'SAPEJ_CLASSIFICACAO',
   };
 
   constructor() {
-   
     // Adiciona no Headers de todas as requests
-    axios.defaults.headers.common['system'] =  process.env.SSO_SYSTEM; 
-    axios.defaults.headers.common['token_system'] =  process.env.SSO_TOKEN_SYSTEM; 
+    axios.defaults.headers.common.system = process.env.SSO_SYSTEM;
+    axios.defaults.headers.common.token_system = process.env.SSO_TOKEN_SYSTEM;
   }
 
   async profiles(request: Request, response: Response): Promise<Response> {
@@ -42,6 +43,40 @@ export class AuthService {
           perfil.id = item._id;
           perfil.profile_name = item.profile_name;
           perfil.profile_description = item.profile_description;
+
+          perfis.push(perfil);
+        });
+      }
+
+      return await response.status(status).json(perfis);
+    } catch (error) {
+      return AuthService.checkError(error, response);
+    }
+  }
+
+  async profilesSapej(request: Request, response: Response): Promise<Response> {
+    const url = process.env.SSO_URL;
+    const perfis = [];
+    const nomeSistema = process.env.SSO_SYSTEM;
+
+    try {
+      const { data, status } = await axios.get(
+        `${url}/profiles/system?nomeSistema=${nomeSistema}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      if (data) {
+        data.forEach(item => {
+          const perfil: any = {};
+          perfil.id = item._id;
+          perfil.profile_name = item.profile_name;
+          perfil.systems = item.systems;
+          perfil.profile_description = item.profile_description;
+          perfil.resources = item.resources;
 
           perfis.push(perfil);
         });
@@ -124,7 +159,7 @@ export class AuthService {
             return await response.status(edit.status).json(edit.data);
           } catch (error) {
             return response.status(400).send({
-              message: 'Não foi possível Atualizar dados de usuário',
+              message: 'Não foi possível Cadastrar de usuário',
             });
           }
         } catch (error) {
@@ -145,8 +180,15 @@ export class AuthService {
   async listUsuarioByCPF(request: Request, response: Response): Promise<any> {
     const url = process.env.SSO_URL;
     try {
-      const result = await axios.get(`${url}/users/cpf/${request.params.cpf}`);
-      return await response.status(result.status).json(result.data);
+      const strCPF = request.params.cpf
+        .replace('.', '')
+        .replace('.', '')
+        .replace('-', '');
+      const { status, data } = await axios.get(`${url}/users/cpf/${strCPF}`);
+      if (data.perfis && data.perfis.length >= 1) {
+        data.perfilUsuario = data.perfis[0]._id;
+      }
+      return await response.status(status).json(data);
     } catch (error) {
       return AuthService.checkError(error, response);
     }
@@ -262,8 +304,6 @@ export class AuthService {
       const url = process.env.SSO_URL;
       const user: UserSSO = dataFrontend;
 
-  
-
       const { data, status } = await axios.post(`${url}/auth`, user, {
         headers: {
           Accept: 'application/json',
@@ -316,13 +356,16 @@ export class AuthService {
     try {
       const dataFrontend: any = request.body;
       const url = process.env.SSO_URL;
-      
 
-      const { data, status } = await axios.post(`${url}/auth/forgotpassword`, dataFrontend, {
-        headers: {
-          Accept: 'application/json',
+      const { data, status } = await axios.post(
+        `${url}/auth/forgotpassword`,
+        dataFrontend,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
         },
-      });
+      );
 
       return response.status(status).json(data);
     } catch (error) {
@@ -347,7 +390,6 @@ export class AuthService {
       return AuthService.checkError(error, response);
     }
   }
-
 
   async verifyRole(request: Request, response: Response): Promise<Response> {
     try {
@@ -403,19 +445,26 @@ export class AuthService {
     }
   }
 
-  async updatePassword(request: Request, response: Response): Promise<Response> {
+  async updatePassword(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
     try {
       const dataFrontend: any = request.body;
       const url = process.env.SSO_URL;
-      const {password} = dataFrontend;
-      const token = request.headers.authorization; 
+      const { password } = dataFrontend;
+      const token = request.headers.authorization;
 
-      const { data, status } = await axios.post(`${url}/auth/reset-pass`, {"password":password}, {
-        headers: {
-          Accept: 'application/json',
-          Authorization:`${token}`
+      const { data, status } = await axios.post(
+        `${url}/auth/reset-pass`,
+        { password },
+        {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `${token}`,
+          },
         },
-      });
+      );
 
       return response.status(status).json(data);
     } catch (error) {
@@ -426,14 +475,18 @@ export class AuthService {
   async refreshToken(request: Request, response: Response): Promise<Response> {
     try {
       const url = process.env.SSO_URL;
-      const token = request.headers.authorization; 
+      const token = request.headers.authorization;
 
-      const { data, status } = await axios.post(`${url}/auth/refresh-token`, {}, {
-        headers: {
-          Accept: 'application/json',
-          Authorization:`${token}`
+      const { data, status } = await axios.post(
+        `${url}/auth/refresh-token`,
+        {},
+        {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `${token}`,
+          },
         },
-      });
+      );
 
       return response.status(status).json(data);
     } catch (error) {

@@ -80,13 +80,13 @@ model Responsaveis {
 }
 
 model Status {
-  id_status         Int          @id @default(autoincrement())
-  desc_status       String       @db.VarChar(100)
-  aplica_a          String       @db.VarChar(100)
-  Reiteracao        Reiteracao[]
-  Historico         Historico[]
-  Processos         Processos[]  @relation("processos_fk_status_fkey")
-  ProcessosPrazos   Processos[]  @relation("processos_fk_statusprazo_fkey")
+  id_status       Int          @id @default(autoincrement())
+  desc_status     String       @db.VarChar(100)
+  aplica_a        String       @db.VarChar(100)
+  Reiteracao      Reiteracao[]
+  Historico       Historico[]
+  Processos       Processos[]  @relation("processos_fk_status_fkey")
+  ProcessosPrazos Processos[]  @relation("processos_fk_statusprazo_fkey")
 
   @@map("status")
 }
@@ -111,8 +111,8 @@ model Processos {
   permanencia_siged   String?      @db.VarChar(100)
   caixa_atual_siged   String?      @db.VarChar(150)
   tramitacao_siged    String?      @db.VarChar(150)
-  fk_responsavel      Int
-  observacao          String?       @db.MediumText
+  fk_responsavel      Int?
+  observacao          String?      @db.MediumText
   descricao           String       @db.MediumText
   dia_limite_prazo    DateTime     @db.Date
   dias_percorridos    Int
@@ -128,7 +128,7 @@ model Processos {
   orgaoDemandante OrgaoDemandante @relation(fields: [fk_orgaodemandante], references: [id_orgao])
   assunto         Assunto         @relation(fields: [fk_assunto], references: [id_assunto])
   classificacao   Classificacao   @relation(fields: [fk_classificacao], references: [id_classificacao])
-  responsavel     Responsaveis    @relation(fields: [fk_responsavel], references: [id_responsavel])
+  responsavel     Responsaveis?   @relation(fields: [fk_responsavel], references: [id_responsavel])
   status          Status          @relation(name: "processos_fk_status_fkey", fields: [fk_status], references: [id_status])
   statusPrazo     Status          @relation(name: "processos_fk_statusprazo_fkey", fields: [status_prazo], references: [id_status])
 

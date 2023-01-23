@@ -11,35 +11,35 @@ const controller = new AssuntoController();
 assuntoRoutes.post(
   '/',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.create,
 );
 
 assuntoRoutes.delete(
   '/:id_assunto',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.delete,
 );
 
 assuntoRoutes.post(
   '/list',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.read,
 );
 
 assuntoRoutes.get(
   '/id/:id_assunto',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.readById,
 );
 
 assuntoRoutes.put(
   '/:id_assunto',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN]),
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.update,
 );
 

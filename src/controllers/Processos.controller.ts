@@ -56,7 +56,7 @@ class ProcessosController {
       permanencia_siged: permanenciaSIGED,
       caixa_atual_siged: caixaAtualSIGED,
       tramitacao_siged: tramitacaoSIGED,
-      fk_responsavel: idResponsavel,
+      fk_responsavel: idResponsavel === '' ? null : idResponsavel,
       observacao,
       descricao,
       status_prazo: statusPrazo,
@@ -260,12 +260,13 @@ class ProcessosController {
     response: Response,
   ): Promise<Response> {
     const { idProcesso } = request.query;
-    const { idStatusProcesso, dataArquivamento } = request.body;
+    const { idStatusProcesso, dataArquivamento, idResponsavel } = request.body;
 
     await ProcessosController.service.updateStatusProcesso(
       Number(idProcesso),
       dataArquivamento,
       idStatusProcesso,
+      idResponsavel,
     );
 
     try {
