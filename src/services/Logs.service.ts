@@ -71,24 +71,28 @@ export class LogsService {
     try {
       const responseQueue = [];
       const allLogs = [];
-
+      
       const result = await LogsService.client.search({
         index: 'system_logs', 
         scroll: '30s',
+        sort : [{ 'date': 'desc'}],
         size: 500,
+        _source: ['date','transaction','module','user'],
         query: {
           match: { system: LogsService.SYSTEM }
         }
       });
 
       responseQueue.push(result);
+
       while (responseQueue.length) {
-        const body = responseQueue.shift()
+        const body = responseQueue.shift();
     
         // collect the titles from this response
         body.hits.hits.forEach(function (hit) {
-          allLogs.push({'system': hit._source.system,'date': hit._source.date,'transaction': hit._source.transaction, 'module': hit._source.module, 'user': hit._source.user.nome})
-        })
+          const dateLog =  new Date(hit._source.date);
+          allLogs.push({'date': `${dateLog.toLocaleString()}` ,'transaction': hit._source.transaction, 'module': hit._source.module, 'user': hit._source.user.nome})
+        });
     
         // check to see if we have collected all of the quotes
         if (body.hits.total.value === allLogs.length) {
