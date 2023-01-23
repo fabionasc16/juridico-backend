@@ -114,7 +114,7 @@ export class LogsService {
       // return await response.status(200).json(result.hits.hits);
 
     } catch (error) {
-      console.error("ERRO AO ENVIAR LOG!",error);
+      console.error("ERRO AO LER O LOG!",error);
       return response.status(500).send();
     }
 
