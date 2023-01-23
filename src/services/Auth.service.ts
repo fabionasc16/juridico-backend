@@ -184,8 +184,11 @@ export class AuthService {
         .replace('.', '')
         .replace('.', '')
         .replace('-', '');
-      const result = await axios.get(`${url}/users/cpf/${strCPF}`);
-      return await response.status(result.status).json(result.data);
+      const { status, data } = await axios.get(`${url}/users/cpf/${strCPF}`);
+      if (data.perfis && data.perfis.length >= 1) {
+        data.perfilUsuario = data.perfis[0]._id;
+      }
+      return await response.status(status).json(data);
     } catch (error) {
       return AuthService.checkError(error, response);
     }
