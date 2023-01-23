@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
 import * as dotenv from 'dotenv';
-import { Client } from '@elastic/elasticsearch';
+import { Client } from 'es8';
 
 type User = {
   id: number;
@@ -29,7 +29,7 @@ export class LogsService {
           password: `${process.env.ELASTIC_PASSWORD}`
         },
         tls: {
-          // might be required if it's a self-signed certificate
+
           rejectUnauthorized: false
         }
       });
