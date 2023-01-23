@@ -15,6 +15,9 @@ services:
       - JWT_KEY=*uDx^m9x8tbPdxU
       - SSO_SYSTEM=SAPEJ
       - SSO_TOKEN_SYSTEM=d220705f-c3ff-4640-bfd5-4c85e0c65e26
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=edVxx!JEx3beqYo*uvrr
+      - ELASTIC_HOST=https://192.168.107.23:9200/
     volumes:
       - '.:/app'
       - '/etc/timezone:/etc/timezone:ro'
