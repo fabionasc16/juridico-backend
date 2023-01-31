@@ -6,6 +6,7 @@ import { checkRole } from '../middlewares/CheckRoles.middleware';
 import { AuthService } from '../services/Auth.service';
 
 const processosRoutes = Router();
+
 const controller = new ProcessosController();
 
 processosRoutes.post(
