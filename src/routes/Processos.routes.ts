@@ -89,4 +89,11 @@ processosRoutes.post(
   controller.readByObjeto,
 );
 
+processosRoutes.post(
+  '/atualiza-dias-prazo',
+  checkJWT,
+  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
+  controller.calculaStatusPrazo,
+);
+
 export { processosRoutes };

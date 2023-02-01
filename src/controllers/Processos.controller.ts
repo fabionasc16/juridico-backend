@@ -297,6 +297,69 @@ class ProcessosController {
 
     return response.status(200).json(data);
   }
+
+  async calculaStatusPrazo(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+
+    const {
+      numProcedimento,
+      idTipoProcesso,
+      prazoTotal,
+      idOrgaoDemandante,
+      dataProcesso,
+      dataRecebimento,
+      horaRecebimento,
+      idAssunto,
+      idClassificacao,
+      objeto,
+      requerSIGED,
+      numProcessoSIGED,
+      dataProcessoSIGED,
+      permanenciaSIGED,
+      caixaAtualSIGED,
+      tramitacaoSIGED,
+      idResponsavel,
+      observacao,
+      descricao,
+      diasCorridos,
+      statusPrazo,
+      sigiloso,
+      statusProcesso,
+      valorMulta,
+    } = request.body;
+
+   const  processo = {
+      num_procedimento: numProcedimento,
+      fk_tipoprocesso: idTipoProcesso,
+      prazo_total: Number(prazoTotal),
+      fk_orgaodemandante: idOrgaoDemandante,
+      data_processo: dataProcesso,
+      data_recebimento: dataRecebimento,
+      hora_recebimento: horaRecebimento,
+      fk_assunto: idAssunto,
+      fk_classificacao: idClassificacao,
+      objeto,
+      requer_siged: requerSIGED === true ? 'S' : 'N',
+      numero_siged: numProcessoSIGED,
+      data_processo_siged: dataProcessoSIGED,
+      permanencia_siged: permanenciaSIGED,
+      caixa_atual_siged: caixaAtualSIGED,
+      tramitacao_siged: tramitacaoSIGED,
+      fk_responsavel: idResponsavel === '' ? null : idResponsavel,
+      observacao,
+      descricao,
+      status_prazo: statusPrazo,
+      dias_corridos: diasCorridos === true ? 'S' : 'N',
+      sigiloso: sigiloso === true ? 'S' : 'N',
+      fk_status: statusProcesso,
+      valor_multa: valorMulta === '' ? 0 : Number(valorMulta),
+    }
+    const data = await ProcessosController.service.calculaStatusPrazo(processo);
+  
+    return response.status(200).json(data);
+  }
 }
 
 export { ProcessosController };
