@@ -47,15 +47,6 @@ assuntoRoutes.put(
   controller.update,
 );
 
-assuntoRoutes.get(
-  '/list',
-  checkJWT,
-  checkRole([
-    AuthService.ROLES.ADMIN,
-    AuthService.ROLES.ADVOGADO,
-    AuthService.ROLES.RECEPCAO,
-  ]),
-  controller.listall,
-);
+assuntoRoutes.get('/list', controller.listall);
 
 export { assuntoRoutes };

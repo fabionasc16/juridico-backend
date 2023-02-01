@@ -47,15 +47,6 @@ orgaoDemandanteRoutes.put(
   controller.update,
 );
 
-orgaoDemandanteRoutes.get(
-  '/list',
-  checkJWT,
-  checkRole([
-    AuthService.ROLES.ADMIN,
-    AuthService.ROLES.ADVOGADO,
-    AuthService.ROLES.RECEPCAO,
-  ]),
-  controller.listall,
-);
+orgaoDemandanteRoutes.get('/list', checkJWT, controller.listall);
 
 export { orgaoDemandanteRoutes };

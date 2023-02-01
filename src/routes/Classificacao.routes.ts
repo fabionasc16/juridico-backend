@@ -47,15 +47,6 @@ classificacaoRoutes.put(
   controller.update,
 );
 
-classificacaoRoutes.get(
-  '/list',
-  checkJWT,
-  checkRole([
-    AuthService.ROLES.ADMIN,
-    AuthService.ROLES.ADVOGADO,
-    AuthService.ROLES.RECEPCAO,
-  ]),
-  controller.listall,
-);
+classificacaoRoutes.get('/list', checkJWT, controller.listall);
 
 export { classificacaoRoutes };
