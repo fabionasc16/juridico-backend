@@ -4,7 +4,12 @@ import { OrgaoDemandante } from '../models/OrgaoDemandante.model';
 
 class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
   async listall(): Promise<any> {
-    return prisma.orgaoDemandante.findMany({});
+    return prisma.orgaoDemandante.findMany({
+      select: {
+        id_orgao: true,
+        orgao_demandante: true,
+      },
+    });
   }
 
   async create(args: OrgaoDemandante): Promise<OrgaoDemandante> {

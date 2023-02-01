@@ -47,15 +47,6 @@ responsaveisRoutes.put(
   controller.update,
 );
 
-responsaveisRoutes.get(
-  '/list',
-  checkJWT,
-  checkRole([
-    AuthService.ROLES.ADMIN,
-    AuthService.ROLES.ADVOGADO,
-    AuthService.ROLES.RECEPCAO,
-  ]),
-  controller.listall,
-);
+responsaveisRoutes.get('/list', checkJWT, controller.listall);
 
 export { responsaveisRoutes };
