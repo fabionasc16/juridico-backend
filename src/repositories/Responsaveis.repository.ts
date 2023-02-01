@@ -81,6 +81,14 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
     });
   }
 
+  async loadIdUsuario(id_usuario: string): Promise<any> {
+    return prisma.responsaveis.findFirst({
+      where: {
+        id_usuario,
+      },
+    });
+  }
+
   async loadResponsavel(cpf_responsavel: string): Promise<any> {
     return prisma.responsaveis.findFirst({
       where: {

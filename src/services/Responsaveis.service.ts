@@ -1,14 +1,19 @@
+import axios from 'axios';
+import { nextTick } from 'process';
+
 import { AppError } from '../errors/AppError.class';
 import { Responsaveis } from '../models/Responsaveis.model';
 import { ResponsaveisRepository } from '../repositories/Responsaveis.repository';
 
 class ResponsaveisService {
+  private url = process.env.SSO_URL;
   private responsaveis: ResponsaveisRepository;
   constructor() {
     this.responsaveis = new ResponsaveisRepository();
   }
 
   async create(args: Responsaveis): Promise<Responsaveis> {
+    const url = process.env.SSO_URL;
     if (!args.nome_responsavel) {
       throw new AppError('Informe o Nome do Responsável');
     }
@@ -38,6 +43,33 @@ class ResponsaveisService {
     );
     if (responsavel) {
       throw new AppError('Responsável já cadastrado no sistema');
+    }
+
+    const idUsuario = await this.responsaveis.loadIdUsuario(args.id_usuario);
+    if (idUsuario) {
+      throw new AppError('ID de Usuário já cadastrado no sistema');
+    }
+
+    try {
+      const { data, status } = await axios.get(
+        `${url}/users/id/${args.id_usuario}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      if (!data) {
+        throw new AppError('Verificar o ID do Usuário');
+      } else if (
+        data.cpf.replaceAll('.', '').replaceAll('-', '') !==
+        args.cpf_responsavel.replaceAll('.', '').replaceAll('-', '')
+      ) {
+        throw new AppError('Verificar CPF do Usuário');
+      }
+    } catch (error) {
+      throw new AppError('Verificar Dados do Usuário');
     }
 
     return this.responsaveis.create({
