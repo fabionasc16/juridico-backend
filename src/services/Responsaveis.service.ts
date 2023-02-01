@@ -29,6 +29,10 @@ class ResponsaveisService {
       throw new AppError('Informe o Registro da OAB do Responsável');
     }
 
+    if (!args.id_usuario) {
+      throw new AppError('Informe o ID do Usuário do Responsável');
+    }
+
     const responsavel = await this.responsaveis.loadResponsavel(
       args.cpf_responsavel.replaceAll('.', '').replaceAll('-', ''),
     );
@@ -44,6 +48,7 @@ class ResponsaveisService {
       telefone: args.telefone,
       email: args.email,
       registro_oab: args.registro_oab,
+      id_usuario: args.id_usuario,
     });
   }
 
@@ -102,6 +107,10 @@ class ResponsaveisService {
 
     if (args.registro_oab) {
       responsavel.registro_oab = args.registro_oab;
+    }
+
+    if (args.id_usuario) {
+      responsavel.id_usuario = args.id_usuario;
     }
 
     const dataExists = await this.responsaveis.loadNotExists(

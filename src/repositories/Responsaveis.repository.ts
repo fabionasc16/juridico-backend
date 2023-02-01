@@ -11,6 +11,7 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
         telefone: args.telefone,
         email: args.email,
         registro_oab: args.registro_oab,
+        id_usuario: args.id_usuario,
       },
     });
   }
