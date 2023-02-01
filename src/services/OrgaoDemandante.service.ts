@@ -108,6 +108,10 @@ class OrgaoDemandanteService {
 
     await this.orgaoDemandante.update(orgaoDemandante);
   }
+
+  async listall(): Promise<void> {
+    return this.orgaoDemandante.listall();
+  }
 }
 
 export { OrgaoDemandanteService };

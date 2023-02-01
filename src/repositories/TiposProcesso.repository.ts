@@ -3,6 +3,9 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { TiposProcesso } from '../models/TiposProcesso.model';
 
 class TiposProcessoRepository implements IPrismaSource<TiposProcesso> {
+  async listall(): Promise<any> {
+    return prisma.tiposProcesso.findMany({});
+  }
   async create(args: TiposProcesso): Promise<TiposProcesso> {
     return prisma.tiposProcesso.create({
       data: {

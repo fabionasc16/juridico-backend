@@ -82,6 +82,9 @@ class ClassificacaoService {
 
     await this.classificacao.update(classificacao);
   }
+  async listall(): Promise<void> {
+    return this.classificacao.listall();
+  }
 }
 
 export { ClassificacaoService };

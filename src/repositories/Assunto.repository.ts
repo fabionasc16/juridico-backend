@@ -3,6 +3,10 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { Assunto } from '../models/Assunto.model';
 
 class AssuntoRepository implements IPrismaSource<Assunto> {
+  async listall(): Promise<any> {
+    return prisma.assunto.findMany({});
+  }
+
   async create(args: Assunto): Promise<Assunto> {
     return prisma.assunto.create({
       data: {
