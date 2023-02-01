@@ -3,6 +3,9 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { Reiteracao } from '../models/Reiteracao.model';
 
 class ReiteracaoRepository implements IPrismaSource<Reiteracao> {
+  listall(): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
   async create(args: Reiteracao): Promise<Reiteracao> {
     return prisma.reiteracao.create({
       data: {

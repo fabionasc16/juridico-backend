@@ -94,6 +94,10 @@ class AssuntoService {
 
     await this.assunto.update(assunto);
   }
+
+  async listall(): Promise<void> {
+    return this.assunto.listall();
+  }
 }
 
 export { AssuntoService };
