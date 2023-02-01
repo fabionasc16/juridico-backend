@@ -47,15 +47,6 @@ tiposProcessoRoutes.delete(
   controller.delete,
 );
 
-tiposProcessoRoutes.get(
-  '/list',
-  checkJWT,
-  checkRole([
-    AuthService.ROLES.ADMIN,
-    AuthService.ROLES.ADVOGADO,
-    AuthService.ROLES.RECEPCAO,
-  ]),
-  controller.listall,
-);
+tiposProcessoRoutes.get('/list', checkJWT, controller.listall);
 
 export { tiposProcessoRoutes };

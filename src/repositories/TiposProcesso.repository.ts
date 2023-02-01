@@ -4,7 +4,12 @@ import { TiposProcesso } from '../models/TiposProcesso.model';
 
 class TiposProcessoRepository implements IPrismaSource<TiposProcesso> {
   async listall(): Promise<any> {
-    return prisma.tiposProcesso.findMany({});
+    return prisma.tiposProcesso.findMany({
+      select: {
+        id_tipoprocesso: true,
+        desc_tipoprocesso: true,
+      },
+    });
   }
   async create(args: TiposProcesso): Promise<TiposProcesso> {
     return prisma.tiposProcesso.create({
