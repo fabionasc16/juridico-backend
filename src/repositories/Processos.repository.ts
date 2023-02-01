@@ -3,6 +3,9 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { Processos } from '../models/Processos.model';
 
 class ProcessosRepository implements IPrismaSource<Processos> {
+  listall(): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
   async create(args: Processos): Promise<Processos> {
     return prisma.processos.create({
       data: {

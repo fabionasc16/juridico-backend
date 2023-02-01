@@ -5,6 +5,9 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { Feriados } from '../models/Feriados.model';
 
 class FeriadosRepository implements IPrismaSource<Feriados> {
+  listall(): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
   async create(args: Feriados): Promise<Feriados> {
     return prisma.feriados.create({
       data: {

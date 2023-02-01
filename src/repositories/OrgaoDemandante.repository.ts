@@ -3,6 +3,10 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { OrgaoDemandante } from '../models/OrgaoDemandante.model';
 
 class OrgaoDemandanteRepository implements IPrismaSource<OrgaoDemandante> {
+  async listall(): Promise<any> {
+    return prisma.orgaoDemandante.findMany({});
+  }
+
   async create(args: OrgaoDemandante): Promise<OrgaoDemandante> {
     return prisma.orgaoDemandante.create({
       data: {

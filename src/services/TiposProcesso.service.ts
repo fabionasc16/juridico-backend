@@ -80,6 +80,10 @@ class TiposProcessoService {
 
     await this.tiposProcesso.update(data);
   }
+
+  async listall(): Promise<void> {
+    return this.tiposProcesso.listall();
+  }
 }
 
 export { TiposProcessoService };
