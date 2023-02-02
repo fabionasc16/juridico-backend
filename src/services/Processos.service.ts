@@ -260,6 +260,11 @@ class ProcessosService {
     return this.processos.read(args);
   }
 
+
+  async readStatusRecebido(args: any): Promise<any> {
+    return this.processos.readRecebido(args);
+  }
+
   async readById(id_processo: number): Promise<any> {
     if (!id_processo) {
       throw new AppError('Informe o Identificador do Processo');
@@ -899,6 +904,28 @@ class ProcessosService {
     if (!result) {
       throw new AppError(
         'Nenhum processo foi localizado com o objeto informado',
+        404,
+      );
+    }
+
+    return result;
+  }
+
+  async readByStatus(fk_status: number, args: any): Promise<any> {
+    if (fk_status !== 10) {
+      throw new AppError(
+        'Nenhum processo foi localizado com o status informado',
+        404,
+      );
+    } else {
+      args = fk_status;
+      return this.processos.read(args);
+    }
+
+    const result = await this.processos.loadDescricao(descricao);
+    if (!result) {
+      throw new AppError(
+        'Nenhum processo foi localizado com o status informado',
         404,
       );
     }
