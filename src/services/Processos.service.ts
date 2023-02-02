@@ -260,6 +260,7 @@ class ProcessosService {
     return this.processos.read(args);
   }
 
+
   async readStatusRecebido(args: any): Promise<any> {
     return this.processos.readRecebido(args);
   }
