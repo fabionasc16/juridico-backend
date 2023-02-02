@@ -93,7 +93,7 @@ processosRoutes.post(
   '/atualiza-dias-prazo',
   checkJWT,
   checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
-  controller.calculaStatusPrazo,
+  controller.atualizaPrazosProcesso,
 );
 
 export { processosRoutes };

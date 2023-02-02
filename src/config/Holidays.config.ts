@@ -4,6 +4,7 @@ import "moment/locale/pt-br";
 import { prisma } from './Prisma.config';
 
 export async function calculateDays(date: any, days: number) {
+  moment.locale('pt-br');
   const anoVigente = Number(moment(new Date()).format('YYYY'));
   const mesVigente = Number(moment(new Date()).format('MM'));
 
@@ -25,9 +26,12 @@ export async function calculateDays(date: any, days: number) {
       },
     });
 
-    feriados.forEach(feriado => {
-      datas_especiais.push(feriado.data_feriado);
-    });
+    for (let index = 0; index < feriados.length; index++) {
+      // Retirando o timezone e formatando para o padrão aceito pelo calculo
+      const feriado = feriados[index].data_feriado;
+      const feriadoSemTimezone = moment(feriado).toISOString(false);
+      datas_especiais.push(feriadoSemTimezone.split('T')[0]);
+    }
 
     moment.updateLocale('pt-BR', {
       holidays: datas_especiais,
@@ -40,6 +44,7 @@ export async function calculateDays(date: any, days: number) {
   }
 }
 export async function calculaDias(date: any, days: number) {
+  moment.locale('pt-br');
   const anoVigente = Number(moment(new Date()).format('YYYY'));
   const mesVigente = Number(moment(new Date()).format('MM'));
 
@@ -56,7 +61,7 @@ export async function calculaDias(date: any, days: number) {
         ]
       },
     });
-    //moment.locale('pt-br');
+    
 
     for (let index = 0; index < feriados.length; index++) {
       // Retirando o timezone e formatando para o padrão aceito pelo calculo

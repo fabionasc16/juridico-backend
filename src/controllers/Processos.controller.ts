@@ -284,6 +284,7 @@ class ProcessosController {
     response: Response,
   ): Promise<Response> {
     const { descricaoProcesso } = request.body;
+    
     const data = await ProcessosController.service.readByDescricao(
       descricaoProcesso,
     );
@@ -359,6 +360,15 @@ class ProcessosController {
     const data = await ProcessosController.service.calculaStatusPrazo(processo);
   
     return response.status(200).json(data);
+  }
+
+  async atualizaPrazosProcesso(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+     ProcessosController.service.atualizaPrazosProcesso();
+  
+    return response.status(200).send();
   }
 }
 

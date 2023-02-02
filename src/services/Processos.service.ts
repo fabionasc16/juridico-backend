@@ -20,7 +20,7 @@ class ProcessosService {
   private classificacao: ClassificacaoRepository;
   private responsavel: ResponsaveisRepository;
   private status: StatusRepository;
-  public static readonly statusPrazo = { 'EXPIRADO': 9, 'CRITICO': 1,  'ATENCAO': 2,  'NORMAL': 3,'EXPIRA_HOJE': 4 };
+  public static readonly statusPrazo = { 'EXPIRADO': 9, 'CRITICO': 1, 'ATENCAO': 2, 'NORMAL': 3, 'EXPIRA_HOJE': 19 };
 
   constructor() {
     this.processos = new ProcessosRepository();
@@ -176,17 +176,9 @@ class ProcessosService {
       'd',
     );
 
-    if (statusPrazo == -1) {
-      args.status_prazo = ProcessosService.statusPrazo.EXPIRA_HOJE;
-    }else if (statusPrazo < -1) {
-      args.status_prazo = ProcessosService.statusPrazo.EXPIRADO;
-    } else if (statusPrazo >= 0 && statusPrazo <= 3) {
-      args.status_prazo = ProcessosService.statusPrazo.CRITICO;
-    } else if (statusPrazo >= 4 && statusPrazo <= 5) {
-      args.status_prazo = ProcessosService.statusPrazo.ATENCAO;
-    } else if (statusPrazo >= 6) {
-      args.status_prazo = args.status_prazo = ProcessosService.statusPrazo.NORMAL;;
-    }
+
+    args.status_prazo = await this.calculaStatusPrazo(args);
+
 
     const dataExists = await this.processos.loadExists(
       args.num_procedimento,
@@ -245,30 +237,30 @@ class ProcessosService {
   }
 
 
- async calculaStatusPrazo(processo: any) {
-   const prazo = await this.calculaPrazo(processo);
-   let status_prazo = undefined;
-   
-   if (prazo == -1) {
-    status_prazo = ProcessosService.statusPrazo.EXPIRA_HOJE;
-  }else if (prazo < -1) {
-    status_prazo = ProcessosService.statusPrazo.EXPIRADO;
-  } else if (prazo >= 0 && prazo <= 3) {
-    status_prazo = ProcessosService.statusPrazo.CRITICO;
-  } else if (prazo >= 4 && prazo <= 5) {
-    status_prazo = ProcessosService.statusPrazo.ATENCAO;
-  } else if (prazo >= 6) {
-    status_prazo = status_prazo = ProcessosService.statusPrazo.NORMAL;
-  }
+  async calculaStatusPrazo(processo: any) {
+    const prazo = await this.calculaPrazo(processo);
+    let status_prazo = undefined;
+
+    if (prazo == -1) {
+      status_prazo = ProcessosService.statusPrazo.EXPIRA_HOJE;
+    } else if (prazo < -1) {
+      status_prazo = ProcessosService.statusPrazo.EXPIRADO;
+    } else if (prazo >= 0 && prazo <= 3) {
+      status_prazo = ProcessosService.statusPrazo.CRITICO;
+    } else if (prazo >= 4 && prazo <= 5) {
+      status_prazo = ProcessosService.statusPrazo.ATENCAO;
+    } else if (prazo >= 6) {
+      status_prazo = status_prazo = ProcessosService.statusPrazo.NORMAL;
+    }
 
     return status_prazo;
   }
 
 
- private async calculaPrazo(processo: any) {
+  private async calculaPrazo(processo: any) {
     let limiteProcesso: any = '';
     let diasExpirados = 0;
-   
+
 
     if (processo.dias_corridos === 'S') {
       limiteProcesso = moment(processo.data_recebimento)
@@ -276,21 +268,20 @@ class ProcessosService {
         .format('YYYY-MM-DD');
     } else {
       limiteProcesso = (
-       await calculaDias(processo.data_recebimento, processo.prazo_total)
+        await calculaDias(processo.data_recebimento, processo.prazo_total)
       ).format('YYYY-MM-DD');
     }
 
     const diasPercorridos = moment(new Date(), 'YYYY-MM-DD').diff(
       moment(processo.data_recebimento, 'YYYY-MM-DD'),
       'days',
-    );   
+    );
 
     const prazo = moment(limiteProcesso as string).diff(
       moment(new Date()).format('YYYY-MM-DD'),
       'd',
-    );   
-    console.log(prazo);
-    console.log(limiteProcesso);
+    );
+
     return prazo;
   }
 
@@ -961,6 +952,27 @@ class ProcessosService {
     }
 
     return result;
+  }
+
+  async atualizaPrazosProcesso() {
+    const processos = await this.processos.listarTodosProcessosAtualizacao();
+
+    for (let index = 0; index < processos.length; index++) {
+      const processo = processos[index];
+      const prazo = await this.calculaPrazo(processo) ;
+      const statusPrazo = await this.calculaStatusPrazo(processo);
+      const recebimento = processo.data_recebimento;
+
+      //processo.dia_limite_prazo;
+      //processo.dias_percorridos;
+      processo.prazo_total = await this.calculaPrazo(processo);
+      processo.status_prazo = await this.calculaStatusPrazo(processo);
+      console.log(`Id: ${processo.id_processo} Recebimento: ${processo.data_recebimento.toISOString(false)}  Status prazo: ${statusPrazo} Prazo: ${prazo}`);
+
+      await this.processos.updatePrazosProcesso(processo.id_processo, processo);
+      
+    }
+
   }
 }
 
