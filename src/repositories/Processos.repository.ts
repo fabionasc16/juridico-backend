@@ -103,6 +103,22 @@ class ProcessosRepository implements IPrismaSource<Processos> {
       AND.push({ caixa_atual_siged: args.body.caixaAtualSIGED });
     }
 
+    if (args.body.objetoProcesso) {
+      return prisma.processos.findMany({
+        where: {
+          objeto: args.body.objetoProcesso,
+        },
+      });
+    }
+
+    if (args.body.descricaoProcesso) {
+      return prisma.processos.findFirst({
+        where: {
+          descricao: args.body.descricaoProcesso,
+        },
+      });
+    }
+
     if (AND.length) {
       Object.assign(filters, { AND });
     }
@@ -167,7 +183,6 @@ class ProcessosRepository implements IPrismaSource<Processos> {
       AND.push({ numero_siged: args.body.numProcessoSIGED });
     }
 
-
     if (args.body.statusPrazo) {
       AND.push({ status_prazo: Number(args.body.statusPrazo) });
     }
@@ -190,6 +205,22 @@ class ProcessosRepository implements IPrismaSource<Processos> {
 
     if (args.body.caixaAtualSIGED) {
       AND.push({ caixa_atual_siged: args.body.caixaAtualSIGED });
+    }
+
+    if (args.body.objetoProcesso) {
+      return prisma.processos.findMany({
+        where: {
+          objeto: args.body.objetoProcesso,
+        },
+      });
+    }
+
+    if (args.body.descricaoProcesso) {
+      return prisma.processos.findFirst({
+        where: {
+          descricao: args.body.descricaoProcesso,
+        },
+      });
     }
 
     if (AND.length) {
