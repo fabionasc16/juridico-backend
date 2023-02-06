@@ -82,7 +82,6 @@ class ProcessosController {
 
     try {
       ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
-
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }
@@ -160,7 +159,7 @@ class ProcessosController {
       horaRecebimento,
       idAssunto,
       idClassificacao,
-      objeto,
+      objetoProcesso,
       requerSIGED,
       numProcessoSIGED,
       dataProcessoSIGED,
@@ -169,7 +168,7 @@ class ProcessosController {
       tramitacaoSIGED,
       idResponsavel,
       observacao,
-      descricao,
+      descricaoProcesso,
       statusPrazo,
       sigiloso,
       diasCorridos,
@@ -187,7 +186,7 @@ class ProcessosController {
       hora_recebimento: horaRecebimento,
       fk_assunto: idAssunto,
       fk_classificacao: idClassificacao,
-      objeto,
+      objeto: objetoProcesso,
       requer_siged: requerSIGED === true ? 'S' : 'N',
       numero_siged: numProcessoSIGED,
       data_processo_siged: dataProcessoSIGED,
@@ -196,7 +195,7 @@ class ProcessosController {
       tramitacao_siged: tramitacaoSIGED,
       fk_responsavel: idResponsavel,
       observacao,
-      descricao,
+      descricao: descricaoProcesso,
       status_prazo: statusPrazo,
       dias_corridos: diasCorridos === true ? 'S' : 'N',
       sigiloso: sigiloso === true ? 'S' : 'N',
