@@ -104,19 +104,11 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     }
 
     if (args.body.objetoProcesso) {
-      return prisma.processos.findMany({
-        where: {
-          objeto: args.body.objetoProcesso,
-        },
-      });
+      AND.push({ objeto: args.body.objetoProcesso });
     }
 
     if (args.body.descricaoProcesso) {
-      return prisma.processos.findFirst({
-        where: {
-          descricao: args.body.descricaoProcesso,
-        },
-      });
+      AND.push({ descricao: args.body.descricaoProcesso });
     }
 
     if (AND.length) {
@@ -208,19 +200,11 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     }
 
     if (args.body.objetoProcesso) {
-      return prisma.processos.findMany({
-        where: {
-          objeto: args.body.objetoProcesso,
-        },
-      });
+      AND.push({ objeto: args.body.objetoProcesso });
     }
 
     if (args.body.descricaoProcesso) {
-      return prisma.processos.findFirst({
-        where: {
-          descricao: args.body.descricaoProcesso,
-        },
-      });
+      AND.push({ descricao: args.body.descricaoProcesso });
     }
 
     if (AND.length) {
