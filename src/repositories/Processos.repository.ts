@@ -37,7 +37,6 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         sigiloso: args.sigiloso,
         fk_status: args.fk_status,
         valor_multa: args.valor_multa,
-        
       },
     });
   }
