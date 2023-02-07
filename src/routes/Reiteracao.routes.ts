@@ -30,7 +30,6 @@ reiteracaoRoutes.delete(
   controller.delete,
 );
 
-
 reiteracaoRoutes.get(
   '/',
   checkJWT,
