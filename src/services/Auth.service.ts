@@ -218,8 +218,15 @@ export class AuthService {
 
     try {
       if (AuthService.checkRoles(AuthService.ROLES.ADMIN, request.user.roles)) {
-        const { status, data } = await axios.get(
-          `${url}/users/system?nomeSistema=SAPEJ`,
+        const { currentPage, perPage } = request.query;
+        const { nomeSistema, nomeUsuario, cpfUsuario } = request.body;
+        const { status, data } = await axios.post(
+          `${url}/users/find?perPage=${perPage}&currentPage=${currentPage}`,
+          {
+            nomeSistema,
+            nomeUsuario,
+            cpfUsuario,
+          },
         );
         return await response.status(status).json(data);
       }
