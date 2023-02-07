@@ -90,31 +90,16 @@ class ProcessosController {
   }
 
   async read(request: Request, response: Response): Promise<Response> {
-    if (
-      AuthService.checkRoles(AuthService.ROLES.ADMIN, request.user.roles) ||
-      AuthService.checkRoles(AuthService.ROLES.ADVOGADO, request.user.roles)
-    ) {
-      const data = await ProcessosController.service.read(request);
-      return response.status(200).json(data);
-    }
-    if (
-      AuthService.checkRoles(AuthService.ROLES.RECEPCAO, request.user.roles)
-    ) {
-      const data = await ProcessosController.service.readStatusRecebido(request);
-      return response.status(200).json(data);
-    }
+    const data = await ProcessosController.service.read(request);
+
     try {
-      ProcessosController.logs.sendLog(
-        LogsService.SYSTEM,
-        LogsService.MODULE.PROCESSO,
-        LogsService.TRANSACTION.LISTAR,
-        request.user,
-        request.user.unidadeUsuario.unit_name,
-        request.body,
-      );
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }
+
+    return response.status(200).json(data);
   }
 
   async readById(request: Request, response: Response): Promise<Response> {
