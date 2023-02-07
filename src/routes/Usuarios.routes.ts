@@ -14,7 +14,7 @@ userRoutes.post(
   authService.createUsuario,
 );
 
-userRoutes.get(
+userRoutes.post(
   '/all',
   checkJWT,
   checkRole([AuthService.ROLES.ADMIN]),
