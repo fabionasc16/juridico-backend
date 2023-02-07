@@ -525,6 +525,7 @@ export class AuthService {
               );
             }
           }
+          
           user.perfilUsuario = await user.perfis[0]._id;
           user.unit_id = await user.unidadeUsuario[0]._id;
         }
