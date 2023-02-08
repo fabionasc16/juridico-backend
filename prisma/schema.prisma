@@ -77,6 +77,7 @@ model Responsaveis {
   Historico        Historico[]
 
   @@unique([cpf_responsavel])
+  @@unique([id_usuario])
   @@map("responsaveis")
 }
 

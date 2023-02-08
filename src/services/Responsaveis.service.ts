@@ -109,6 +109,7 @@ class ResponsaveisService {
   }
 
   async update(args: any): Promise<void> {
+    const url = process.env.SSO_URL;
     if (!args.id_responsavel) {
       throw new AppError('Informe o Identificador do Responsável');
     }
@@ -153,6 +154,33 @@ class ResponsaveisService {
       throw new AppError(
         'Já existe um registro na base de dados para os valores informados',
       );
+    }
+
+    const idUsuario = await this.responsaveis.loadIdUsuario(args.id_usuario);
+    if (idUsuario) {
+      throw new AppError('ID de Usuário já cadastrado no sistema');
+    }
+
+    try {
+      const { data, status } = await axios.get(
+        `${url}/users/id/${args.id_usuario}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      if (!data) {
+        throw new AppError('Verificar o ID do Usuário');
+      } else if (
+        data.cpf.replaceAll('.', '').replaceAll('-', '') !==
+        args.cpf_responsavel.replaceAll('.', '').replaceAll('-', '')
+      ) {
+        throw new AppError('Verificar CPF do Usuário');
+      }
+    } catch (error) {
+      throw new AppError('Verificar Dados do Usuário');
     }
 
     await this.responsaveis.update(responsavel);
