@@ -115,6 +115,7 @@ model Processos {
   dias_percorridos    Int
   dias_expirados      Int
   status_prazo        Int
+  porcetagem_prazo    Int?
   sigiloso            String?         @db.Char(1)
   observacao          String?         @db.MediumText
   fk_status           Int
