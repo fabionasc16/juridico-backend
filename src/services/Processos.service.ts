@@ -256,6 +256,21 @@ class ProcessosService {
     return status_prazo;
   }
 
+  private async calculaLimitePrazo(processo: any) {
+    let limiteProcesso;
+    if (processo.dias_corridos === 'S') {
+      limiteProcesso = moment(processo.data_recebimento)
+        .add(processo.prazo_total, 'd')
+        .format('YYYY-MM-DD');
+    } else {
+      limiteProcesso = (
+        await calculaDias(processo.data_recebimento, processo.prazo_total)
+      ).format('YYYY-MM-DD');
+    }
+
+    return limiteProcesso;
+  }
+  
 
   private async calculaPrazo(processo: any) {
     let limiteProcesso: any = '';
@@ -959,18 +974,18 @@ class ProcessosService {
 
     for (let index = 0; index < processos.length; index++) {
       const processo = processos[index];
-      const prazo = await this.calculaPrazo(processo) ;
-      const statusPrazo = await this.calculaStatusPrazo(processo);
-      const recebimento = processo.data_recebimento;
-
-      //processo.dia_limite_prazo;
-      //processo.dias_percorridos;
-      processo.prazo_total = await this.calculaPrazo(processo);
+          
+     // processo.prazo_total = await this.calculaPrazo(processo);
       processo.status_prazo = await this.calculaStatusPrazo(processo);
-      console.log(`Id: ${processo.id_processo} Recebimento: ${processo.data_recebimento.toISOString(false)}  Status prazo: ${statusPrazo} Prazo: ${prazo}`);
+      processo.dia_limite_prazo = await this.calculaLimitePrazo(processo);
+      processo.dias_percorridos = await this.calculaDiasPecorridos(processo);
+      //processo.dias_expirados = await this.calculaDiasExpirados(processo);
+
+
+      console.log(`Id: ${processo.id_processo} Recebimento: ${processo.data_recebimento.toISOString(false)}  Status prazo: ${processo.status_prazo} Prazo: ${processo.prazo_total}`);
 
       await this.processos.updatePrazosProcesso(processo.id_processo, processo);
-      
+
     }
 
   }
