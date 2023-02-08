@@ -233,12 +233,13 @@ class ProcessosService {
       sigiloso: args.sigiloso,
       fk_status: args.fk_status,
       valor_multa: args.valor_multa,
+      porcetagem_prazo: undefined
     });
   }
 
 
   async calculaStatusPrazo(processo: any) {
-    const prazo = await this.calculaPrazo(processo);
+    const prazo = await this.calculaDiasPecorridos(processo);
     let status_prazo = undefined;
 
     if (prazo == -1) {
@@ -270,9 +271,29 @@ class ProcessosService {
 
     return limiteProcesso;
   }
-  
 
-  private async calculaPrazo(processo: any) {
+  /*private async calculaDiasPecorridos(processo: any) {
+    let limiteProcesso;
+    if (processo.dias_corridos === 'S') {
+      limiteProcesso = moment(processo.data_recebimento)
+        .add(processo.prazo_total, 'd')
+        .format('YYYY-MM-DD');
+    } else {
+      limiteProcesso = (
+        await calculaDias(processo.data_recebimento, processo.prazo_total)
+      ).format('YYYY-MM-DD');
+    }
+
+    const diasPercorridos = moment(new Date(), 'YYYY-MM-DD').diff(
+      moment(processo.data_recebimento, 'YYYY-MM-DD'),
+      'days',
+    );
+
+    return diasPercorridos;
+  }*/
+
+
+  private async calculaDiasPecorridos(processo: any) {
     let limiteProcesso: any = '';
     let diasExpirados = 0;
 
@@ -974,15 +995,21 @@ class ProcessosService {
 
     for (let index = 0; index < processos.length; index++) {
       const processo = processos[index];
-          
-     // processo.prazo_total = await this.calculaPrazo(processo);
+
       processo.status_prazo = await this.calculaStatusPrazo(processo);
       processo.dia_limite_prazo = await this.calculaLimitePrazo(processo);
-      processo.dias_percorridos = await this.calculaDiasPecorridos(processo);
-      //processo.dias_expirados = await this.calculaDiasExpirados(processo);
+      processo.dias_percorridos = await await this.calculaDiasPecorridos(processo);
 
-
-      console.log(`Id: ${processo.id_processo} Recebimento: ${processo.data_recebimento.toISOString(false)}  Status prazo: ${processo.status_prazo} Prazo: ${processo.prazo_total}`);
+      // Calculo para definir a percentual de completude do prazo
+      if ( processo.dias_percorridos > 0) {
+        processo.porcetagem_prazo = ((processo.dias_percorridos * 100) / processo.prazo_total);
+      } else if (processo.dias_percorridos < 0 ){
+        processo.porcetagem_prazo = ((processo.prazo_total + (processo.dias_percorridos * -1)) * 100) / processo.prazo_total;
+      } else if( processo.dias_percorridos == 0){
+        processo.porcetagem_prazo = 100;
+      }
+      
+      console.log(`Id: ${processo.id_processo} Recebimento: ${processo.data_recebimento.toISOString(false)}  Status prazo: ${processo.status_prazo} Data Limite: ${processo.dia_limite_prazo} Prazo: ${processo.prazo_total} Dias Corridos: ${processo.dias_percorridos} Completude: ${processo.porcetagem_prazo} `);
 
       await this.processos.updatePrazosProcesso(processo.id_processo, processo);
 

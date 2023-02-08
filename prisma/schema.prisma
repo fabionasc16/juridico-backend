@@ -78,14 +78,13 @@ model Responsaveis {
 }
 
 model Status {
-  id_status          Int          @id @default(autoincrement())
-  desc_status        String       @db.VarChar(100)
-  aplica_a           String       @db.VarChar(100)
-  color_status_prazo String?      @db.VarChar(100)
-  Historico          Historico[]
-  Processos          Processos[]  @relation("processos_fk_status_fkey")
-  ProcessosPrazos    Processos[]  @relation("processos_fk_statusprazo_fkey")
-  Reiteracao         Reiteracao[]
+  id_status       Int          @id @default(autoincrement())
+  desc_status     String       @db.VarChar(100)
+  aplica_a        String       @db.VarChar(100)
+  Historico       Historico[]
+  Processos       Processos[]  @relation("processos_fk_status_fkey")
+  ProcessosPrazos Processos[]  @relation("processos_fk_statusprazo_fkey")
+  Reiteracao      Reiteracao[]
 
   @@map("status")
 }
