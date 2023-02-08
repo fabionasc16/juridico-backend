@@ -156,11 +156,6 @@ class ResponsaveisService {
       );
     }
 
-    const idUsuario = await this.responsaveis.loadIdUsuario(args.id_usuario);
-    if (idUsuario) {
-      throw new AppError('ID de Usuário já cadastrado no sistema');
-    }
-
     try {
       const { data, status } = await axios.get(
         `${url}/users/id/${args.id_usuario}`,
@@ -178,6 +173,16 @@ class ResponsaveisService {
         args.cpf_responsavel.replaceAll('.', '').replaceAll('-', '')
       ) {
         throw new AppError('Verificar CPF do Usuário');
+      }
+
+      const idUsuario = await this.responsaveis.loadIdUsuario(args.id_usuario);
+      if (idUsuario) {
+        if (
+          idUsuario.cpf_responsavel.replaceAll('.', '').replaceAll('-', '') !==
+          args.cpf_responsavel.replaceAll('.', '').replaceAll('-', '')
+        ) {
+          throw new AppError('Verificar CPF do Usuário');
+        }
       }
     } catch (error) {
       throw new AppError('Verificar Dados do Usuário');
