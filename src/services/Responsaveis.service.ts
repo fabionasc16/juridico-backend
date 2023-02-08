@@ -1,14 +1,19 @@
+import axios from 'axios';
+import { nextTick } from 'process';
+
 import { AppError } from '../errors/AppError.class';
 import { Responsaveis } from '../models/Responsaveis.model';
 import { ResponsaveisRepository } from '../repositories/Responsaveis.repository';
 
 class ResponsaveisService {
+  private url = process.env.SSO_URL;
   private responsaveis: ResponsaveisRepository;
   constructor() {
     this.responsaveis = new ResponsaveisRepository();
   }
 
   async create(args: Responsaveis): Promise<Responsaveis> {
+    const url = process.env.SSO_URL;
     if (!args.nome_responsavel) {
       throw new AppError('Informe o Nome do Responsável');
     }
@@ -29,11 +34,42 @@ class ResponsaveisService {
       throw new AppError('Informe o Registro da OAB do Responsável');
     }
 
+    if (!args.id_usuario) {
+      throw new AppError('Informe o ID do Usuário do Responsável');
+    }
+
     const responsavel = await this.responsaveis.loadResponsavel(
       args.cpf_responsavel.replaceAll('.', '').replaceAll('-', ''),
     );
     if (responsavel) {
       throw new AppError('Responsável já cadastrado no sistema');
+    }
+
+    const idUsuario = await this.responsaveis.loadIdUsuario(args.id_usuario);
+    if (idUsuario) {
+      throw new AppError('ID de Usuário já cadastrado no sistema');
+    }
+
+    try {
+      const { data, status } = await axios.get(
+        `${url}/users/id/${args.id_usuario}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      if (!data) {
+        throw new AppError('Verificar o ID do Usuário');
+      } else if (
+        data.cpf.replaceAll('.', '').replaceAll('-', '') !==
+        args.cpf_responsavel.replaceAll('.', '').replaceAll('-', '')
+      ) {
+        throw new AppError('Verificar CPF do Usuário');
+      }
+    } catch (error) {
+      throw new AppError('Verificar Dados do Usuário');
     }
 
     return this.responsaveis.create({
@@ -44,6 +80,7 @@ class ResponsaveisService {
       telefone: args.telefone,
       email: args.email,
       registro_oab: args.registro_oab,
+      id_usuario: args.id_usuario,
     });
   }
 
@@ -72,6 +109,7 @@ class ResponsaveisService {
   }
 
   async update(args: any): Promise<void> {
+    const url = process.env.SSO_URL;
     if (!args.id_responsavel) {
       throw new AppError('Informe o Identificador do Responsável');
     }
@@ -104,6 +142,10 @@ class ResponsaveisService {
       responsavel.registro_oab = args.registro_oab;
     }
 
+    if (args.id_usuario) {
+      responsavel.id_usuario = args.id_usuario;
+    }
+
     const dataExists = await this.responsaveis.loadNotExists(
       args.id_responsavel,
       args.cpf_responsavel,
@@ -112,6 +154,38 @@ class ResponsaveisService {
       throw new AppError(
         'Já existe um registro na base de dados para os valores informados',
       );
+    }
+
+    try {
+      const { data, status } = await axios.get(
+        `${url}/users/id/${args.id_usuario}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      if (!data) {
+        throw new AppError('Verificar o ID do Usuário');
+      } else if (
+        data.cpf.replaceAll('.', '').replaceAll('-', '') !==
+        args.cpf_responsavel.replaceAll('.', '').replaceAll('-', '')
+      ) {
+        throw new AppError('Verificar CPF do Usuário');
+      }
+
+      const idUsuario = await this.responsaveis.loadIdUsuario(args.id_usuario);
+      if (idUsuario) {
+        if (
+          idUsuario.cpf_responsavel.replaceAll('.', '').replaceAll('-', '') !==
+          args.cpf_responsavel.replaceAll('.', '').replaceAll('-', '')
+        ) {
+          throw new AppError('Verificar CPF do Usuário');
+        }
+      }
+    } catch (error) {
+      throw new AppError('Verificar Dados do Usuário');
     }
 
     await this.responsaveis.update(responsavel);

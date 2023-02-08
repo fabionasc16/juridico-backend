@@ -72,10 +72,12 @@ model Responsaveis {
   telefone         String      @db.VarChar(40)
   email            String      @db.VarChar(60)
   registro_oab     String      @db.VarChar(40)
+  id_usuario       String      @db.VarChar(40)
   Processos        Processos[]
   Historico        Historico[]
 
   @@unique([cpf_responsavel])
+  @@unique([id_usuario])
   @@map("responsaveis")
 }
 
