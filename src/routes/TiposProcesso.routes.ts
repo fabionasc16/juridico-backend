@@ -18,7 +18,11 @@ tiposProcessoRoutes.post(
 tiposProcessoRoutes.get(
   '/',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
+  checkRole([
+    AuthService.ROLES.ADMIN,
+    AuthService.ROLES.ADVOGADO,
+    AuthService.ROLES.RECEPCAO,
+  ]),
   controller.read,
 );
 
@@ -42,5 +46,7 @@ tiposProcessoRoutes.delete(
   checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.delete,
 );
+
+tiposProcessoRoutes.get('/list', checkJWT, controller.listall);
 
 export { tiposProcessoRoutes };

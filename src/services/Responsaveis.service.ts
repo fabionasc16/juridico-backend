@@ -190,6 +190,10 @@ class ResponsaveisService {
 
     await this.responsaveis.update(responsavel);
   }
+
+  async listall(): Promise<void> {
+    return this.responsaveis.listall();
+  }
 }
 
 export { ResponsaveisService };

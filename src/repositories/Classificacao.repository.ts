@@ -3,6 +3,15 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { Classificacao } from '../models/Classificacao.model';
 
 class ClassificacaoRepository implements IPrismaSource<Classificacao> {
+  async listall(): Promise<any> {
+    return prisma.classificacao.findMany({
+      select: {
+        id_classificacao: true,
+        desc_classificacao: true,
+      },
+    });
+  }
+
   async create(args: Classificacao): Promise<Classificacao> {
     return prisma.classificacao.create({
       data: {

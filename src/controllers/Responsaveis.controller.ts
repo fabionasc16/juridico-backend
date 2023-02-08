@@ -141,6 +141,25 @@ class ResponsaveisController {
 
     return response.status(204).send();
   }
+
+  async listall(request: Request, response: Response): Promise<any> {
+    const data = await ResponsaveisController.service.listall();
+
+    try {
+      ResponsaveisController.logs.sendLog(
+        LogsService.SYSTEM,
+        LogsService.MODULE.ASSUNTOS,
+        LogsService.TRANSACTION.LISTAR,
+        request.user,
+        request.user.unidadeUsuario.unit_name,
+        request.body,
+      );
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
+    return response.status(200).json(data);
+  }
 }
 
 export { ResponsaveisController };

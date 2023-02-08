@@ -25,7 +25,11 @@ orgaoDemandanteRoutes.delete(
 orgaoDemandanteRoutes.post(
   '/list',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
+  checkRole([
+    AuthService.ROLES.ADMIN,
+    AuthService.ROLES.ADVOGADO,
+    AuthService.ROLES.RECEPCAO,
+  ]),
   controller.read,
 );
 
@@ -42,5 +46,7 @@ orgaoDemandanteRoutes.put(
   checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.update,
 );
+
+orgaoDemandanteRoutes.get('/list', checkJWT, controller.listall);
 
 export { orgaoDemandanteRoutes };

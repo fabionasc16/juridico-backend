@@ -3,6 +3,14 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { Responsaveis } from '../models/Responsaveis.model';
 
 class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
+  async listall(): Promise<any> {
+    return prisma.responsaveis.findMany({
+      select: {
+        id_responsavel: true,
+        nome_responsavel: true,
+      },
+    });
+  }
   async create(args: Responsaveis): Promise<Responsaveis> {
     return prisma.responsaveis.create({
       data: {
