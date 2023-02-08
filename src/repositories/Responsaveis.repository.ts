@@ -19,6 +19,7 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
         telefone: args.telefone,
         email: args.email,
         registro_oab: args.registro_oab,
+        id_usuario: args.id_usuario,
       },
     });
   }
@@ -84,6 +85,14 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
     return prisma.responsaveis.findUnique({
       where: {
         id_responsavel,
+      },
+    });
+  }
+
+  async loadIdUsuario(id_usuario: string): Promise<any> {
+    return prisma.responsaveis.findFirst({
+      where: {
+        id_usuario,
       },
     });
   }
