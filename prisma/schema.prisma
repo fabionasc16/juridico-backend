@@ -17,11 +17,10 @@ model TiposProcesso {
 
 model Assunto {
   id_assunto   Int         @id @default(autoincrement())
-  codigo_siged Int
+  codigo_siged Int         @unique
   desc_assunto String      @db.MediumText
   Processos    Processos[]
 
-  @@unique([codigo_siged])
   @@map("assunto")
 }
 
@@ -68,16 +67,14 @@ model TiposEventos {
 model Responsaveis {
   id_responsavel   Int         @id @default(autoincrement())
   nome_responsavel String      @db.VarChar(200)
-  cpf_responsavel  String      @db.VarChar(20)
+  cpf_responsavel  String      @unique @db.VarChar(20)
   telefone         String      @db.VarChar(40)
   email            String      @db.VarChar(60)
   registro_oab     String      @db.VarChar(40)
-  id_usuario       String      @db.VarChar(40)
-  Processos        Processos[]
+  id_usuario       String?      @db.VarChar(40)
   Historico        Historico[]
+  Processos        Processos[]
 
-  @@unique([cpf_responsavel])
-  @@unique([id_usuario])
   @@map("responsaveis")
 }
 
@@ -85,78 +82,86 @@ model Status {
   id_status       Int          @id @default(autoincrement())
   desc_status     String       @db.VarChar(100)
   aplica_a        String       @db.VarChar(100)
-  Reiteracao      Reiteracao[]
   Historico       Historico[]
   Processos       Processos[]  @relation("processos_fk_status_fkey")
   ProcessosPrazos Processos[]  @relation("processos_fk_statusprazo_fkey")
+  Reiteracao      Reiteracao[]
 
   @@map("status")
 }
 
 model Processos {
-  id_processo         Int          @id @default(autoincrement())
-  num_procedimento    String       @db.VarChar(100)
+  id_processo         Int             @id @default(autoincrement())
+  num_procedimento    String          @db.VarChar(100)
   fk_tipoprocesso     Int
   prazo_total         Int
-  dias_corridos       String       @db.Char(1)
+  dias_corridos       String          @db.Char(1)
   fk_orgaodemandante  Int
-  data_processo       DateTime     @db.Date
-  data_recebimento    DateTime     @db.Date
-  hora_recebimento    String       @db.VarChar(10)
-  data_arquivamento   DateTime?    @db.Date
+  data_processo       DateTime        @db.Date
+  data_recebimento    DateTime        @db.Date
+  hora_recebimento    String          @db.VarChar(10)
+  data_arquivamento   DateTime?       @db.Date
   fk_assunto          Int
   fk_classificacao    Int
-  objeto              String       @db.MediumText
-  requer_siged        String       @db.Char(1)
+  objeto              String          @db.MediumText
+  requer_siged        String          @db.Char(1)
   numero_siged        String?
-  data_processo_siged DateTime?    @db.Date
-  permanencia_siged   String?      @db.VarChar(100)
-  caixa_atual_siged   String?      @db.VarChar(150)
-  tramitacao_siged    String?      @db.VarChar(150)
+  data_processo_siged DateTime?       @db.Date
+  permanencia_siged   String?         @db.VarChar(100)
+  caixa_atual_siged   String?         @db.VarChar(150)
+  tramitacao_siged    String?         @db.VarChar(150)
   fk_responsavel      Int?
-  observacao          String?      @db.MediumText
-  descricao           String       @db.MediumText
-  dia_limite_prazo    DateTime     @db.Date
+  descricao           String          @db.MediumText
+  dia_limite_prazo    DateTime        @db.Date
   dias_percorridos    Int
   dias_expirados      Int
   status_prazo        Int
-  sigiloso            String?      @db.Char(1)
+  sigiloso            String?         @db.Char(1)
+  observacao          String?         @db.MediumText
   fk_status           Int
-  valor_multa         Float?       @db.Double
+  valor_multa         Float?
   Historico           Historico[]
+  assunto             Assunto         @relation(fields: [fk_assunto], references: [id_assunto])
+  classificacao       Classificacao   @relation(fields: [fk_classificacao], references: [id_classificacao])
+  orgaoDemandante     OrgaoDemandante @relation(fields: [fk_orgaodemandante], references: [id_orgao])
+  responsavel         Responsaveis?   @relation(fields: [fk_responsavel], references: [id_responsavel], onDelete: Restrict)
+  status              Status          @relation("processos_fk_status_fkey", fields: [fk_status], references: [id_status])
+  tipoProcesso        TiposProcesso   @relation(fields: [fk_tipoprocesso], references: [id_tipoprocesso])
+  statusPrazo         Status          @relation("processos_fk_statusprazo_fkey", fields: [status_prazo], references: [id_status])
   Reiteracao          Reiteracao[]
 
-  tipoProcesso    TiposProcesso   @relation(fields: [fk_tipoprocesso], references: [id_tipoprocesso])
-  orgaoDemandante OrgaoDemandante @relation(fields: [fk_orgaodemandante], references: [id_orgao])
-  assunto         Assunto         @relation(fields: [fk_assunto], references: [id_assunto])
-  classificacao   Classificacao   @relation(fields: [fk_classificacao], references: [id_classificacao])
-  responsavel     Responsaveis?   @relation(fields: [fk_responsavel], references: [id_responsavel])
-  status          Status          @relation(name: "processos_fk_status_fkey", fields: [fk_status], references: [id_status])
-  statusPrazo     Status          @relation(name: "processos_fk_statusprazo_fkey", fields: [status_prazo], references: [id_status])
-
+  @@index([fk_assunto], map: "processos_fk_assunto_fkey")
+  @@index([fk_classificacao], map: "processos_fk_classificacao_fkey")
+  @@index([fk_orgaodemandante], map: "processos_fk_orgaodemandante_fkey")
+  @@index([fk_responsavel], map: "processos_fk_responsavel_fkey")
+  @@index([fk_status], map: "processos_fk_status_fkey")
+  @@index([status_prazo], map: "processos_fk_statusprazo_fkey_idx")
+  @@index([fk_tipoprocesso], map: "processos_fk_tipoprocesso_fkey")
   @@map("processos")
 }
 
 model Historico {
-  id_historico   Int      @id @default(autoincrement())
-  data_historico DateTime @db.DateTime()
-  id_usuario     String   @db.VarChar(190)
+  id_historico   Int          @id @default(autoincrement())
+  data_historico DateTime     @db.DateTime(0)
+  id_usuario     String       @db.VarChar(190)
   fk_tipoevento  Int
   fk_processo    Int
   fk_responsavel Int
   fk_status      Int
+  processo       Processos    @relation(fields: [fk_processo], references: [id_processo])
+  responsavel    Responsaveis @relation(fields: [fk_responsavel], references: [id_responsavel])
+  status         Status       @relation(fields: [fk_status], references: [id_status])
+  tipoEvento     TiposEventos @relation(fields: [fk_tipoevento], references: [id_tipoevento])
 
-  tipoEvento  TiposEventos @relation(fields: [fk_tipoevento], references: [id_tipoevento])
-  processo    Processos    @relation(fields: [fk_processo], references: [id_processo])
-  responsavel Responsaveis @relation(fields: [fk_responsavel], references: [id_responsavel])
-  status      Status       @relation(fields: [fk_status], references: [id_status])
-
+  @@index([fk_processo], map: "historico_fk_processo_fkey")
+  @@index([fk_responsavel], map: "historico_fk_responsavel_fkey")
+  @@index([fk_status], map: "historico_fk_status_fkey")
+  @@index([fk_tipoevento], map: "historico_fk_tipoevento_fkey")
   @@map("historico")
 }
 
 model Reiteracao {
   id_reiteracao    Int       @id @default(autoincrement())
-  num_procedimento String?   @db.VarChar(120)
   numero_siged     String?   @db.VarChar(120)
   data_processo    DateTime? @db.Date
   prazo            Int?
@@ -165,9 +170,11 @@ model Reiteracao {
   hora_recebimento String?   @db.VarChar(10)
   reiteracao       String?   @db.MediumText
   fk_processo      Int
+  num_procedimento String?   @db.VarChar(120)
+  processo         Processos @relation(fields: [fk_processo], references: [id_processo])
+  status           Status    @relation(fields: [fk_status], references: [id_status])
 
-  status   Status    @relation(fields: [fk_status], references: [id_status])
-  processo Processos @relation(fields: [fk_processo], references: [id_processo])
-
+  @@index([fk_processo], map: "reiteracao_fk_processo_fkey")
+  @@index([fk_status], map: "reiteracao_fk_status_fkey")
   @@map("reiteracao")
 }
