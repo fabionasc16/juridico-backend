@@ -58,6 +58,19 @@ class StatusController {
     return response.status(200).json(data);
   }
 
+  async readRecepcao(request: Request, response: Response): Promise<Response> {
+    const data = await StatusController.service.readRecpcao();
+    try {
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
+
+    return response.status(200).json(data);
+  }
+
   async readById(request: Request, response: Response): Promise<Response> {
     const { id_status } = request.params;
     const data = await StatusController.service.readById(Number(id_status));

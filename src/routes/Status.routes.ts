@@ -30,6 +30,17 @@ statusRoutes.get(
 );
 
 statusRoutes.get(
+  '/recepcao',
+  checkJWT,
+  checkRole([
+    AuthService.ROLES.ADMIN,
+    AuthService.ROLES.ADVOGADO,
+    AuthService.ROLES.RECEPCAO,
+  ]),
+  controller.readRecepcao,
+);
+
+statusRoutes.get(
   '/id/:id_status',
   checkJWT,
   checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
