@@ -133,4 +133,4 @@ dist
 .pnp.*
 
 # Prisma Migrations
-prisma/migrations
+#prisma/migrations
