@@ -17,6 +17,7 @@ class StatusSerivce {
     if (status) {
       throw new AppError('O Status informado já está cadastrado no sistema');
     }
+    
 
     return this.status.create({
       desc_status: args.desc_status,
