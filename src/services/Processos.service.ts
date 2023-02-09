@@ -261,15 +261,14 @@ class ProcessosService {
     let limiteProcesso;
     if (processo.dias_corridos === 'S') {
       limiteProcesso = moment(processo.data_recebimento)
-        .add(processo.prazo_total, 'd')
-        .format('YYYY-MM-DD');
+        .add(processo.prazo_total, 'd');
     } else {
       limiteProcesso = (
         await calculaDias(processo.data_recebimento, processo.prazo_total)
-      ).format('YYYY-MM-DD');
+      );
     }
 
-    return limiteProcesso;
+    return limiteProcesso.toDate();
   }
 
   /*private async calculaDiasPecorridos(processo: any) {
@@ -1002,9 +1001,9 @@ class ProcessosService {
 
       // Calculo para definir a percentual de completude do prazo
       if ( processo.dias_percorridos > 0) {
-        processo.porcetagem_prazo = ((processo.dias_percorridos * 100) / processo.prazo_total);
+        processo.porcetagem_prazo = Math.round((processo.dias_percorridos * 100) / processo.prazo_total);
       } else if (processo.dias_percorridos < 0 ){
-        processo.porcetagem_prazo = ((processo.prazo_total + (processo.dias_percorridos * -1)) * 100) / processo.prazo_total;
+        processo.porcetagem_prazo = Math.round(((processo.prazo_total + (processo.dias_percorridos * -1)) * 100) / processo.prazo_total);
       } else if( processo.dias_percorridos == 0){
         processo.porcetagem_prazo = 100;
       }

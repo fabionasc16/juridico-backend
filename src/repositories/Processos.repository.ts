@@ -306,9 +306,9 @@ class ProcessosRepository implements IPrismaSource<Processos> {
   async updatePrazosProcesso(
     id_processo: number,
     processo: any
-  ): Promise<void> {
+  ): Promise<any> {
 
-    prisma.processos.update({
+    return await  prisma.processos.update({
       where: { id_processo },
       data: processo,
     });
