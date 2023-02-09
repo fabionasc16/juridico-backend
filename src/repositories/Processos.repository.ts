@@ -104,11 +104,11 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     }
 
     if (args.body.objetoProcesso) {
-      AND.push({ objeto: args.body.objetoProcesso });
+      AND.push({ objeto: { contains: args.body.objetoProcesso } });
     }
 
     if (args.body.descricaoProcesso) {
-      AND.push({ descricao: args.body.descricaoProcesso });
+      AND.push({ descricao: { contains: args.body.descricaoProcesso } });
     }
 
     if (AND.length) {
@@ -200,11 +200,11 @@ class ProcessosRepository implements IPrismaSource<Processos> {
     }
 
     if (args.body.objetoProcesso) {
-      AND.push({ objeto: args.body.objetoProcesso });
+      AND.push({ objeto: { contains: args.body.objetoProcesso } });
     }
 
     if (args.body.descricaoProcesso) {
-      AND.push({ descricao: args.body.descricaoProcesso });
+      AND.push({ descricao: { contains: args.body.descricaoProcesso } });
     }
 
     if (AND.length) {
