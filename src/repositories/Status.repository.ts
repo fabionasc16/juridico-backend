@@ -19,6 +19,14 @@ class StatusRepository implements IPrismaSource<Status> {
     return prisma.status.findMany();
   }
 
+  async readRecepcao(): Promise<any> {
+    return prisma.status.findMany({
+      where: {
+        OR: [{ id_status: 10 }, { id_status: 11 }],
+      },
+    });
+  }
+
   async update(args: Status): Promise<void> {
     await prisma.status.update({
       where: {
