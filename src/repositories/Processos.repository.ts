@@ -3,6 +3,9 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { Processos } from '../models/Processos.model';
 
 class ProcessosRepository implements IPrismaSource<Processos> {
+  listall(): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
   async create(args: Processos): Promise<Processos> {
     return prisma.processos.create({
       data: {
@@ -98,6 +101,110 @@ class ProcessosRepository implements IPrismaSource<Processos> {
 
     if (args.body.caixaAtualSIGED) {
       AND.push({ caixa_atual_siged: args.body.caixaAtualSIGED });
+    }
+
+    if (args.body.objetoProcesso) {
+      AND.push({ objeto: { contains: args.body.objetoProcesso } });
+    }
+
+    if (args.body.descricaoProcesso) {
+      AND.push({ descricao: { contains: args.body.descricaoProcesso } });
+    }
+
+    if (AND.length) {
+      Object.assign(filters, { AND });
+    }
+
+    const total = await prisma.processos.count({
+      where: filters,
+    });
+    const pageNumber = Number(page);
+    const pageSizeNumber = Number(pageSize);
+
+    const data = await prisma.processos.findMany({
+      skip: pageNumber * pageSizeNumber,
+      take: pageSizeNumber,
+      where: filters,
+      include: {
+        _count: {
+          select: {
+            Reiteracao: true,
+          },
+        },
+        tipoProcesso: true,
+        status: true,
+        assunto: true,
+        classificacao: true,
+        orgaoDemandante: true,
+        responsavel: true,
+      },
+    });
+
+    return {
+      currentPage: page,
+      perPage: pageSize,
+      total,
+      data,
+    };
+  }
+
+  async readRecebido(args: any): Promise<any> {
+    const page =
+      args.query.currentPage != null ? `${args.query.currentPage - 1}` : '0';
+    const pageSize = args.query.perPage != null ? args.query.perPage : '10';
+    const search = args.query.search != null ? args.query.search : '';
+    let filters = {};
+    if (search) {
+      filters = {
+        id_processo: args.query.search,
+      };
+    }
+
+    const AND = [];
+    AND.push({ fk_status: 10 });
+
+    if (args.body.idTipoProcesso) {
+      AND.push({ fk_tipoprocesso: Number(args.body.idTipoProcesso) });
+    }
+
+    if (args.body.numProcedimento) {
+      AND.push({ num_procedimento: args.body.numProcedimento });
+    }
+
+    if (args.body.numProcessoSIGED) {
+      AND.push({ numero_siged: args.body.numProcessoSIGED });
+    }
+
+    if (args.body.statusPrazo) {
+      AND.push({ status_prazo: Number(args.body.statusPrazo) });
+    }
+
+    if (args.body.idOrgaoDemandante) {
+      AND.push({ fk_orgaodemandante: Number(args.body.idOrgaoDemandante) });
+    }
+
+    if (args.body.idClassificacao) {
+      AND.push({ fk_classificacao: Number(args.body.idClassificacao) });
+    }
+
+    if (args.body.idResponsavel) {
+      AND.push({ fk_responsavel: Number(args.body.idResponsavel) });
+    }
+
+    if (args.body.idAssunto) {
+      AND.push({ fk_assunto: Number(args.body.idAssunto) });
+    }
+
+    if (args.body.caixaAtualSIGED) {
+      AND.push({ caixa_atual_siged: args.body.caixaAtualSIGED });
+    }
+
+    if (args.body.objetoProcesso) {
+      AND.push({ objeto: { contains: args.body.objetoProcesso } });
+    }
+
+    if (args.body.descricaoProcesso) {
+      AND.push({ descricao: { contains: args.body.descricaoProcesso } });
     }
 
     if (AND.length) {

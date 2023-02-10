@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 
-import { ResponsaveisService } from '../services/Responsaveis.service';
-
 import { LogsService } from '../services/Logs.service';
-
+import { ResponsaveisService } from '../services/Responsaveis.service';
 
 class ResponsaveisController {
   static service: ResponsaveisService;
@@ -15,19 +13,32 @@ class ResponsaveisController {
   }
 
   async create(request: Request, response: Response): Promise<Response> {
-    const { nomeResponsavel, cpfResponsavel, telefone, email, registroOAB } =
-      request.body;
+    const {
+      nomeResponsavel,
+      cpfResponsavel,
+      telefone,
+      email,
+      registroOAB,
+      idUsuario,
+    } = request.body;
     const service = await ResponsaveisController.service.create({
       nome_responsavel: nomeResponsavel,
       cpf_responsavel: cpfResponsavel,
       telefone,
       email,
       registro_oab: registroOAB,
+      id_usuario: idUsuario,
     });
 
     try {
-      ResponsaveisController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.RESPONSAVEIS, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
-
+      ResponsaveisController.logs.sendLog(
+        LogsService.SYSTEM,
+        LogsService.MODULE.RESPONSAVEIS,
+        LogsService.TRANSACTION.CADASTRAR,
+        request.user,
+        request.user.unidadeUsuario.unit_name,
+        request.body,
+      );
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }
@@ -40,8 +51,14 @@ class ResponsaveisController {
     await ResponsaveisController.service.delete(Number(id_responsavel));
 
     try {
-      ResponsaveisController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.RESPONSAVEIS, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
-
+      ResponsaveisController.logs.sendLog(
+        LogsService.SYSTEM,
+        LogsService.MODULE.RESPONSAVEIS,
+        LogsService.TRANSACTION.EXCLUIR,
+        request.user,
+        request.user.unidadeUsuario.unit_name,
+        request.body,
+      );
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }
@@ -53,8 +70,14 @@ class ResponsaveisController {
     const data = await ResponsaveisController.service.read(request);
 
     try {
-      ResponsaveisController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.RESPONSAVEIS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
-
+      ResponsaveisController.logs.sendLog(
+        LogsService.SYSTEM,
+        LogsService.MODULE.RESPONSAVEIS,
+        LogsService.TRANSACTION.LISTAR,
+        request.user,
+        request.user.unidadeUsuario.unit_name,
+        request.body,
+      );
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }
@@ -68,8 +91,14 @@ class ResponsaveisController {
       Number(id_responsavel),
     );
     try {
-      ResponsaveisController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.RESPONSAVEIS, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
-
+      ResponsaveisController.logs.sendLog(
+        LogsService.SYSTEM,
+        LogsService.MODULE.RESPONSAVEIS,
+        LogsService.TRANSACTION.VISUALIZAR,
+        request.user,
+        request.user.unidadeUsuario.unit_name,
+        request.body,
+      );
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }
@@ -78,8 +107,14 @@ class ResponsaveisController {
 
   async update(request: Request, response: Response): Promise<Response> {
     const { id_responsavel } = request.params;
-    const { nomeResponsavel, cpfResponsavel, telefone, email, registroOAB } =
-      request.body;
+    const {
+      nomeResponsavel,
+      cpfResponsavel,
+      telefone,
+      email,
+      registroOAB,
+      idUsuario,
+    } = request.body;
 
     await ResponsaveisController.service.update({
       id_responsavel: Number(id_responsavel),
@@ -88,16 +123,42 @@ class ResponsaveisController {
       telefone,
       email,
       registro_oab: registroOAB,
+      id_usuario: idUsuario,
     });
 
     try {
-      ResponsaveisController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.RESPONSAVEIS, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
-
+      ResponsaveisController.logs.sendLog(
+        LogsService.SYSTEM,
+        LogsService.MODULE.RESPONSAVEIS,
+        LogsService.TRANSACTION.EDITAR,
+        request.user,
+        request.user.unidadeUsuario.unit_name,
+        request.body,
+      );
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }
 
     return response.status(204).send();
+  }
+
+  async listall(request: Request, response: Response): Promise<any> {
+    const data = await ResponsaveisController.service.listall();
+
+    try {
+      ResponsaveisController.logs.sendLog(
+        LogsService.SYSTEM,
+        LogsService.MODULE.ASSUNTOS,
+        LogsService.TRANSACTION.LISTAR,
+        request.user,
+        request.user.unidadeUsuario.unit_name,
+        request.body,
+      );
+    } catch (error) {
+      console.error('ERROR AO GRAVAR O LOG');
+    }
+
+    return response.status(200).json(data);
   }
 }
 

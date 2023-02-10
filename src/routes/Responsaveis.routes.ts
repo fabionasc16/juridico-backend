@@ -25,7 +25,11 @@ responsaveisRoutes.delete(
 responsaveisRoutes.post(
   '/list',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
+  checkRole([
+    AuthService.ROLES.ADMIN,
+    AuthService.ROLES.ADVOGADO,
+    AuthService.ROLES.RECEPCAO,
+  ]),
   controller.read,
 );
 
@@ -42,5 +46,7 @@ responsaveisRoutes.put(
   checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.update,
 );
+
+responsaveisRoutes.get('/list', checkJWT, controller.listall);
 
 export { responsaveisRoutes };

@@ -3,6 +3,9 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { TiposEvento } from '../models/TipoEvento.model';
 
 class TiposEventoRepository implements IPrismaSource<TiposEvento> {
+  listall(): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
   async create(args: TiposEvento): Promise<TiposEvento> {
     return prisma.tiposEventos.create({
       data: {

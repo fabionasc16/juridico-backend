@@ -5,4 +5,5 @@ export type Responsaveis = {
   telefone: string;
   email: string;
   registro_oab: string;
+  id_usuario?: string;
 };

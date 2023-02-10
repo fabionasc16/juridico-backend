@@ -4,4 +4,5 @@ export interface IPrismaSource<T> {
   update(args: T): Promise<void>;
   delete(args: number): Promise<void>;
   loadId(args: number): Promise<any>;
+  listall(): Promise<any>;
 }

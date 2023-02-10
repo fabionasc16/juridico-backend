@@ -25,7 +25,11 @@ classificacaoRoutes.delete(
 classificacaoRoutes.get(
   '/',
   checkJWT,
-  checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
+  checkRole([
+    AuthService.ROLES.ADMIN,
+    AuthService.ROLES.ADVOGADO,
+    AuthService.ROLES.RECEPCAO,
+  ]),
   controller.read,
 );
 
@@ -42,5 +46,7 @@ classificacaoRoutes.put(
   checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.update,
 );
+
+classificacaoRoutes.get('/list', checkJWT, controller.listall);
 
 export { classificacaoRoutes };

@@ -3,6 +3,9 @@ import { IPrismaSource } from '../generics/IPrismaSource';
 import { Status } from '../models/Status.model';
 
 class StatusRepository implements IPrismaSource<Status> {
+  listall(): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
   async create(args: Status): Promise<Status> {
     return prisma.status.create({
       data: {
@@ -14,6 +17,28 @@ class StatusRepository implements IPrismaSource<Status> {
 
   async read(): Promise<any> {
     return prisma.status.findMany();
+  }
+
+  async readRecepcao(): Promise<any> {
+    return prisma.status.findMany({
+      where: {
+        OR: [{ id_status: 10 }, { id_status: 11 }],
+      },
+    });
+  }
+
+  async readAll(): Promise<any> {
+    return prisma.status.findMany({
+      where: {
+        OR: [
+          { id_status: 10 },
+          { id_status: 11 },
+          { id_status: 12 },
+          { id_status: 13 },
+          { id_status: 14 },
+        ],
+      },
+    });
   }
 
   async update(args: Status): Promise<void> {
