@@ -368,7 +368,7 @@ class ProcessosService {
     return this.processos.readCaixasSIGED();
   }
 
-  async update(args: Processos): Promise<void> {
+  async update(args: Processos): Promise<any> {
     if (!args.id_processo) {
       throw new AppError('Informe o Identificador do procedimento');
     }
@@ -631,7 +631,7 @@ class ProcessosService {
       }
     }
 
-    await this.processos.update(processo);
+    return await this.processos.update(processo);
   }
 
   async retrieveSIGEDData(numero_processo: string): Promise<any> {

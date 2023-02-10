@@ -67,6 +67,9 @@ class ProcessosController {
       valor_multa: valorMulta === '' ? 0 : Number(valorMulta),
     });
 
+     // Atualiza prazo do processo
+     ProcessosController.service.atualizaPrazoProcesso(service.id_processo);
+
     try {
       ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
 
@@ -160,7 +163,7 @@ class ProcessosController {
       statusProcesso,
       valorMulta,
     } = request.body;
-    await ProcessosController.service.update({
+   const service =  await ProcessosController.service.update({
       id_processo: Number(id_processo),
       num_procedimento: numProcedimento,
       fk_tipoprocesso: idTipoProcesso,
@@ -187,6 +190,9 @@ class ProcessosController {
       fk_status: statusProcesso,
       valor_multa: valorMulta === '' ? 0 : Number(valorMulta),
     });
+
+    // Atualiza prazo do processo
+    ProcessosController.service.atualizaPrazoProcesso(service.id_processo);
 
     try {
       ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
@@ -366,7 +372,7 @@ class ProcessosController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-     ProcessosController.service.atualizaPrazosProcesso();
+     ProcessosController.service.atualizaPrazosProcessos();
   
     return response.status(200).send();
   }
