@@ -17,6 +17,7 @@ class StatusSerivce {
     if (status) {
       throw new AppError('O Status informado já está cadastrado no sistema');
     }
+    
 
     return this.status.create({
       desc_status: args.desc_status,
@@ -106,6 +107,15 @@ class StatusSerivce {
 
   async readRecpcao(): Promise<any> {
     const status = await this.status.readRecepcao();
+    if (status.length === 0) {
+      throw new AppError('Nenhum status foi encontrado no sistema', 404);
+    }
+
+    return status;
+  }
+
+  async readAll(): Promise<any> {
+    const status = await this.status.readAll();
     if (status.length === 0) {
       throw new AppError('Nenhum status foi encontrado no sistema', 404);
     }
