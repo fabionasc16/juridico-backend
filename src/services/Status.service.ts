@@ -113,6 +113,15 @@ class StatusSerivce {
 
     return status;
   }
+
+  async readAll(): Promise<any> {
+    const status = await this.status.readAll();
+    if (status.length === 0) {
+      throw new AppError('Nenhum status foi encontrado no sistema', 404);
+    }
+
+    return status;
+  }
 }
 
 export { StatusSerivce };

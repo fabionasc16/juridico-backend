@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 
+import { AuthService } from '../services/Auth.service';
+// eslint-disable-next-line import-helpers/order-imports
 import { StatusSerivce } from '../services/Status.service';
 
 import { LogsService } from '../services/Logs.service';
@@ -59,16 +61,24 @@ class StatusController {
   }
 
   async readRecepcao(request: Request, response: Response): Promise<Response> {
-    const data = await StatusController.service.readRecpcao();
+    if (
+      AuthService.checkRoles(AuthService.ROLES.ADMIN, request.user.roles) ||
+      AuthService.checkRoles(AuthService.ROLES.ADVOGADO, request.user.roles)
+    ) {
+      const data = await StatusController.service.readAll()
+      return response.status(200).json(data);
+    }
+    if (
+      AuthService.checkRoles(AuthService.ROLES.RECEPCAO, request.user.roles)
+    ) {
+      const data = await StatusController.service.readRecpcao();
+      return response.status(200).json(data);
+    }
     try {
       StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
-
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }
-
-
-    return response.status(200).json(data);
   }
 
   async readById(request: Request, response: Response): Promise<Response> {
@@ -96,9 +106,14 @@ class StatusController {
     );
 
     try {
-      
-      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
-
+      StatusController.logs.sendLog(
+        LogsService.SYSTEM,
+        LogsService.MODULE.STATUS,
+        LogsService.TRANSACTION.VISUALIZAR,
+        request.user,
+        request.user.unidadeUsuario.unit_name,
+        request.body,
+      );
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }
