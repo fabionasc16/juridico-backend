@@ -989,7 +989,7 @@ class ProcessosService {
     return result;
   }
 
-  async atualizaPrazosProcesso() {
+  async atualizaPrazosProcessos() {
     const processos = await this.processos.listarTodosProcessosAtualizacao();
 
     for (let index = 0; index < processos.length; index++) {
@@ -1013,6 +1013,31 @@ class ProcessosService {
       await this.processos.updatePrazosProcesso(processo.id_processo, processo);
 
     }
+
+  }
+
+  async atualizaPrazoProcesso(id_processo:number) {
+    const processo = await this.processos.loadId(id_processo);
+    
+    if( processo.fk_status !=  14 ){
+
+      processo.status_prazo = await this.calculaStatusPrazo(processo);
+      processo.dia_limite_prazo = await this.calculaLimitePrazo(processo);
+      processo.dias_percorridos = await await this.calculaDiasPecorridos(processo);
+
+      // Calculo para definir a percentual de completude do prazo
+      if ( processo.dias_percorridos > 0) {
+        processo.porcetagem_prazo = Math.round((processo.dias_percorridos * 100) / processo.prazo_total);
+      } else if (processo.dias_percorridos < 0 ){
+        processo.porcetagem_prazo = Math.round(((processo.prazo_total + (processo.dias_percorridos * -1)) * 100) / processo.prazo_total);
+      } else if( processo.dias_percorridos == 0){
+        processo.porcetagem_prazo = 100;
+      }
+      
+      console.log(`Id: ${processo.id_processo} Recebimento: ${processo.data_recebimento.toISOString(false)}  Status prazo: ${processo.status_prazo} Data Limite: ${processo.dia_limite_prazo} Prazo: ${processo.prazo_total} Dias Corridos: ${processo.dias_percorridos} Completude: ${processo.porcetagem_prazo} `);
+
+      await this.processos.updatePrazosProcesso(processo.id_processo, processo); 
+    }   
 
   }
 }
