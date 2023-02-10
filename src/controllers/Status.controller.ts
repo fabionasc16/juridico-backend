@@ -31,7 +31,7 @@ class StatusController {
         request.user,
         request.user.unidadeUsuario.unit_name,
         request.body,
-
+      );  
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }
