@@ -57,6 +57,11 @@ class AssuntoRepository implements IPrismaSource<Assunto> {
       skip: pageNumber * pageSizeNumber,
       take: pageSizeNumber,
       where: filters,
+      orderBy: [
+        {
+          desc_assunto: 'asc',
+        },
+      ],
     });
 
     return {
