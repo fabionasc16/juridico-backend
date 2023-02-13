@@ -43,6 +43,11 @@ class ClassificacaoRepository implements IPrismaSource<Classificacao> {
       skip: pageNumber * pageSizeNumber,
       take: pageSizeNumber,
       where: filters,
+      orderBy: [
+        {
+          desc_classificacao: 'asc',
+        },
+      ],
     });
 
     return {
