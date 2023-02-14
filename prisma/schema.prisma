@@ -71,7 +71,7 @@ model Responsaveis {
   telefone         String      @db.VarChar(40)
   email            String      @db.VarChar(60)
   registro_oab     String      @db.VarChar(40)
-  id_usuario       String?      @db.VarChar(40)
+  id_usuario       String?     @db.VarChar(40)
   Historico        Historico[]
   Processos        Processos[]
 
@@ -82,6 +82,7 @@ model Status {
   id_status       Int          @id @default(autoincrement())
   desc_status     String       @db.VarChar(100)
   aplica_a        String       @db.VarChar(100)
+  color_status_prazo  String?       @db.VarChar(100)
   Historico       Historico[]
   Processos       Processos[]  @relation("processos_fk_status_fkey")
   ProcessosPrazos Processos[]  @relation("processos_fk_statusprazo_fkey")
@@ -116,6 +117,7 @@ model Processos {
   dias_percorridos    Int
   dias_expirados      Int
   status_prazo        Int
+  porcetagem_prazo    Int?
   sigiloso            String?         @db.Char(1)
   observacao          String?         @db.MediumText
   fk_status           Int

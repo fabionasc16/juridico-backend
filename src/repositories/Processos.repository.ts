@@ -36,7 +36,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         status_prazo: args.status_prazo,
         sigiloso: args.sigiloso,
         fk_status: args.fk_status,
-        valor_multa: args.valor_multa,
+        valor_multa: args.valor_multa,        
       },
     });
   }
@@ -410,6 +410,37 @@ class ProcessosRepository implements IPrismaSource<Processos> {
       data: { fk_status, fk_responsavel, data_arquivamento },
     });
   }
+  async updatePrazosProcesso(
+    id_processo: number,
+    processo: any
+  ): Promise<any> {
+
+    return await  prisma.processos.update({
+      where: { id_processo },
+      data: processo,
+    });
+  }
+
+  async listarTodosProcessosAtualizacao(): Promise<any> {
+    return await prisma.processos.findMany(
+      {
+        select: {
+          id_processo: true,
+          prazo_total: true,
+          data_recebimento: true
+        },
+        where: {
+          NOT: {
+            AND: [
+              { fk_status: 14 },
+            ]
+          },
+        },
+
+      }
+    );
+  }
+
 }
 
 export { ProcessosRepository };
