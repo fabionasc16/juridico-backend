@@ -50,6 +50,11 @@ class TiposProcessoRepository implements IPrismaSource<TiposProcesso> {
       skip: pageNumber * pageSizeNumber,
       take: pageSizeNumber,
       where: filters,
+      orderBy: [
+        {
+          desc_tipoprocesso: 'asc',
+        },
+      ],
     });
 
     return {

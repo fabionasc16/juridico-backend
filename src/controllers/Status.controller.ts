@@ -24,14 +24,7 @@ class StatusController {
     });
 
     try {
-      StatusController.logs.sendLog(
-        LogsService.SYSTEM,
-        LogsService.MODULE.STATUS,
-        LogsService.TRANSACTION.CADASTRAR,
-        request.user,
-        request.user.unidadeUsuario.unit_name,
-        request.body,
-      );  
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG');
     }

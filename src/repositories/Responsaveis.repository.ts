@@ -48,6 +48,11 @@ class ResponsaveisRepository implements IPrismaSource<Responsaveis> {
       skip: pageNumber * pageSizeNumber,
       take: pageSizeNumber,
       where: { AND },
+      orderBy: [
+        {
+          nome_responsavel: 'asc',
+        },
+      ],
     });
 
     return {
