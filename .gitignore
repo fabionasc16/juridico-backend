@@ -14,7 +14,7 @@ package-*.json
 *.spec.ts
 
 # Migrations Prisma - Não precisam subir no projeto
-prisma/migrations### Node template
+#prisma/migrations### Node template
 # Logs
 logs
 *.log
@@ -133,4 +133,4 @@ dist
 .pnp.*
 
 # Prisma Migrations
-prisma/migrations
+#prisma/migrations

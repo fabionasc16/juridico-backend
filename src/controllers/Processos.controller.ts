@@ -67,6 +67,9 @@ class ProcessosController {
       valor_multa: valorMulta === '' ? 0 : Number(valorMulta),
     });
 
+     // Atualiza prazo do processo
+     ProcessosController.service.atualizaPrazoProcesso(service.id_processo);
+
     try {
       ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
 
@@ -160,7 +163,7 @@ class ProcessosController {
       statusProcesso,
       valorMulta,
     } = request.body;
-    await ProcessosController.service.update({
+   const service =  await ProcessosController.service.update({
       id_processo: Number(id_processo),
       num_procedimento: numProcedimento,
       fk_tipoprocesso: idTipoProcesso,
@@ -187,6 +190,9 @@ class ProcessosController {
       fk_status: statusProcesso,
       valor_multa: valorMulta === '' ? 0 : Number(valorMulta),
     });
+
+    // Atualiza prazo do processo
+    ProcessosController.service.atualizaPrazoProcesso(service.id_processo);
 
     try {
       ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
@@ -284,6 +290,7 @@ class ProcessosController {
     response: Response,
   ): Promise<Response> {
     const { descricaoProcesso } = request.body;
+    
     const data = await ProcessosController.service.readByDescricao(
       descricaoProcesso,
     );
@@ -296,6 +303,78 @@ class ProcessosController {
     }
 
     return response.status(200).json(data);
+  }
+
+  async calculaStatusPrazo(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+
+    const {
+      numProcedimento,
+      idTipoProcesso,
+      prazoTotal,
+      idOrgaoDemandante,
+      dataProcesso,
+      dataRecebimento,
+      horaRecebimento,
+      idAssunto,
+      idClassificacao,
+      objeto,
+      requerSIGED,
+      numProcessoSIGED,
+      dataProcessoSIGED,
+      permanenciaSIGED,
+      caixaAtualSIGED,
+      tramitacaoSIGED,
+      idResponsavel,
+      observacao,
+      descricao,
+      diasCorridos,
+      statusPrazo,
+      sigiloso,
+      statusProcesso,
+      valorMulta,
+    } = request.body;
+
+   const  processo = {
+      num_procedimento: numProcedimento,
+      fk_tipoprocesso: idTipoProcesso,
+      prazo_total: Number(prazoTotal),
+      fk_orgaodemandante: idOrgaoDemandante,
+      data_processo: dataProcesso,
+      data_recebimento: dataRecebimento,
+      hora_recebimento: horaRecebimento,
+      fk_assunto: idAssunto,
+      fk_classificacao: idClassificacao,
+      objeto,
+      requer_siged: requerSIGED === true ? 'S' : 'N',
+      numero_siged: numProcessoSIGED,
+      data_processo_siged: dataProcessoSIGED,
+      permanencia_siged: permanenciaSIGED,
+      caixa_atual_siged: caixaAtualSIGED,
+      tramitacao_siged: tramitacaoSIGED,
+      fk_responsavel: idResponsavel === '' ? null : idResponsavel,
+      observacao,
+      descricao,
+      status_prazo: statusPrazo,
+      dias_corridos: diasCorridos === true ? 'S' : 'N',
+      sigiloso: sigiloso === true ? 'S' : 'N',
+      fk_status: statusProcesso,
+      valor_multa: valorMulta === '' ? 0 : Number(valorMulta),
+    }
+    const data = await ProcessosController.service.calculaStatusPrazo(processo);
+  
+    return response.status(200).json(data);
+  }
+
+  async atualizaPrazosProcesso(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+     ProcessosController.service.atualizaPrazosProcessos();
+  
+    return response.status(200).send();
   }
 }
 

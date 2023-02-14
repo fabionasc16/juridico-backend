@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import { client } from '../config/Elasticsearch.config';
-import { calculateDays } from '../config/Holidays.config';
+import { calculaDias, calculateDays } from '../config/Holidays.config';
 import { AppError } from '../errors/AppError.class';
 import { Processos } from '../models/Processos.model';
 import { AssuntoRepository } from '../repositories/Assunto.repository';
@@ -20,6 +20,7 @@ class ProcessosService {
   private classificacao: ClassificacaoRepository;
   private responsavel: ResponsaveisRepository;
   private status: StatusRepository;
+  public static readonly statusPrazo = { 'EXPIRADO': 9, 'CRITICO': 1, 'ATENCAO': 2, 'NORMAL': 3, 'EXPIRA_HOJE': 19 };
 
   constructor() {
     this.processos = new ProcessosRepository();
@@ -174,15 +175,10 @@ class ProcessosService {
       moment(new Date()).format('YYYY-MM-DD'),
       'd',
     );
-    if (statusPrazo < 0) {
-      args.status_prazo = 9;
-    } else if (statusPrazo >= 0 && statusPrazo <= 3) {
-      args.status_prazo = 1;
-    } else if (statusPrazo >= 4 && statusPrazo <= 5) {
-      args.status_prazo = 2;
-    } else if (statusPrazo >= 6) {
-      args.status_prazo = 3;
-    }
+
+
+    args.status_prazo = await this.calculaStatusPrazo(args);
+
 
     const dataExists = await this.processos.loadExists(
       args.num_procedimento,
@@ -237,8 +233,95 @@ class ProcessosService {
       sigiloso: args.sigiloso,
       fk_status: args.fk_status,
       valor_multa: args.valor_multa,
+      porcetagem_prazo: undefined
     });
   }
+
+
+  async calculaStatusPrazo(processo: any) {
+    const prazo = await this.calculaDiasPecorridos(processo);
+    let status_prazo = undefined;
+
+    if (prazo == -1) {
+      status_prazo = ProcessosService.statusPrazo.EXPIRA_HOJE;
+    } else if (prazo < -1) {
+      status_prazo = ProcessosService.statusPrazo.EXPIRADO;
+    } else if (prazo >= 0 && prazo <= 3) {
+      status_prazo = ProcessosService.statusPrazo.CRITICO;
+    } else if (prazo >= 4 && prazo <= 5) {
+      status_prazo = ProcessosService.statusPrazo.ATENCAO;
+    } else if (prazo >= 6) {
+      status_prazo = status_prazo = ProcessosService.statusPrazo.NORMAL;
+    }
+
+    return status_prazo;
+  }
+
+  private async calculaLimitePrazo(processo: any) {
+    let limiteProcesso;
+    if (processo.dias_corridos === 'S') {
+      limiteProcesso = moment(processo.data_recebimento)
+        .add(processo.prazo_total, 'd');
+    } else {
+      limiteProcesso = (
+        await calculaDias(processo.data_recebimento, processo.prazo_total)
+      );
+    }
+
+    return limiteProcesso.toDate();
+  }
+
+  /*private async calculaDiasPecorridos(processo: any) {
+    let limiteProcesso;
+    if (processo.dias_corridos === 'S') {
+      limiteProcesso = moment(processo.data_recebimento)
+        .add(processo.prazo_total, 'd')
+        .format('YYYY-MM-DD');
+    } else {
+      limiteProcesso = (
+        await calculaDias(processo.data_recebimento, processo.prazo_total)
+      ).format('YYYY-MM-DD');
+    }
+
+    const diasPercorridos = moment(new Date(), 'YYYY-MM-DD').diff(
+      moment(processo.data_recebimento, 'YYYY-MM-DD'),
+      'days',
+    );
+
+    return diasPercorridos;
+  }*/
+
+
+  private async calculaDiasPecorridos(processo: any) {
+    let limiteProcesso: any = '';
+    let diasExpirados = 0;
+
+
+    if (processo.dias_corridos === 'S') {
+      limiteProcesso = moment(processo.data_recebimento)
+        .add(processo.prazo_total, 'd')
+        .format('YYYY-MM-DD');
+    } else {
+      limiteProcesso = (
+        await calculaDias(processo.data_recebimento, processo.prazo_total)
+      ).format('YYYY-MM-DD');
+    }
+
+    const diasPercorridos = moment(new Date(), 'YYYY-MM-DD').diff(
+      moment(processo.data_recebimento, 'YYYY-MM-DD'),
+      'days',
+    );
+
+    const prazo = moment(limiteProcesso as string).diff(
+      moment(new Date()).format('YYYY-MM-DD'),
+      'd',
+    );
+
+    return prazo;
+  }
+
+
+
 
   async delete(id_processo: number): Promise<void> {
     if (!id_processo) {
@@ -285,7 +368,7 @@ class ProcessosService {
     return this.processos.readCaixasSIGED();
   }
 
-  async update(args: Processos): Promise<void> {
+  async update(args: Processos): Promise<any> {
     if (!args.id_processo) {
       throw new AppError('Informe o Identificador do procedimento');
     }
@@ -548,7 +631,7 @@ class ProcessosService {
       }
     }
 
-    await this.processos.update(processo);
+    return await this.processos.update(processo);
   }
 
   async retrieveSIGEDData(numero_processo: string): Promise<any> {
@@ -911,6 +994,57 @@ class ProcessosService {
     return result;
   }
 
+  async atualizaPrazosProcessos() {
+    const processos = await this.processos.listarTodosProcessosAtualizacao();
+
+    for (let index = 0; index < processos.length; index++) {
+      const processo = processos[index];
+
+      processo.status_prazo = await this.calculaStatusPrazo(processo);
+      processo.dia_limite_prazo = await this.calculaLimitePrazo(processo);
+      processo.dias_percorridos = await await this.calculaDiasPecorridos(processo);
+
+      // Calculo para definir a percentual de completude do prazo
+      if ( processo.dias_percorridos > 0) {
+        processo.porcetagem_prazo = Math.round((processo.dias_percorridos * 100) / processo.prazo_total);
+      } else if (processo.dias_percorridos < 0 ){
+        processo.porcetagem_prazo = Math.round(((processo.prazo_total + (processo.dias_percorridos * -1)) * 100) / processo.prazo_total);
+      } else if( processo.dias_percorridos == 0){
+        processo.porcetagem_prazo = 100;
+      }
+      
+      console.log(`Id: ${processo.id_processo} Recebimento: ${processo.data_recebimento.toISOString(false)}  Status prazo: ${processo.status_prazo} Data Limite: ${processo.dia_limite_prazo} Prazo: ${processo.prazo_total} Dias Corridos: ${processo.dias_percorridos} Completude: ${processo.porcetagem_prazo} `);
+
+      await this.processos.updatePrazosProcesso(processo.id_processo, processo);
+
+    }
+
+  }
+
+  async atualizaPrazoProcesso(id_processo:number) {
+    const processo = await this.processos.loadId(id_processo);
+    
+    if( processo.fk_status !=  14 ){
+
+      processo.status_prazo = await this.calculaStatusPrazo(processo);
+      processo.dia_limite_prazo = await this.calculaLimitePrazo(processo);
+      processo.dias_percorridos = await await this.calculaDiasPecorridos(processo);
+
+      // Calculo para definir a percentual de completude do prazo
+      if ( processo.dias_percorridos > 0) {
+        processo.porcetagem_prazo = Math.round((processo.dias_percorridos * 100) / processo.prazo_total);
+      } else if (processo.dias_percorridos < 0 ){
+        processo.porcetagem_prazo = Math.round(((processo.prazo_total + (processo.dias_percorridos * -1)) * 100) / processo.prazo_total);
+      } else if( processo.dias_percorridos == 0){
+        processo.porcetagem_prazo = 100;
+      }
+      
+      console.log(`Id: ${processo.id_processo} Recebimento: ${processo.data_recebimento.toISOString(false)}  Status prazo: ${processo.status_prazo} Data Limite: ${processo.dia_limite_prazo} Prazo: ${processo.prazo_total} Dias Corridos: ${processo.dias_percorridos} Completude: ${processo.porcetagem_prazo} `);
+
+      await this.processos.updatePrazosProcesso(processo.id_processo, processo); 
+    }   
+    }   
+
   async readByStatus(fk_status: number, args: any): Promise<any> {
     if (fk_status !== 10) {
       throw new AppError(
@@ -921,8 +1055,8 @@ class ProcessosService {
       args = fk_status;
       return this.processos.read(args);
     }
-
-    const result = await this.processos.loadDescricao(descricao);
+/*
+    const result = await this.processos.loadDescricao(args.descricao);
     if (!result) {
       throw new AppError(
         'Nenhum processo foi localizado com o status informado',
@@ -930,7 +1064,7 @@ class ProcessosService {
       );
     }
 
-    return result;
+    return result;*/
   }
 }
 

@@ -1,15 +1,18 @@
 import { Request, Response } from 'express';
 
 import { FeriadosService } from '../services/Feriados.service';
+import { ProcessosService } from '../services/Processos.service';
 
 import { LogsService } from '../services/Logs.service';
 
 class FeriadosController {
   static service: FeriadosService;
+  static processoService: ProcessosService;
   static logs: LogsService;
 
   public constructor() {
     FeriadosController.service = new FeriadosService();
+    FeriadosController.processoService = new ProcessosService();
     FeriadosController.logs = new LogsService();
   }
   async create(request: Request, response: Response): Promise<Response> {
@@ -27,12 +30,18 @@ class FeriadosController {
       console.error('ERROR AO GRAVAR O LOG');
     }
 
+    // Atualiza prazo do processo
+    FeriadosController.processoService.atualizaPrazosProcessos();
+
     return response.status(201).json(service);
   }
 
   async delete(request: Request, response: Response): Promise<Response> {
     const { id_feriado } = request.params;
     await FeriadosController.service.delete(Number(id_feriado));
+
+     // Atualiza prazo do processo
+     FeriadosController.processoService.atualizaPrazosProcessos();
 
     try {
       FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
@@ -84,7 +93,9 @@ class FeriadosController {
       desc_feriado: descFeriado,
       tipo_feriado: tipoFeriado,
     });
-
+ 
+    // Atualiza prazo do processo
+    FeriadosController.processoService.atualizaPrazosProcessos();
     try {
       FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
 

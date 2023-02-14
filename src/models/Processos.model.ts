@@ -28,4 +28,5 @@ export type Processos = {
   sigiloso: string | null;
   fk_status: number;
   valor_multa: number | null;
+  porcetagem_prazo?: number | null;
 };
