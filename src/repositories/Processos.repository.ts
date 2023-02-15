@@ -428,7 +428,8 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         select: {
           id_processo: true,
           prazo_total: true,
-          data_recebimento: true
+          data_recebimento: true,
+          dias_corridos: true
         },
         where: {
           NOT: {
