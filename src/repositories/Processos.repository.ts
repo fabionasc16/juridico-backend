@@ -433,7 +433,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         where: {
           NOT: {
             AND: [
-              { fk_status: 14 },
+              { fk_status: 14 },// nao traz processos arquivados
             ]
           },
         },
