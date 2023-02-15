@@ -2,6 +2,8 @@ import axios from 'axios';
 import { Response, Request } from 'express';
 import { sign, verify } from 'jsonwebtoken';
 
+import { AppError } from '../errors/AppError.class';
+
 export class AuthService {
   private url = process.env.SSO_URL;
 
@@ -267,8 +269,23 @@ export class AuthService {
   }
 
   async updateUsuario(request: Request, response: Response): Promise<any> {
+    if (!request.params.id) {
+      throw new AppError('Faltado Parâmetro na Requisição', 400);
+    }
+
     try {
       const url = process.env.SSO_URL;
+
+      if (request.body) {
+        if (request.body.genero) {
+          if (
+            request.body.genero === 'masculino' ||
+            request.body.genero === 'feminino'
+          ) {
+            request.body.generoOutro = '';
+          }
+        }
+      }
 
       const { status, data } = await axios.put(
         `${url}/users/${request.params.id}`,
