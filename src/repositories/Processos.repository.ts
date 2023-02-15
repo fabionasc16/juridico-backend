@@ -133,6 +133,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         },
         tipoProcesso: true,
         status: true,
+        statusPrazo: true,
         assunto: true,
         classificacao: true,
         orgaoDemandante: true,

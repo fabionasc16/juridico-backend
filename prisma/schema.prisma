@@ -116,20 +116,20 @@ model Processos {
   dia_limite_prazo    DateTime        @db.Date
   dias_percorridos    Int
   dias_expirados      Int
-  status_prazo        Int
   porcetagem_prazo    Int?
   sigiloso            String?         @db.Char(1)
   observacao          String?         @db.MediumText
   fk_status           Int
+  status_prazo        Int
   valor_multa         Float?
   Historico           Historico[]
   assunto             Assunto         @relation(fields: [fk_assunto], references: [id_assunto])
   classificacao       Classificacao   @relation(fields: [fk_classificacao], references: [id_classificacao])
   orgaoDemandante     OrgaoDemandante @relation(fields: [fk_orgaodemandante], references: [id_orgao])
   responsavel         Responsaveis?   @relation(fields: [fk_responsavel], references: [id_responsavel], onDelete: Restrict)
-  status              Status?          @relation("processos_fk_status_fkey", fields: [fk_status], references: [id_status])
+  status              Status?         @relation("processos_fk_status_fkey", fields: [fk_status], references: [id_status])
   tipoProcesso        TiposProcesso   @relation(fields: [fk_tipoprocesso], references: [id_tipoprocesso])
-  statusPrazo         Status?          @relation("processos_fk_statusprazo_fkey", fields: [status_prazo], references: [id_status])
+  statusPrazo         Status?         @relation("processos_fk_statusprazo_fkey", fields: [status_prazo ], references: [id_status])
   Reiteracao          Reiteracao[]
 
   @@index([fk_assunto], map: "processos_fk_assunto_fkey")
