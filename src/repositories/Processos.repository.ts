@@ -133,6 +133,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         },
         tipoProcesso: true,
         status: true,
+        statusPrazo: true,
         assunto: true,
         classificacao: true,
         orgaoDemandante: true,
@@ -432,7 +433,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         where: {
           NOT: {
             AND: [
-              { fk_status: 14 },
+              { fk_status: 14 },// nao traz processos arquivados
             ]
           },
         },
