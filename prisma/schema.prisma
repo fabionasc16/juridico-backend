@@ -127,9 +127,9 @@ model Processos {
   classificacao       Classificacao   @relation(fields: [fk_classificacao], references: [id_classificacao])
   orgaoDemandante     OrgaoDemandante @relation(fields: [fk_orgaodemandante], references: [id_orgao])
   responsavel         Responsaveis?   @relation(fields: [fk_responsavel], references: [id_responsavel], onDelete: Restrict)
-  status              Status          @relation("processos_fk_status_fkey", fields: [fk_status], references: [id_status])
+  status              Status?          @relation("processos_fk_status_fkey", fields: [fk_status], references: [id_status])
   tipoProcesso        TiposProcesso   @relation(fields: [fk_tipoprocesso], references: [id_tipoprocesso])
-  statusPrazo         Status          @relation("processos_fk_statusprazo_fkey", fields: [status_prazo], references: [id_status])
+  statusPrazo         Status?          @relation("processos_fk_statusprazo_fkey", fields: [status_prazo], references: [id_status])
   Reiteracao          Reiteracao[]
 
   @@index([fk_assunto], map: "processos_fk_assunto_fkey")
@@ -137,7 +137,7 @@ model Processos {
   @@index([fk_orgaodemandante], map: "processos_fk_orgaodemandante_fkey")
   @@index([fk_responsavel], map: "processos_fk_responsavel_fkey")
   @@index([fk_status], map: "processos_fk_status_fkey")
-  @@index([status_prazo], map: "processos_fk_statusprazo_fkey_idx")
+  @@index([status_prazo], map: "processos_fk_statusprazo_fkey")
   @@index([fk_tipoprocesso], map: "processos_fk_tipoprocesso_fkey")
   @@map("processos")
 }
