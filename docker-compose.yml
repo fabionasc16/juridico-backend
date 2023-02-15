@@ -18,6 +18,7 @@ services:
       - ELASTIC_USER=elastic
       - ELASTIC_PASSWORD=edVxx!JEx3beqYo*uvrr
       - ELASTIC_HOST=https://192.168.107.23:9200/
+      - CRON_TOKEN=Bearer fissL805qU@
     volumes:
       - '.:/app'
       - '/etc/timezone:/etc/timezone:ro'
