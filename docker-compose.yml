@@ -1,11 +1,11 @@
 version: '3.3'
 services:
   juridico-dev:
-    image: node:16
+    image: node:16-alpine
     container_name: juridico_dev
     restart: always
     working_dir: /app
-    command: bash -c 'npm install && npm run generate && npm run development'
+    command: sh -c 'npm install && npm run generate && npm run development'
     environment:
       - PORT=3302
       - DATABASE_URL=mysql://root:1312Dashs@2020@192.168.107.55:3306/juridico-db
@@ -18,6 +18,7 @@ services:
       - ELASTIC_USER=elastic
       - ELASTIC_PASSWORD=edVxx!JEx3beqYo*uvrr
       - ELASTIC_HOST=https://192.168.107.23:9200/
+      - CRON_TOKEN=Bearer fissL805qU@
     volumes:
       - '.:/app'
       - '/etc/timezone:/etc/timezone:ro'
