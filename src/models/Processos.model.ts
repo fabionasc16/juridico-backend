@@ -24,9 +24,9 @@ export type Processos = {
   dia_limite_prazo?: Date | string;
   dias_percorridos?: number;
   dias_expirados?: number;
-  status_prazo: number;
+  status_prazo?: number;
   sigiloso: string | null;
-  fk_status: number;
+  fk_status?: number;
   valor_multa: number | null;
   porcetagem_prazo?: number | null;
 };
