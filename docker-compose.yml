@@ -1,11 +1,11 @@
 version: '3.3'
 services:
   juridico-dev:
-    image: node:16
+    image: node:16-alpine
     container_name: juridico_dev
     restart: always
     working_dir: /app
-    command: bash -c 'npm install && npm run generate && npm run development'
+    command: sh -c 'npm install && npm run generate && npm run development'
     environment:
       - PORT=3302
       - DATABASE_URL=mysql://root:1312Dashs@2020@192.168.107.55:3306/juridico-db

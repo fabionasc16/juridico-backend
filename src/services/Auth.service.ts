@@ -48,7 +48,7 @@ export class AuthService {
         });
       }
 
-      return await response.status(status).json(perfis);
+      return response.status(status).json(perfis);
     } catch (error) {
       return AuthService.checkError(error, response);
     }
@@ -82,7 +82,7 @@ export class AuthService {
         });
       }
 
-      return await response.status(status).json(perfis);
+      return response.status(status).json(perfis);
     } catch (error) {
       return AuthService.checkError(error, response);
     }
@@ -116,7 +116,7 @@ export class AuthService {
       }
       data.data = units;
 
-      return await response.status(status).json(data);
+      return response.status(status).json(data);
     } catch (error) {
       return AuthService.checkError(error, response);
     }
@@ -132,7 +132,7 @@ export class AuthService {
           .replace('-', '');
         const result: any = await axios.get(`${url}/users/cpf/${strCPF}`);
 
-        return await response.status(200).json({ id: result.data._id });
+        return response.status(200).json({ id: result.data._id });
       } catch (error) {
         return response.status(404).send({
           message: 'Usuário não existe na base de dados.',
@@ -156,7 +156,7 @@ export class AuthService {
               `${url}/users/${existUser.data._id}`,
               request.body,
             );
-            return await response.status(edit.status).json(edit.data);
+            return response.status(edit.status).json(edit.data);
           } catch (error) {
             return response.status(400).send({
               message: 'Não foi possível Cadastrar de usuário',
@@ -169,7 +169,7 @@ export class AuthService {
             request.body,
           );
 
-          return await response.status(status).json(data);
+          return response.status(status).json(data);
         }
       }
     } catch (error) {
@@ -188,7 +188,7 @@ export class AuthService {
       if (data.perfis && data.perfis.length >= 1) {
         data.perfilUsuario = data.perfis[0]._id;
       }
-      return await response.status(status).json(data);
+      return response.status(status).json(data);
     } catch (error) {
       return AuthService.checkError(error, response);
     }
@@ -205,7 +205,7 @@ export class AuthService {
         data.perfilUsuario = data.perfis[0]._id;
       }
 
-      return await response.status(status).json(data);
+      return response.status(status).json(data);
     } catch (error) {
       return AuthService.checkError(error, response);
     }
@@ -228,7 +228,7 @@ export class AuthService {
             cpfUsuario,
           },
         );
-        return await response.status(status).json(data);
+        return response.status(status).json(data);
       }
 
       const { status, data } = await axios.get(
@@ -260,7 +260,7 @@ export class AuthService {
       const { status, statusText } = await axios.delete(
         `${url}/users/${request.params.id}`,
       );
-      return await response.status(status).json(statusText);
+      return response.status(status).json(statusText);
     } catch (error) {
       return AuthService.checkError(error, response);
     }
@@ -274,7 +274,7 @@ export class AuthService {
         `${url}/users/${request.params.id}`,
         request.body,
       );
-      return await response.status(status).json(data);
+      return response.status(status).json(data);
     } catch (error) {
       return AuthService.checkError(error, response);
     }
@@ -299,7 +299,7 @@ export class AuthService {
           status: status_atual,
         },
       );
-      return await response.status(status).json(data);
+      return response.status(status).json(data);
     } catch (error) {
       return AuthService.checkError(error, response);
     }
