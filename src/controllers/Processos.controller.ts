@@ -68,7 +68,7 @@ class ProcessosController {
     });
 
      // Atualiza prazo do processo
-     ProcessosController.service.atualizaPrazoProcesso(service.id_processo);
+     await ProcessosController.service.atualizaPrazoProcesso(service.id_processo);
 
     try {
       ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
@@ -192,7 +192,7 @@ class ProcessosController {
     });
 
     // Atualiza prazo do processo
-    ProcessosController.service.atualizaPrazoProcesso(service.id_processo);
+    await ProcessosController.service.atualizaPrazoProcesso(service.id_processo);
 
     try {
       ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
