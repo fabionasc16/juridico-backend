@@ -282,7 +282,9 @@ export class AuthService {
             request.body.genero === 'masculino' ||
             request.body.genero === 'feminino'
           ) {
-            request.body.generoOutro = '';
+            if (request.body.generoOutro) {
+              request.body.generoOutro = '';
+            }
           }
         }
       }
