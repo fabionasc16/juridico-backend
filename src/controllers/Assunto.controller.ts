@@ -21,10 +21,10 @@ class AssuntoController {
     });
 
     try {
-      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.CADASTRAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(201).json(service);
@@ -35,10 +35,10 @@ class AssuntoController {
     await AssuntoController.service.delete(Number(id_assunto));
 
     try {
-      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.EXCLUIR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(204).send();
@@ -47,12 +47,12 @@ class AssuntoController {
   async read(request: Request, response: Response): Promise<Response> {
     const data = await AssuntoController.service.read(request);
 
-    try {
-      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+    /*try {
+      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.LISTAR, request.user.user, request.user.unidadeUsuario.unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
-    }
+      console.error('ERROR AO GRAVAR O LOG', error);
+    }*/
 
     return response.status(200).json(data);
   }
@@ -63,10 +63,10 @@ class AssuntoController {
 
     try {
      
-      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.VISUALIZAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -85,10 +85,10 @@ class AssuntoController {
 
     try {
      
-      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.EDITAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(204).send();
@@ -97,12 +97,7 @@ class AssuntoController {
   async listall(request: Request, response: Response): Promise<any> {
     const data = await AssuntoController.service.listall();
 
-    try {
-      AssuntoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
-
-    } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
-    }
+   
 
     return response.status(200).json(data);
   }

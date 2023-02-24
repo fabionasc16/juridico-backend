@@ -1028,7 +1028,7 @@ class ProcessosService {
 
       processo.status_prazo = await this.calculaStatusPrazo(processo);
       processo.dia_limite_prazo = await this.calculaLimitePrazo(processo);
-      processo.dias_percorridos = await await this.calculaDiasPecorridos(processo);
+      processo.dias_percorridos = await this.calculaDiasPecorridos(processo);
 
       // Calculo para definir a percentual de completude do prazo
       if ( processo.dias_percorridos > 0) {
