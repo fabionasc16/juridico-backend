@@ -20,7 +20,13 @@ class ProcessosService {
   private classificacao: ClassificacaoRepository;
   private responsavel: ResponsaveisRepository;
   private status: StatusRepository;
-  public static readonly statusPrazo = { 'EXPIRADO': 9, 'CRITICO': 1, 'ATENCAO': 2, 'NORMAL': 3, 'EXPIRA_HOJE': 19 };
+  public static readonly statusPrazo = {
+    EXPIRADO: 9,
+    CRITICO: 1,
+    ATENCAO: 2,
+    NORMAL: 3,
+    EXPIRA_HOJE: 19,
+  };
 
   constructor() {
     this.processos = new ProcessosRepository();
@@ -176,9 +182,7 @@ class ProcessosService {
       'd',
     );
 
-
     args.status_prazo = await this.calculaStatusPrazo(args);
-
 
     const dataExists = await this.processos.loadExists(
       args.num_procedimento,
@@ -233,14 +237,13 @@ class ProcessosService {
       sigiloso: args.sigiloso,
       fk_status: args.fk_status,
       valor_multa: args.valor_multa,
-      porcetagem_prazo: undefined
+      porcetagem_prazo: undefined,
     });
   }
 
-
   async calculaStatusPrazo(processo: any) {
     const prazo = await this.calculaDiasPecorridos(processo);
-    let status_prazo = undefined;
+    let status_prazo;
 
     if (prazo == -1) {
       status_prazo = ProcessosService.statusPrazo.EXPIRA_HOJE;
@@ -260,18 +263,21 @@ class ProcessosService {
   private async calculaLimitePrazo(processo: any) {
     let limiteProcesso;
     if (processo.dias_corridos === 'S') {
-      limiteProcesso = moment(processo.data_recebimento)
-        .add(processo.prazo_total, 'd');
+      limiteProcesso = moment(processo.data_recebimento).add(
+        processo.prazo_total,
+        'd',
+      );
     } else {
-      limiteProcesso = (
-        await calculaDias(processo.data_recebimento, processo.prazo_total)
+      limiteProcesso = await calculaDias(
+        processo.data_recebimento,
+        processo.prazo_total,
       );
     }
 
     return limiteProcesso.toDate();
   }
 
-  /*private async calculaDiasPecorridos(processo: any) {
+  /* private async calculaDiasPecorridos(processo: any) {
     let limiteProcesso;
     if (processo.dias_corridos === 'S') {
       limiteProcesso = moment(processo.data_recebimento)
@@ -289,13 +295,11 @@ class ProcessosService {
     );
 
     return diasPercorridos;
-  }*/
-
+  } */
 
   private async calculaDiasPecorridos(processo: any) {
     let limiteProcesso: any = '';
-    let diasExpirados = 0;
-
+    const diasExpirados = 0;
 
     if (processo.dias_corridos === 'S') {
       limiteProcesso = moment(processo.data_recebimento)
@@ -320,9 +324,6 @@ class ProcessosService {
     return prazo;
   }
 
-
-
-
   async delete(id_processo: number): Promise<void> {
     if (!id_processo) {
       throw new AppError('Informe o identificador do Processo');
@@ -342,7 +343,6 @@ class ProcessosService {
   async read(args: any): Promise<any> {
     return this.processos.read(args);
   }
-
 
   async readStatusRecebido(args: any): Promise<any> {
     return this.processos.readRecebido(args);
@@ -1002,48 +1002,79 @@ class ProcessosService {
 
       processo.status_prazo = await this.calculaStatusPrazo(processo);
       processo.dia_limite_prazo = await this.calculaLimitePrazo(processo);
-      processo.dias_percorridos = await await this.calculaDiasPecorridos(processo);
+      processo.dias_percorridos = await this.calculaDiasPecorridos(processo);
 
       // Calculo para definir a percentual de completude do prazo
-      if ( processo.dias_percorridos > 0) {
-        processo.porcetagem_prazo = Math.round((processo.dias_percorridos * 100) / processo.prazo_total);
-      } else if (processo.dias_percorridos < 0 ){
-        processo.porcetagem_prazo = Math.round(((processo.prazo_total + (processo.dias_percorridos * -1)) * 100) / processo.prazo_total);
-      } else if( processo.dias_percorridos == 0){
+      if (processo.dias_percorridos > 0) {
+        processo.porcetagem_prazo = Math.round(
+          (processo.dias_percorridos * 100) / processo.prazo_total,
+        );
+      } else if (processo.dias_percorridos < 0) {
+        processo.porcetagem_prazo = Math.round(
+          ((processo.prazo_total + processo.dias_percorridos * -1) * 100) /
+            processo.prazo_total,
+        );
+      } else if (processo.dias_percorridos == 0) {
         processo.porcetagem_prazo = 100;
       }
-      
-      console.log(`Id: ${processo.id_processo} Recebimento: ${processo.data_recebimento.toISOString(false)}  Status prazo: ${processo.status_prazo} Data Limite: ${processo.dia_limite_prazo} Prazo: ${processo.prazo_total} Dias Corridos: ${processo.dias_percorridos} Completude: ${processo.porcetagem_prazo} `);
 
-      await this.processos.updatePrazosProcesso(processo.id_processo, processo);
+      console.log(
+        `Id: ${
+          processo.id_processo
+        } Recebimento: ${processo.data_recebimento.toISOString(
+          false,
+        )}  Status prazo: ${processo.status_prazo} Data Limite: ${
+          processo.dia_limite_prazo
+        } Prazo: ${processo.prazo_total} Dias Corridos: ${
+          processo.dias_percorridos
+        } Completude: ${processo.porcetagem_prazo} `,
+      );
 
+      // await this.processos.updatePrazosProcesso(processo.id_processo, processo);
+      await this.processos.update(processo);
     }
-
   }
 
-  async atualizaPrazoProcesso(id_processo:number) {
+  async atualizaPrazoProcesso(id_processo: number) {
     const processo = await this.processos.loadId(id_processo);
-    
-    if( processo.fk_status !=  14 ){
 
+    if (processo.fk_status != 14) {
       processo.status_prazo = await this.calculaStatusPrazo(processo);
       processo.dia_limite_prazo = await this.calculaLimitePrazo(processo);
-      processo.dias_percorridos = await await this.calculaDiasPecorridos(processo);
+      processo.dias_percorridos = await await this.calculaDiasPecorridos(
+        processo,
+      );
 
       // Calculo para definir a percentual de completude do prazo
-      if ( processo.dias_percorridos > 0) {
-        processo.porcetagem_prazo = Math.round((processo.dias_percorridos * 100) / processo.prazo_total);
-      } else if (processo.dias_percorridos < 0 ){
-        processo.porcetagem_prazo = Math.round(((processo.prazo_total + (processo.dias_percorridos * -1)) * 100) / processo.prazo_total);
-      } else if( processo.dias_percorridos == 0){
+      if (processo.dias_percorridos > 0) {
+        processo.porcetagem_prazo = Math.round(
+          (processo.dias_percorridos * 100) / processo.prazo_total,
+        );
+      } else if (processo.dias_percorridos < 0) {
+        processo.porcetagem_prazo = Math.round(
+          ((processo.prazo_total + processo.dias_percorridos * -1) * 100) /
+            processo.prazo_total,
+        );
+      } else if (processo.dias_percorridos == 0) {
         processo.porcetagem_prazo = 100;
       }
-      
-      console.log(`Id: ${processo.id_processo} Recebimento: ${processo.data_recebimento.toISOString(false)}  Status prazo: ${processo.status_prazo} Data Limite: ${processo.dia_limite_prazo} Prazo: ${processo.prazo_total} Dias Corridos: ${processo.dias_percorridos} Completude: ${processo.porcetagem_prazo} `);
 
-      await this.processos.updatePrazosProcesso(processo.id_processo, processo); 
-    }   
-    }   
+      console.log(
+        `Id: ${
+          processo.id_processo
+        } Recebimento: ${processo.data_recebimento.toISOString(
+          false,
+        )}  Status prazo: ${processo.status_prazo} Data Limite: ${
+          processo.dia_limite_prazo
+        } Prazo: ${processo.prazo_total} Dias Corridos: ${
+          processo.dias_percorridos
+        } Completude: ${processo.porcetagem_prazo} `,
+      );
+
+      // await this.processos.updatePrazosProcesso(processo.id_processo, processo);
+      await this.processos.update(processo);
+    }
+  }
 
   async readByStatus(fk_status: number, args: any): Promise<any> {
     if (fk_status !== 10) {
@@ -1055,7 +1086,7 @@ class ProcessosService {
       args = fk_status;
       return this.processos.read(args);
     }
-/*
+    /*
     const result = await this.processos.loadDescricao(args.descricao);
     if (!result) {
       throw new AppError(
@@ -1064,7 +1095,7 @@ class ProcessosService {
       );
     }
 
-    return result;*/
+    return result; */
   }
 }
 
