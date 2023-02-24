@@ -36,7 +36,7 @@ class ProcessosRepository implements IPrismaSource<Processos> {
         status_prazo: args.status_prazo,
         sigiloso: args.sigiloso,
         fk_status: args.fk_status,
-        valor_multa: args.valor_multa,        
+        valor_multa: args.valor_multa,
       },
     });
   }
@@ -411,38 +411,33 @@ class ProcessosRepository implements IPrismaSource<Processos> {
       data: { fk_status, fk_responsavel, data_arquivamento },
     });
   }
-  async updatePrazosProcesso(
-    id_processo: number,
-    processo: any
-  ): Promise<any> {
 
-    return await  prisma.processos.update({
+  async updatePrazosProcesso(id_processo: number, processo: any): Promise<any> {
+    const proc = await prisma.processos.update({
       where: { id_processo },
       data: processo,
     });
+
+    return proc;
   }
 
   async listarTodosProcessosAtualizacao(): Promise<any> {
-    return await prisma.processos.findMany(
-      {
-        select: {
-          id_processo: true,
-          prazo_total: true,
-          data_recebimento: true,
-          dias_corridos: true
+    return await prisma.processos.findMany({
+      select: {
+        id_processo: true,
+        prazo_total: true,
+        data_recebimento: true,
+        dias_corridos: true,
+      },
+      where: {
+        NOT: {
+          AND: [
+            { fk_status: 14 }, // nao traz processos arquivados
+          ],
         },
-        where: {
-          NOT: {
-            AND: [
-              { fk_status: 14 },// nao traz processos arquivados
-            ]
-          },
-        },
-
-      }
-    );
+      },
+    });
   }
-
 }
 
 export { ProcessosRepository };
