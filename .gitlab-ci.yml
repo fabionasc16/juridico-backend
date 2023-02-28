@@ -9,4 +9,13 @@ deploy:
   stage: deploy
   tags:
     - prodam_150
+
+deploy-cron:
+  script:
+    - cp cron-files
+    - /etc/cron/ chmod u+x
+  when: manual
+  stage: deploy
+  tags:
+    - prodam_150
   

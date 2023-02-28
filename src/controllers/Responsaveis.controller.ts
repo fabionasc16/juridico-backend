@@ -75,7 +75,7 @@ class ResponsaveisController {
         LogsService.MODULE.RESPONSAVEIS,
         LogsService.TRANSACTION.LISTAR,
         request.user.nome,
-        request.user.unidadeUsuari[0].unit_name,
+        request.user.unidadeUsuario[0].unit_name,
         request.body,
       );
     } catch (error) {
