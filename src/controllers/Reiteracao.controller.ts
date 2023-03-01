@@ -38,10 +38,10 @@ class ReiteracaoController {
     });
 
     try {
-      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.CADASTRAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(201).json(service);
@@ -52,10 +52,10 @@ class ReiteracaoController {
     await ReiteracaoController.service.delete(Number(id_reiteracao));
 
     try {
-      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.EXCLUIR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(204).send();
@@ -65,10 +65,10 @@ class ReiteracaoController {
     const data = await ReiteracaoController.service.read(request.query);
 
     try {
-      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.LISTAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(200).json(data);
@@ -81,10 +81,10 @@ class ReiteracaoController {
     );
 
     try {
-      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.VISUALIZAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -118,10 +118,10 @@ class ReiteracaoController {
     });
 
     try {
-      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.EDITAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -138,10 +138,10 @@ class ReiteracaoController {
     );
 
     try {
-      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      ReiteracaoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.REITERACAO, LogsService.TRANSACTION.VISUALIZAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 

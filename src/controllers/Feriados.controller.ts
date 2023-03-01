@@ -24,10 +24,10 @@ class FeriadosController {
     });
 
     try {
-      FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.CADASTRAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     // Atualiza prazo do processo
@@ -44,10 +44,10 @@ class FeriadosController {
      FeriadosController.processoService.atualizaPrazosProcessos();
 
     try {
-      FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.EXCLUIR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -58,10 +58,10 @@ class FeriadosController {
     const data = await FeriadosController.service.read(request);
 
     try {
-      FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.LISTAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -73,10 +73,10 @@ class FeriadosController {
     const data = await FeriadosController.service.readById(Number(id_feriado));
 
     try {
-      FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.VISUALIZAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -97,10 +97,10 @@ class FeriadosController {
     // Atualiza prazo do processo
     FeriadosController.processoService.atualizaPrazosProcessos();
     try {
-      FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      FeriadosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.FERIADOS, LogsService.TRANSACTION.EDITAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(204).send();

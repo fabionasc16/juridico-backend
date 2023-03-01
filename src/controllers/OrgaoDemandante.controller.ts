@@ -30,10 +30,10 @@ class OrgaoDemandanteController {
     });
 
     try {
-      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.CADASTRAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -45,10 +45,10 @@ class OrgaoDemandanteController {
     await OrgaoDemandanteController.service.delete(Number(id_orgao));
 
     try {
-      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.EXCLUIR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -59,10 +59,10 @@ class OrgaoDemandanteController {
     const data = await OrgaoDemandanteController.service.read(request);
 
     try {
-      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.LISTAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(200).json(data);
@@ -75,10 +75,10 @@ class OrgaoDemandanteController {
     );
 
     try {
-      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.VISUALIZAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(200).json(data);
@@ -104,10 +104,10 @@ class OrgaoDemandanteController {
     });
 
     try {
-      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.EDITAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -118,10 +118,10 @@ class OrgaoDemandanteController {
     const data = await OrgaoDemandanteController.service.listall();
 
     try {
-      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      OrgaoDemandanteController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.LISTAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(200).json(data);

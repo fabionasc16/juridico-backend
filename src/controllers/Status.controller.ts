@@ -24,9 +24,9 @@ class StatusController {
     });
 
     try {
-      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.LISTAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(201).json(data);
@@ -37,10 +37,10 @@ class StatusController {
     await StatusController.service.delete(Number(id_status));
 
     try {
-      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.EXCLUIR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(204).send();
@@ -49,10 +49,10 @@ class StatusController {
   async read(request: Request, response: Response): Promise<Response> {
     const data = await StatusController.service.read();
     try {
-      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.LISTAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -74,9 +74,9 @@ class StatusController {
       return response.status(200).json(data);
     }
     try {
-      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.LISTAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
   }
 
@@ -86,10 +86,10 @@ class StatusController {
 
     try {
 
-      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.VISUALIZAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(200).json(data);
@@ -109,12 +109,10 @@ class StatusController {
         LogsService.SYSTEM,
         LogsService.MODULE.STATUS,
         LogsService.TRANSACTION.VISUALIZAR,
-        request.user,
-        request.user.unidadeUsuario.unit_name,
-        request.body,
+        "Anônimo", "Indefinida", request.body
       );
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -132,10 +130,10 @@ class StatusController {
 
     try {
       
-      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      StatusController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.STATUS, LogsService.TRANSACTION.EDITAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
