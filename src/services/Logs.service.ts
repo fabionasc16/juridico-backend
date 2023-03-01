@@ -65,8 +65,8 @@ export class LogsService {
             system: system
           }
         })
-      }else{
-        console.error("LOG NÃO ENVIADO!",` transaction: ${transaction},    module: ${module},    user: ${user}, unit: ${unit}`);
+      } else {
+        console.error("LOG NÃO ENVIADO!", ` transaction: ${transaction},    module: ${module},    user: ${user}, unit: ${unit}`);
       }
     } catch (error) {
       console.error("ERRO AO ENVIAR LOG!", error);
@@ -78,16 +78,22 @@ export class LogsService {
     try {
       const responseQueue = [];
       const allLogs = [];
-
+      const idProcesso = request.query.idProcesso;
       const result = await LogsService.client.search({
         index: 'system_logs',
         scroll: '30s',
-        sort: [{ 'date': 'desc' }],
+        sort: [{ 'date': `desc` }],
         size: 500,
         _source: ['date', 'transaction', 'module', 'user'],
         query: {
-          match: { system: LogsService.SYSTEM }
+          bool: {
+            must: [
+              { match: { system: LogsService.SYSTEM } },
+              { match: { "data.idProcesso": `${idProcesso}`} }
+            ]
+          }
         }
+
       });
 
       responseQueue.push(result);
@@ -98,7 +104,7 @@ export class LogsService {
         // collect the titles from this response
         body.hits.hits.forEach(function (hit) {
           const dateLog = new Date(hit._source.date);
-          allLogs.push({ 'date': `${dateLog.toLocaleString()}`, 'transaction': hit._source.transaction, 'module': hit._source.module, 'user': hit._source.user.nome })
+          allLogs.push({ 'date': `${dateLog.toLocaleString()}`, 'transaction': hit._source.transaction, 'module': hit._source.module, 'user': hit._source.user })
         });
 
         // check to see if we have collected all of the quotes
