@@ -26,18 +26,3 @@ services:
     ports:
       - '3302:3302'
     network_mode: bridge
-    
-  ticados-mongodb:
-      image: mongo:4.4.6
-      container_name: ticados-mongodb
-      restart: always
-      ports:
-        - "27018:27017"
-      volumes:
-        - mongo_data:/data/db
-        - '/etc/timezone:/etc/timezone'
-        - '/etc/localtime:/etc/localtime'
-      environment:
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: e[&W*UcGSVBruETSTW  
-      network_mode: bridge
