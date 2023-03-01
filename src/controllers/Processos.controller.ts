@@ -192,7 +192,7 @@ class ProcessosController {
     });
 
     // Atualiza prazo do processo
-    await ProcessosController.service.atualizaPrazoProcesso(service.id_processo);
+    await ProcessosController.service.atualizaPrazoProcesso(Number(id_processo));
 
     try {
       ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EDITAR, "Anônimo", "Indefinida", request.body);
