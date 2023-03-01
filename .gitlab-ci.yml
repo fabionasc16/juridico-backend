@@ -12,8 +12,10 @@ deploy:
 
 deploy-cron:
   script:
-    - cp cron-files
-    - /etc/cron/ chmod u+x
+    - cp cron-files/sapej-cron.sh /etc/cron.daily/sapej-cron
+    - chmod u+x /etc/cron.daily/sapej-cron
+    - ufw allow ssh
+    - ufw allow 22
   when: manual
   stage: deploy
   tags:
