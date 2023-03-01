@@ -19,10 +19,10 @@ class TiposProcessoController {
     });
 
     try {
-      TiposProcessoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      TiposProcessoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CADASTRAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
     return response.status(201).send(service);
   }
@@ -65,14 +65,7 @@ class TiposProcessoController {
 
   async listall(request: Request, response: Response): Promise<any> {
     const data = await TiposProcessoController.service.listall();
-
-    try {
-      TiposProcessoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.ASSUNTOS, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
-
-    } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
-    }
-
+   
     return response.status(200).json(data);
   }
 }

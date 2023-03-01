@@ -2,6 +2,8 @@ import axios from 'axios';
 import { Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import { Client } from 'es8';
+import { text } from 'stream/consumers';
+import { AppError } from 'errors/AppError.class';
 
 type User = {
   id: number;
@@ -40,7 +42,7 @@ export class LogsService {
 
   }
 
-  public async sendLog(system: string, module: string, transaction: string, user: string, unit: string, data: any) {
+  public async sendLog(system: string, module: string, transaction: string, user: any, unit: string, data: any) {
     try {
       const query_create_index = {
         'settings': {
@@ -49,20 +51,25 @@ export class LogsService {
         }
       }
 
-      const result = await LogsService.client.index({
-        index: 'system_logs',
-        document: {
-          transaction: transaction,
-          module: module,
-          user: user,
-          unit: unit,
-          data: data,
-          date: new Date,
-          system: system
-        }
-      })
+      if (typeof user === 'string' && typeof unit === 'string') {
+
+        const result = await LogsService.client.index({
+          index: 'system_logs',
+          document: {
+            transaction: transaction,
+            module: module,
+            user: user,
+            unit: unit,
+            data: data,
+            date: new Date,
+            system: system
+          }
+        })
+      } else {
+        console.error("LOG NÃO ENVIADO!", ` transaction: ${transaction},    module: ${module},    user: ${user}, unit: ${unit}`);
+      }
     } catch (error) {
-      console.error("ERRO AO ENVIAR LOG!");
+      console.error("ERRO AO ENVIAR LOG!", error);
     }
   }
 
@@ -71,41 +78,47 @@ export class LogsService {
     try {
       const responseQueue = [];
       const allLogs = [];
-      
+      const idProcesso = request.query.idProcesso;
       const result = await LogsService.client.search({
-        index: 'system_logs', 
+        index: 'system_logs',
         scroll: '30s',
-        sort : [{ 'date': 'desc'}],
+        sort: [{ 'date': `desc` }],
         size: 500,
-        _source: ['date','transaction','module','user'],
+        _source: ['date', 'transaction', 'module', 'user'],
         query: {
-          match: { system: LogsService.SYSTEM }
+          bool: {
+            must: [
+              { match: { system: LogsService.SYSTEM } },
+              { match: { "data.idProcesso": `${idProcesso}`} }
+            ]
+          }
         }
+
       });
 
       responseQueue.push(result);
 
       while (responseQueue.length) {
         const body = responseQueue.shift();
-    
+
         // collect the titles from this response
         body.hits.hits.forEach(function (hit) {
-          const dateLog =  new Date(hit._source.date);
-          allLogs.push({'date': `${dateLog.toLocaleString()}` ,'transaction': hit._source.transaction, 'module': hit._source.module, 'user': hit._source.user.nome})
+          const dateLog = new Date(hit._source.date);
+          allLogs.push({ 'date': `${dateLog.toLocaleString()}`, 'transaction': hit._source.transaction, 'module': hit._source.module, 'user': hit._source.user })
         });
-    
+
         // check to see if we have collected all of the quotes
         if (body.hits.total.value === allLogs.length) {
-         // console.log('Every quote', allLogs)
+          // console.log('Every quote', allLogs)
           break
         }
-    
+
         // get the next response if there are more quotes to fetch
         responseQueue.push(
           await LogsService.client.scroll({
             scroll_id: body._scroll_id,
             scroll: '30s'
-            
+
           })
         );
       }
@@ -114,7 +127,7 @@ export class LogsService {
       // return await response.status(200).json(result.hits.hits);
 
     } catch (error) {
-      console.error("ERRO AO LER O LOG!",error);
+      console.error("ERRO AO LER O LOG!", error);
       return response.status(500).send();
     }
 

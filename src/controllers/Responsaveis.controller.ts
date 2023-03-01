@@ -35,12 +35,12 @@ class ResponsaveisController {
         LogsService.SYSTEM,
         LogsService.MODULE.RESPONSAVEIS,
         LogsService.TRANSACTION.CADASTRAR,
-        request.user,
-        request.user.unidadeUsuario.unit_name,
+        request.user.nome,
+        request.user.unidadeUsuario[0].unit_name,
         request.body,
       );
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(201).json(service);
@@ -55,12 +55,12 @@ class ResponsaveisController {
         LogsService.SYSTEM,
         LogsService.MODULE.RESPONSAVEIS,
         LogsService.TRANSACTION.EXCLUIR,
-        request.user,
-        request.user.unidadeUsuario.unit_name,
+        request.user.nome,
+        request.user.unidadeUsuario[0].unit_name,
         request.body,
       );
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(204).send();
@@ -74,12 +74,12 @@ class ResponsaveisController {
         LogsService.SYSTEM,
         LogsService.MODULE.RESPONSAVEIS,
         LogsService.TRANSACTION.LISTAR,
-        request.user,
-        request.user.unidadeUsuario.unit_name,
+        request.user.nome,
+        request.user.unidadeUsuario[0].unit_name,
         request.body,
       );
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(200).json(data);
@@ -95,12 +95,12 @@ class ResponsaveisController {
         LogsService.SYSTEM,
         LogsService.MODULE.RESPONSAVEIS,
         LogsService.TRANSACTION.VISUALIZAR,
-        request.user,
-        request.user.unidadeUsuario.unit_name,
+        request.user.nome,
+        request.user.unidadeUsuario[0].unit_name,
         request.body,
       );
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
     return response.status(200).json(data);
   }
@@ -131,12 +131,12 @@ class ResponsaveisController {
         LogsService.SYSTEM,
         LogsService.MODULE.RESPONSAVEIS,
         LogsService.TRANSACTION.EDITAR,
-        request.user,
-        request.user.unidadeUsuario.unit_name,
+        request.user.nome,
+        request.user.unidadeUsuario[0].unit_name,
         request.body,
       );
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(204).send();
@@ -150,12 +150,12 @@ class ResponsaveisController {
         LogsService.SYSTEM,
         LogsService.MODULE.ASSUNTOS,
         LogsService.TRANSACTION.LISTAR,
-        request.user,
-        request.user.unidadeUsuario.unit_name,
+        request.user.nome,
+        request.user.unidadeUsuario[0].unit_name,
         request.body,
       );
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(200).json(data);

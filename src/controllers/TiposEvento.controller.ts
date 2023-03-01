@@ -21,10 +21,10 @@ class TiposEventoController {
     });
 
      try {
-      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.CADASTRAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.CADASTRAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(201).json(service);
@@ -35,10 +35,10 @@ class TiposEventoController {
     await TiposEventoController.service.delete(Number(id_tipoevento));
 
     try {
-      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.EXCLUIR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.EXCLUIR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -49,10 +49,10 @@ class TiposEventoController {
     const data = await TiposEventoController.service.read();
 
     try {
-      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.LISTAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.LISTAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
@@ -66,10 +66,10 @@ class TiposEventoController {
     );
 
     try {
-      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.VISUALIZAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.VISUALIZAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
     return response.status(200).json(data);
@@ -85,10 +85,10 @@ class TiposEventoController {
     });
 
     try {
-      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.EDITAR, request.user, request.user.unidadeUsuario.unit_name, request.body);
+      TiposEventoController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.TIPO_EVENTO, LogsService.TRANSACTION.EDITAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
 
     } catch (error) {
-      console.error('ERROR AO GRAVAR O LOG');
+      console.error('ERROR AO GRAVAR O LOG', error);
     }
 
 
