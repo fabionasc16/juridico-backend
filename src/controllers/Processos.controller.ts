@@ -382,6 +382,21 @@ class ProcessosController {
      
     return response.status(200).send();
   }
+
+  async atualizaPrazoProcesso(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+
+    if(request.headers.authorization && process.env.CRON_TOKEN  && request.headers.authorization === process.env.CRON_TOKEN ){
+      ProcessosController.service.atualizaPrazoProcesso(Number(request.query.id_processo));
+    }else{
+      return response.status(401).send({error:401, message: "Token inválido!"});
+    }
+    
+     
+    return response.status(200).send();
+  }
 }
 
 export { ProcessosController };

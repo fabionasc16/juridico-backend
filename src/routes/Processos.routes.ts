@@ -136,5 +136,11 @@ processosRoutes.post(
  // checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
   controller.atualizaPrazosProcesso,
 );
+processosRoutes.get(
+  '/atualiza-prazo-processo',
+ // checkJWT,
+ // checkRole([AuthService.ROLES.ADMIN, AuthService.ROLES.ADVOGADO]),
+  controller.atualizaPrazoProcesso,
+);
 
 export { processosRoutes };
