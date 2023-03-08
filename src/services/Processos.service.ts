@@ -263,13 +263,12 @@ class ProcessosService {
   private async calculaLimitePrazo(processo: any) {
     let limiteProcesso;
     if (processo.dias_corridos === 'S') {
-      limiteProcesso = moment(processo.data_recebimento).add(
-        processo.prazo_total,
+      limiteProcesso = moment(processo.data_recebimento.toISOString(false)).add(processo.prazo_total,
         'd',
       );
     } else {
       limiteProcesso = await calculaDias(
-        processo.data_recebimento,
+        processo.data_recebimento.toISOString(false ),
         processo.prazo_total,
       );
     }
@@ -277,42 +276,22 @@ class ProcessosService {
     return limiteProcesso.toDate();
   }
 
-  /* private async calculaDiasPecorridos(processo: any) {
-    let limiteProcesso;
-    if (processo.dias_corridos === 'S') {
-      limiteProcesso = moment(processo.data_recebimento)
-        .add(processo.prazo_total, 'd')
-        .format('YYYY-MM-DD');
-    } else {
-      limiteProcesso = (
-        await calculaDias(processo.data_recebimento, processo.prazo_total)
-      ).format('YYYY-MM-DD');
-    }
-
-    const diasPercorridos = moment(new Date(), 'YYYY-MM-DD').diff(
-      moment(processo.data_recebimento, 'YYYY-MM-DD'),
-      'days',
-    );
-
-    return diasPercorridos;
-  } */
-
   private async calculaDiasPecorridos(processo: any) {
     let limiteProcesso: any = '';
     const diasExpirados = 0;
 
     if (processo.dias_corridos === 'S') {
-      limiteProcesso = moment(processo.data_recebimento)
+      limiteProcesso = moment(processo.data_recebimento.toISOString(false))
         .add(processo.prazo_total, 'd')
         .format('YYYY-MM-DD');
     } else {
       limiteProcesso = (
-        await calculaDias(processo.data_recebimento, processo.prazo_total)
+        await calculaDias(processo.data_recebimento.toISOString(false), processo.prazo_total)
       ).format('YYYY-MM-DD');
     }
 
     const diasPercorridos = moment(new Date(), 'YYYY-MM-DD').diff(
-      moment(processo.data_recebimento, 'YYYY-MM-DD'),
+      moment(processo.data_recebimento.toISOString(false), 'YYYY-MM-DD'),
       'days',
     );
 
@@ -1024,7 +1003,9 @@ class ProcessosService {
         } Recebimento: ${processo.data_recebimento.toISOString(
           false,
         )}  Status prazo: ${processo.status_prazo} Data Limite: ${
-          processo.dia_limite_prazo
+          processo.dia_limite_prazo.toISOString(
+            false,
+          )
         } Prazo: ${processo.prazo_total} Dias Corridos: ${
           processo.dias_percorridos
         } Completude: ${processo.porcetagem_prazo} `,
@@ -1063,7 +1044,7 @@ class ProcessosService {
         } Recebimento: ${processo.data_recebimento.toISOString(
           false,
         )}  Status prazo: ${processo.status_prazo} Data Limite: ${
-          processo.dia_limite_prazo
+          processo.dia_limite_prazo.toISOString(false)
         } Prazo: ${processo.prazo_total} Dias Corridos: ${
           processo.dias_percorridos
         } Completude: ${processo.porcetagem_prazo} `,
