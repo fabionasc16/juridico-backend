@@ -245,11 +245,11 @@ class ProcessosService {
     const prazo = await this.calculaDiasPecorridos(processo);
     let status_prazo;
 
-    if (prazo == -1) {
+    if (prazo == 0) {
       status_prazo = ProcessosService.statusPrazo.EXPIRA_HOJE;
-    } else if (prazo < -1) {
+    } else if (prazo <= -1) {
       status_prazo = ProcessosService.statusPrazo.EXPIRADO;
-    } else if (prazo >= 0 && prazo <= 3) {
+    } else if (prazo >= 1 && prazo <= 3) {
       status_prazo = ProcessosService.statusPrazo.CRITICO;
     } else if (prazo >= 4 && prazo <= 5) {
       status_prazo = ProcessosService.statusPrazo.ATENCAO;
