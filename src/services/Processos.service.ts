@@ -279,8 +279,12 @@ class ProcessosService {
   private async calculaDiasPecorridos(processo: any) {
     let limiteProcesso: any = '';
     const diasExpirados = 0;
-
+    if( typeof processo.data_recebimento ===  'string'){
+      processo.data_recebimento = moment(processo.data_recebimento)
+   }
     if (processo.dias_corridos === 'S') {
+      
+
       limiteProcesso = moment(processo.data_recebimento.toISOString(false))
         .add(processo.prazo_total, 'd')
         .format('YYYY-MM-DD');
