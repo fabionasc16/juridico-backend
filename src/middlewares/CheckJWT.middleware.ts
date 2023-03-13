@@ -12,7 +12,7 @@ export const checkJWT = async (
     const user = await AuthService.verify(token);
     if (user) {
       req.user = user;
-      req.user_name = user.user_name;
+      req.user_name = user.nome;
       req.user_unit = user.unidadeUsuario[0].unit_name;
     } else {
       res.status(401).json({ message: 'Acesso negado ou Sessão expirada!' });
