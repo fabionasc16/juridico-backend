@@ -71,7 +71,16 @@ class ProcessosController {
      await ProcessosController.service.atualizaPrazoProcesso(service.id_processo);
 
     try {
-      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CADASTRAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
+      let user= 'Anônimo';
+      let unidade= 'Indefinida';
+            
+      if(request.user_name ){
+         user = request.user_name;
+         if(request.user_unit){
+          unidade = request.user_unit;
+       }
+      }
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CADASTRAR, user, unidade, request.body);
 
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG', error);
@@ -84,7 +93,16 @@ class ProcessosController {
     await ProcessosController.service.delete(Number(id_processo));
 
     try {
-      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EXCLUIR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
+      let user= 'Anônimo';
+      let unidade= 'Indefinida';
+            
+      if(request.user_name ){
+         user = request.user_name;
+         if(request.user_unit){
+          unidade = request.user_unit;
+       }
+      }
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EXCLUIR, user, unidade, request.body);
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG', error);
     }
@@ -96,7 +114,16 @@ class ProcessosController {
     const data = await ProcessosController.service.read(request);
 
     try {
-      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.LISTAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
+      let user= 'Anônimo';
+      let unidade= 'Indefinida';
+            
+      if(request.user_name ){
+         user = request.user_name;
+         if(request.user_unit){
+          unidade = request.user_unit;
+       }
+      }
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.LISTAR, user, unidade, request.body);
 
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG', error);
@@ -112,7 +139,16 @@ class ProcessosController {
     );
 
     try {
-      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.VISUALIZAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
+      let user= 'Anônimo';
+      let unidade= 'Indefinida';
+            
+      if(request.user_name ){
+         user = request.user_name;
+         if(request.user_unit){
+          unidade = request.user_unit;
+       }
+      }
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.VISUALIZAR, user, unidade, {"idProcesso": id_processo});
 
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG', error);
@@ -126,7 +162,16 @@ class ProcessosController {
     const data = await ProcessosController.service.readByObjeto(objetoProcesso);
 
     try {
-      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.VISUALIZAR, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
+      let user= 'Anônimo';
+      let unidade= 'Indefinida';
+            
+      if(request.user_name ){
+         user = request.user_name;
+         if(request.user_unit){
+          unidade = request.user_unit;
+       }
+      }
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.VISUALIZAR, user, unidade, request.body);
 
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG', error);
@@ -195,7 +240,20 @@ class ProcessosController {
     await ProcessosController.service.atualizaPrazoProcesso(Number(id_processo));
 
     try {
-      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EDITAR, "Anônimo", "Indefinida", request.body);
+
+      let user= 'Anônimo';
+      let unidade= 'Indefinida';
+
+      if(request.user_name ){
+         user = request.user_name;
+         if(request.user_unit){
+          unidade = request.user_unit;
+       }
+      }
+
+     
+      
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EDITAR, user, unidade, request.body);
 
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG', error);
@@ -215,7 +273,16 @@ class ProcessosController {
     );
 
     try {
-      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.BUSCAR_PROCESSO, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
+      let user= 'Anônimo';
+      let unidade= 'Indefinida';
+            
+      if(request.user_name ){
+         user = request.user_name;
+         if(request.user_unit){
+          unidade = request.user_unit;
+       }
+      }
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.BUSCAR_PROCESSO, user, unidade, request.body);
 
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG', error);
@@ -236,7 +303,16 @@ class ProcessosController {
       );
 
       try {
-        ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.MOVIMENTACOES_PROCESSO, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
+        let user= 'Anônimo';
+        let unidade= 'Indefinida';
+              
+        if(request.user_name ){
+           user = request.user_name;
+           if(request.user_unit){
+            unidade = request.user_unit;
+         }
+        }
+        ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.MOVIMENTACOES_PROCESSO, user, unidade, request.body);
   
       } catch (error) {
         console.error('ERROR AO GRAVAR O LOG', error);
@@ -246,13 +322,22 @@ class ProcessosController {
   }
 
   async readCaixasSIGED(
-    _request: Request,
+    request: Request,
     response: Response,
   ): Promise<Response> {
     const data = await ProcessosController.service.readCaixasSIGEDProcesso();
 
     try {
-      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CAIXAS_SIGED, _request.user.nome, _request.user.unidadeUsuario[0].unit_name, _request.body);
+      let user= 'Anônimo';
+      let unidade= 'Indefinida';
+            
+      if(request.user_name ){
+         user = request.user_name;
+         if(request.user_unit){
+          unidade = request.user_unit;
+       }
+      }
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.CAIXAS_SIGED, user, unidade, request.body);
 
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG', error);
@@ -276,7 +361,16 @@ class ProcessosController {
     );
 
     try {
-      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EDITAR_STATUS, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
+      let user= 'Anônimo';
+      let unidade= 'Indefinida';
+            
+      if(request.user_name ){
+         user = request.user_name;
+         if(request.user_unit){
+          unidade = request.user_unit;
+       }
+      }
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.EDITAR_STATUS, user, unidade, request.body);
 
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG', error);
@@ -296,7 +390,17 @@ class ProcessosController {
     );
 
     try {
-      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.BUSCAR_PROCESSO_DESCRICAO, request.user.nome, request.user.unidadeUsuario[0].unit_name, request.body);
+      let user= 'Anônimo';
+      let unidade= 'Indefinida';
+            
+      if(request.user_name ){
+         user = request.user_name;
+         if(request.user_unit){
+          unidade = request.user_unit;
+       }
+      }
+
+      ProcessosController.logs.sendLog(LogsService.SYSTEM, LogsService.MODULE.PROCESSO, LogsService.TRANSACTION.BUSCAR_PROCESSO_DESCRICAO, user, unidade, request.body);
 
     } catch (error) {
       console.error('ERROR AO GRAVAR O LOG', error);
