@@ -79,18 +79,25 @@ export class LogsService {
       const responseQueue = [];
       const allLogs = [];
       const idProcesso = request.query.idProcesso;
+      const search = request.query.search?request.query.search:'';
+      let conditions = [
+        { match: { system: LogsService.SYSTEM } },
+        { match: { "data.idProcesso": `${idProcesso}`} }
+      ]
+
+      if(search){
+        conditions.push({ match: { 'user': `${search}`} });
+      }
+
       const result = await LogsService.client.search({
         index: 'system_logs',
         scroll: '30s',
-        sort: [{ 'date': `desc` }],
+        sort: [{ 'date': 'desc' }],
         size: 500,
         _source: ['date', 'transaction', 'module', 'user'],
         query: {
           bool: {
-            must: [
-              { match: { system: LogsService.SYSTEM } },
-              { match: { "data.idProcesso": `${idProcesso}`} }
-            ]
+            must: conditions
           }
         }
 
